@@ -1,0 +1,82 @@
+We are a music school called Nathaniel School of Music. We need a beautiful, dark-themed website (black/orange/white colors) that acts as a technology resource for our students “Nathaniel Production House”. The site should look professional like a high-end music studio website - services include Recording, Mixing, Arrangement and Production.
+
+THE MAIN LANDING PAGE (HERO SECTION):
+At the very top, create a split-screen hero section. Left side: Big bold headline "Nathaniel Production House" with subtitle about our recording studio and tech resources. Right side: A smart form that changes based on what the user selects. The form should have tabs: "Learn Music" / "Record Music" / "Rehearse" / "Collaborate". When they click a tab, the form fields change accordingly. For example, if they click "Record Music", show dropdowns for "Single Track" or "Album Production". If they click "Learn Music", show instrument selection. All forms should auto-sync & backup to a Google Sheet - Sheet ID: 1afzuGc2km8ZbWmojzfGzvgGHN5ZhqXEA6O6qUuSZsds
+
+STUDIO SHOWCASE SECTION:
+Create a photo gallery grid that looks artistic - mix of large images and small images (Pinterest-style masonry grid). When you hover over images, it should explain features of our studio based on the content we give you in the attached doc. Below the gallery, add a "Recent Work" section showing YouTube video cards and Spotify embeds. Admin should be able to update these easily in our dashboard.
+
+HOW TO BUY INSTRUMENTS Page:
+This is a major page with tabs: "Piano & Keys" / "Guitars" / "Servicing" / "Accessories".
+For the Piano tab: Create a detailed buying guide showing types of pianos (Acoustic vs Digital), key specifications (88 keys, weighted action, polyphony), and a comparison table between specific models (CK-88 vs RD-88). Include embedded YouTube video cards for tutorials like "How to Buy Your First Piano" and comparison videos. All these links should be adjustable by the admin along with their content. Refer to my guide which is attached in the file titled - Piano Guide
+
+- https://youtu.be/ov8mojWB-j0 
+- https://youtu.be/uiDMZcwmnxk 
+- https://youtu.be/s_wsHwo4IJg 
+- https://youtu.be/P6xU9PGegag 
+
+For Guitars: Similar structure but for acoustic/electric guitars. For content, B-Roll inspiration and instruments to buy, refer to my guide which is attached in the file titled - Guitar Guide
+
+For Accessories: Show product cards for metronomes, headphones, etc with "Buy on Amazon" and "Buy on Bajao” buttons. Each product should have a copy-link button so admin can share direct links.
+
+ONLINE LESSONS SETUP PAGE(OBS GUIDE):
+
+Create a professional guide for setting up class on Zoom using OBS. Instructions are in the PDF attached - and the transcripts of the YouTube videos (also attached). Also, display the YouTube videos intelligently. 
+- Part 1 - https://youtu.be/ugY4dTJiwxM?si=JIxIsg14EnQ68pCm 
+- Part 2 - https://youtu.be/2O0CqcfJb9I?si=i_TR6Gu-rffe2EZD 
+- Part 3 - https://youtu.be/xuCCAYiXqE4  Also, include the PDF document as an attached benefit for users
+
+GEAR MARKETPLACE PAGE:
+
+This should look like an e-commerce site (like Sweetwater or Amazon) but for used gear our students sell.
+
+Filter bar at top: Search box, Category dropdown (Keyboards, Guitars, Drums, Pro Audio), Sort dropdown (Price Low-High, Newest First, Best Discount).
+
+Product cards showing: Photo, Category tag, Product name, Price (big green number), Original price (crossed out), Discount percentage badge, short description.
+
+Most importantly: Under each product, show three buttons for price comparison: "Amazon: ₹XX,XXX", "Bajaoo: ₹XX,XXX", "SoundGlitz: ₹XX,XXX". And a copy-link button.
+
+Can we plug in the best AI API Key to do this search for us?
+
+"Sell Your Gear" button that opens a form where students can upload photos and details. This is ONLY users that have actual accounts on our site.
+
+AFFILIATE PARTNERS PAGE:
+
+Grid of partner cards showing software companies (Pianoteq (Modartt), Slate Digital etc.) and hardware deals. Each card should have: Company logo placeholder, "Software" or "Hardware" badge, description, commission/discount badge (like "30% Off"), and a "Claim Deal" button.
+
+CONTACT SECTION:
+Copy the contact style from Nathaniel School website (or standard professional contact page). Include a contact form, phone number, email, and two addresses (Langford Town and Sahakar Nagar, Bangalore). Include a map or location visualization - www.nathanielschool.com
+
+DISCRETE ADMIN DASHBOARD:
+At the bottom right corner, place a small gear/settings icon that opens an admin panel. This should NOT look like part of the public site - keep it minimal.
+Admin panel needs these functions:
+
+Image Manager: Drag-and-drop zone to upload new studio photos. These should automatically appear in the gallery section above.
+Video Manager: Input field to paste YouTube URLs and select which section they appear in (Studio Work, Piano Tutorial, OBS Guide, etc.).
+Gear Manager: Form to add new gear for sale - Name, Category, Your Price, Original Price, and fields for Amazon/Bajao/SoundGlitz affiliate links. Include a "Search Market Prices" button that helps find current prices (you can simulate this or use an API if available).
+Partner Manager: Form to add new affiliate partners with logo upload, commission rates, and payment links.
+Site Settings: Edit phone number, WhatsApp group link, and other contact info.
+Sync Status: Show "Last synced with Google Sheets: 2 mins ago" and manual sync/backup buttons.
+
+GOOGLE SHEETS BACKUP:
+The entire site should backup to Google Sheets. This is crucial so our non-technical staff can update content easily. Structure of the sheets is:
+One tab for "Studio Images" (URLs, captions, display order)
+One tab for "YouTube Videos" (Title, URL, Category, Thumbnail)
+One tab for "Gear for Sale" (Name, Price, Original Price, Image URLs, Amazon Link, Bajao Link, etc.)
+One tab for "Affiliate Partners" (Company, Logo URL, Commission %, Deal Link)
+One tab for "Site Config" (Phone numbers, addresses, etc.)
+When admin uploads an image via the dashboard, it should save to Google Drive and the URL should be recorded in the Sheet. When they add a YouTube video, it should append to the Sheet.
+
+USER REGISTRATION:
+Allow students to create accounts (simple email/password or Google login). Once logged in, they can post gear for sale themselves. Think of it like a mini-Reverb.com marketplace just for our school community.
+
+OTHER IMPORTANT DETAILS:
+Mobile-responsive: Must work perfectly on phones and tablets
+Copy-paste friendly links: Every page should have easy-to-copy URLs (like "tech.nathaniel.com/#gear" or "tech.nathaniel.com/#piano-guide")
+Fast loading: Optimize images
+Dark theme: Black background and artistic and rustic for musicians to be inspired from. Should showcase “trust” and a “one-step resource” for all things tech
+WhatsApp integration: Optional - either integrate a WhatsApp chat button or link to our existing group in a simple way
+
+TECHNICAL NOTE FOR REPLIT:
+Use HTML, CSS, and JavaScript for the frontend. For the backend (if needed), use Node.js or Python to handle Google Sheets API connections, image uploads, and user authentication. Store the Google Sheets API credentials securely. 
+Make it look stunning, professional, and easy to update. Think "Apple website meets Sweetwater meets dark mode Spotify.
