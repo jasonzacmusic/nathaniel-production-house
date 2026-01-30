@@ -688,9 +688,14 @@ function ShareLinksManager() {
       const response = await adminApiRequest("POST", "/api/share-links", data);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/share-links"] });
-      toast({ title: "Link Created", description: "Share link created successfully" });
+      const url = `${window.location.origin}/s/${data.code}`;
+      navigator.clipboard.writeText(url).then(() => {
+        toast({ title: "Link Created & Copied", description: "Share link created and copied to clipboard" });
+      }).catch(() => {
+        toast({ title: "Link Created", description: "Share link created successfully" });
+      });
       setNewLink({ targetPage: "/obs-guide", label: "", code: "" });
     }
   });
