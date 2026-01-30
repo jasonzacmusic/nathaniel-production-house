@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip:*)",
+      "Bash(python3:*)",
+      "Bash(npm run build:*)",
+      "WebFetch(domain:nathanielschool.com)",
+      "Bash(npm run check:*)",
+      "Bash(npx tsc:*)",
+      "WebSearch"
+    ]
+  }
+}

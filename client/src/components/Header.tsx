@@ -2,28 +2,32 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Phone, MessageCircle } from "lucide-react";
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/instruments", label: "Buy Instruments" },
-  { href: "/obs-guide", label: "OBS Guide" },
-  { href: "/marketplace", label: "Gear Market" },
-  { href: "/partners", label: "Partners" },
-  { href: "/contact", label: "Contact" },
-];
+import { Badge } from "@/components/ui/badge";
+import { Menu, Phone, MessageCircle, Mic2 } from "lucide-react";
+import { getVisibleNavLinks, type PageConfig } from "@/config/siteConfig";
 
 export default function Header() {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const handleNavClick = (href: string, isAnchor?: boolean) => {
+    if (isAnchor && location === "/") {
+      const id = href.replace("/#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setMobileOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
         <Link href="/" className="flex items-center gap-3">
-          <img 
-            src="/logo-icon.png" 
-            alt="Nathaniel" 
+          <img
+            src="/logo-icon.png"
+            alt="Nathaniel"
             className="h-10 w-auto"
             data-testid="img-logo"
           />
@@ -34,23 +38,48 @@ export default function Header() {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1" data-testid="nav-desktop">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href}>
-              <Button
-                variant={location === link.href ? "secondary" : "ghost"}
-                size="sm"
-                data-testid={`link-nav-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+          {getVisibleNavLinks().map((link: PageConfig) => (
+            link.isAnchor ? (
+              <a
+                key={link.path}
+                href={link.path}
+                onClick={(e) => {
+                  if (location === "/") {
+                    e.preventDefault();
+                    handleNavClick(link.path, true);
+                  }
+                }}
               >
-                {link.label}
-              </Button>
-            </Link>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  data-testid={`link-nav-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+                >
+                  {link.label}
+                </Button>
+              </a>
+            ) : (
+              <Link key={link.path} href={link.path}>
+                <Button
+                  variant={location === link.path ? "secondary" : "ghost"}
+                  size="sm"
+                  data-testid={`link-nav-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+                >
+                  {link.label}
+                </Button>
+              </Link>
+            )
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
-          <a 
-            href="https://wa.me/919876543210" 
-            target="_blank" 
+          <Badge variant="outline" className="hidden md:flex items-center gap-1 text-xs">
+            <Mic2 className="h-3 w-3" />
+            AVID Certified
+          </Badge>
+          <a
+            href="https://wa.me/917760456847"
+            target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:flex"
           >
@@ -59,7 +88,7 @@ export default function Header() {
               WhatsApp
             </Button>
           </a>
-          <a href="tel:+919876543210" className="hidden sm:flex">
+          <a href="tel:+917760456847" className="hidden sm:flex">
             <Button size="sm" data-testid="button-call">
               <Phone className="h-4 w-4 mr-2" />
               Call Us
@@ -73,26 +102,56 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-72">
-              <nav className="flex flex-col gap-2 mt-8">
-                {navLinks.map((link) => (
-                  <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}>
-                    <Button
-                      variant={location === link.href ? "secondary" : "ghost"}
-                      className="w-full justify-start"
-                      data-testid={`link-mobile-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+              <div className="flex items-center gap-2 mb-6">
+                <img src="/logo-icon.png" alt="Nathaniel" className="h-8 w-auto" />
+                <div>
+                  <span className="font-semibold">Nathaniel</span>
+                  <span className="block text-xs text-muted-foreground">Production House</span>
+                </div>
+              </div>
+              <nav className="flex flex-col gap-2">
+                {getVisibleNavLinks().map((link: PageConfig) => (
+                  link.isAnchor ? (
+                    <a
+                      key={link.path}
+                      href={link.path}
+                      onClick={(e) => {
+                        if (location === "/") {
+                          e.preventDefault();
+                          handleNavClick(link.path, true);
+                        } else {
+                          setMobileOpen(false);
+                        }
+                      }}
                     >
-                      {link.label}
-                    </Button>
-                  </Link>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start"
+                        data-testid={`link-mobile-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+                      >
+                        {link.label}
+                      </Button>
+                    </a>
+                  ) : (
+                    <Link key={link.path} href={link.path} onClick={() => setMobileOpen(false)}>
+                      <Button
+                        variant={location === link.path ? "secondary" : "ghost"}
+                        className="w-full justify-start"
+                        data-testid={`link-mobile-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+                      >
+                        {link.label}
+                      </Button>
+                    </Link>
+                  )
                 ))}
                 <div className="border-t border-border my-4" />
-                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/917760456847" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" className="w-full justify-start">
                     <MessageCircle className="h-4 w-4 mr-2" />
                     WhatsApp
                   </Button>
                 </a>
-                <a href="tel:+919876543210">
+                <a href="tel:+917760456847">
                   <Button className="w-full justify-start">
                     <Phone className="h-4 w-4 mr-2" />
                     Call Us

@@ -10,11 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
   Send,
   MessageCircle,
   ExternalLink
@@ -23,16 +23,16 @@ import {
 const locations = [
   {
     name: "Langford Town",
-    address: "123 Langford Road, Langford Town, Bangalore - 560025",
-    phone: "+91 98765 43210",
+    address: "Langford Town, Bangalore, Karnataka 560025, India",
+    phone: "+91 77604 56847",
     hours: "Mon-Sat: 9:00 AM - 8:00 PM",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.0123456789!2d77.5945!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDU4JzE3LjgiTiA3N8KwMzUnNDAuMiJF!5e0!3m2!1sen!2sin!4v1234567890123",
   },
   {
     name: "Sahakar Nagar",
-    address: "456 Main Road, Sahakar Nagar, Bangalore - 560092",
-    phone: "+91 98765 43211",
-    hours: "Mon-Sat: 10:00 AM - 7:00 PM",
+    address: "Sahakar Nagar, Bangalore, Karnataka 560092, India",
+    phone: "+91 77604 56847",
+    hours: "Mon-Sat: 9:00 AM - 8:00 PM",
     mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.0123456789!2d77.5945!3d13.0616!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDAzJzQxLjgiTiA3N8KwMzUnNDAuMiJF!5e0!3m2!1sen!2sin!4v1234567890123",
   },
 ];
@@ -53,21 +53,21 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     toast({
       title: "Message Sent!",
       description: "We'll get back to you within 24 hours.",
     });
-    
+
     setIsSubmitting(false);
     (e.target as HTMLFormElement).reset();
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEOHead 
+      <SEOHead
         title="Contact Us - Nathaniel School of Music Bangalore"
         description="Get in touch with Nathaniel School of Music. Locations in Langford Town and Sahakar Nagar, Bangalore. Contact us for music lessons, recording studio bookings, and inquiries."
         path="/contact"
@@ -82,7 +82,7 @@ export default function Contact() {
                 Contact <span className="gradient-text">Us</span>
               </h1>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Have questions about lessons, recording, or our services? 
+                Have questions about lessons, recording, or our services?
                 We'd love to hear from you. Reach out through any of the channels below.
               </p>
             </div>
@@ -108,7 +108,7 @@ export default function Contact() {
                           <Input id="email" type="email" placeholder="you@example.com" required data-testid="input-contact-email" />
                         </div>
                       </div>
-                      
+
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="phone">Phone Number</Label>
@@ -138,8 +138,8 @@ export default function Contact() {
 
                       <div className="space-y-2">
                         <Label htmlFor="message">Message</Label>
-                        <Textarea 
-                          id="message" 
+                        <Textarea
+                          id="message"
                           placeholder="Tell us more about your inquiry..."
                           className="min-h-[150px] resize-none"
                           required
@@ -164,9 +164,9 @@ export default function Contact() {
                       Quick Contact
                     </h3>
                     <div className="space-y-4">
-                      <a 
-                        href="https://wa.me/919876543210" 
-                        target="_blank" 
+                      <a
+                        href="https://wa.me/917760456847"
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="block"
                       >
@@ -176,16 +176,16 @@ export default function Contact() {
                           <ExternalLink className="h-3 w-3 ml-auto" />
                         </Button>
                       </a>
-                      <a href="tel:+919876543210" className="block">
+                      <a href="tel:+917760456847" className="block">
                         <Button variant="outline" className="w-full justify-start" data-testid="button-call-contact">
                           <Phone className="h-4 w-4 mr-2 text-primary" />
-                          +91 98765 43210
+                          +91 77604 56847
                         </Button>
                       </a>
-                      <a href="mailto:info@nathanielschool.com" className="block">
+                      <a href="mailto:music@nathanielschool.com" className="block">
                         <Button variant="outline" className="w-full justify-start" data-testid="button-email-contact">
                           <Mail className="h-4 w-4 mr-2 text-primary" />
-                          info@nathanielschool.com
+                          music@nathanielschool.com
                         </Button>
                       </a>
                     </div>
@@ -194,9 +194,14 @@ export default function Contact() {
 
                 <Card className="bg-primary/5 border-primary/20">
                   <CardContent className="p-6">
+                    <h3 className="font-semibold mb-2">Business Hours</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Monday - Saturday<br />
+                      9:00 AM - 8:00 PM
+                    </p>
                     <h3 className="font-semibold mb-2">Response Time</h3>
                     <p className="text-sm text-muted-foreground">
-                      We typically respond within 24 hours on business days. 
+                      We typically respond within 24 hours on business days.
                       For urgent inquiries, please call or WhatsApp us directly.
                     </p>
                   </CardContent>
@@ -238,7 +243,7 @@ export default function Contact() {
                         <span className="text-muted-foreground">{location.hours}</span>
                       </div>
                     </div>
-                    <a 
+                    <a
                       href={`https://maps.google.com/?q=${encodeURIComponent(location.address)}`}
                       target="_blank"
                       rel="noopener noreferrer"

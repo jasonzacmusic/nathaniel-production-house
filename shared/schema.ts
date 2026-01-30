@@ -107,6 +107,39 @@ export const insertSiteConfigSchema = createInsertSchema(siteConfig).omit({ id: 
 export type InsertSiteConfig = z.infer<typeof insertSiteConfigSchema>;
 export type SiteConfig = typeof siteConfig.$inferSelect;
 
+// Instrument Recommendations (admin-editable)
+export const instrumentRecommendations = pgTable("instrument_recommendations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  category: text("category").notNull(), // piano, guitar, accessories
+  name: text("name").notNull(),
+  model: text("model").notNull(),
+  priceRange: text("price_range"),
+  amazonLink: text("amazon_link"),
+  bajaaoLink: text("bajaao_link"),
+  description: text("description"),
+  features: text("features"),
+  recommendation: text("recommendation"), // budget, intermediate, professional
+  displayOrder: integer("display_order").default(0),
+});
+
+export const insertInstrumentRecommendationSchema = createInsertSchema(instrumentRecommendations).omit({ id: true });
+export type InsertInstrumentRecommendation = z.infer<typeof insertInstrumentRecommendationSchema>;
+export type InstrumentRecommendation = typeof instrumentRecommendations.$inferSelect;
+
+// OBS Guide Content (admin-editable)
+export const obsGuideContent = pgTable("obs_guide_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  section: text("section").notNull(), // intro, setup, zoom_tips, obs_settings
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  imageUrl: text("image_url"),
+  displayOrder: integer("display_order").default(0),
+});
+
+export const insertObsGuideContentSchema = createInsertSchema(obsGuideContent).omit({ id: true });
+export type InsertObsGuideContent = z.infer<typeof insertObsGuideContentSchema>;
+export type ObsGuideContent = typeof obsGuideContent.$inferSelect;
+
 // Form data types for frontend
 export interface BookingFormData {
   type: 'learn' | 'record' | 'rehearse' | 'collaborate';

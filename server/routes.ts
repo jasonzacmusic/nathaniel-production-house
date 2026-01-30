@@ -6,9 +6,12 @@ import {
   insertVideoSchema, 
   insertGearListingSchema, 
   insertAffiliatePartnerSchema, 
-  insertContactMessageSchema 
+  insertContactMessageSchema,
+  insertInstrumentRecommendationSchema,
+  insertObsGuideContentSchema
 } from "@shared/schema";
 import { z } from "zod";
+import { randomUUID } from "crypto";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -306,6 +309,101 @@ export async function registerRoutes(
       res.status(201).json(message);
     } catch (error) {
       res.status(500).json({ error: "Failed to submit inquiry" });
+    }
+  });
+
+  // Admin Login
+  app.post("/api/admin/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      const user = await storage.getUserByUsername(username);
+      
+      if (!user || user.password !== password || !user.isAdmin) {
+        return res.status(401).json({ success: false, message: "Invalid credentials" });
+      }
+      
+      const token = randomUUID();
+      res.json({ success: true, token, user: { username: user.username, email: user.email } });
+    } catch (error) {
+      res.status(500).json({ success: false, message: "Login failed" });
+    }
+  });
+
+  // Instrument Recommendations
+  app.get("/api/instruments/recommendations", async (req, res) => {
+    try {
+      const category = req.query.category as string | undefined;
+      const recommendations = await storage.getInstrumentRecommendations(category);
+      res.json(recommendations);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch recommendations" });
+    }
+  });
+
+  app.post("/api/instruments/recommendations", async (req, res) => {
+    try {
+      const data = insertInstrumentRecommendationSchema.parse(req.body);
+      const recommendation = await storage.createInstrumentRecommendation(data);
+      res.status(201).json(recommendation);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create recommendation" });
+    }
+  });
+
+  app.patch("/api/instruments/recommendations/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = insertInstrumentRecommendationSchema.partial().parse(req.body);
+      const recommendation = await storage.updateInstrumentRecommendation(id, data);
+      if (!recommendation) {
+        return res.status(404).json({ error: "Recommendation not found" });
+      }
+      res.json(recommendation);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to update recommendation" });
+    }
+  });
+
+  app.delete("/api/instruments/recommendations/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await storage.deleteInstrumentRecommendation(id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Recommendation not found" });
+      }
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete recommendation" });
+    }
+  });
+
+  // OBS Guide Content
+  app.get("/api/obs-guide/content", async (req, res) => {
+    try {
+      const section = req.query.section as string | undefined;
+      const content = await storage.getObsGuideContent(section);
+      res.json(content);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch OBS guide content" });
+    }
+  });
+
+  app.post("/api/obs-guide/content", async (req, res) => {
+    try {
+      const data = insertObsGuideContentSchema.parse(req.body);
+      const content = await storage.createObsGuideContent(data);
+      res.status(201).json(content);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create content" });
     }
   });
 

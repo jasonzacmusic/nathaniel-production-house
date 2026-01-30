@@ -12,7 +12,11 @@ import {
   type ContactMessage,
   type InsertContactMessage,
   type SiteConfig,
-  type InsertSiteConfig
+  type InsertSiteConfig,
+  type InstrumentRecommendation,
+  type InsertInstrumentRecommendation,
+  type ObsGuideContent,
+  type InsertObsGuideContent
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -59,6 +63,18 @@ export interface IStorage {
   getSiteConfig(): Promise<SiteConfig[]>;
   getConfigByKey(key: string): Promise<SiteConfig | undefined>;
   updateConfig(key: string, value: string): Promise<SiteConfig>;
+  
+  // Instrument Recommendations
+  getInstrumentRecommendations(category?: string): Promise<InstrumentRecommendation[]>;
+  createInstrumentRecommendation(rec: InsertInstrumentRecommendation): Promise<InstrumentRecommendation>;
+  updateInstrumentRecommendation(id: string, rec: Partial<InsertInstrumentRecommendation>): Promise<InstrumentRecommendation | undefined>;
+  deleteInstrumentRecommendation(id: string): Promise<boolean>;
+  
+  // OBS Guide Content
+  getObsGuideContent(section?: string): Promise<ObsGuideContent[]>;
+  createObsGuideContent(content: InsertObsGuideContent): Promise<ObsGuideContent>;
+  updateObsGuideContent(id: string, content: Partial<InsertObsGuideContent>): Promise<ObsGuideContent | undefined>;
+  deleteObsGuideContent(id: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -69,6 +85,8 @@ export class MemStorage implements IStorage {
   private affiliatePartners: Map<string, AffiliatePartner>;
   private contactMessages: Map<string, ContactMessage>;
   private siteConfig: Map<string, SiteConfig>;
+  private instrumentRecommendations: Map<string, InstrumentRecommendation>;
+  private obsGuideContent: Map<string, ObsGuideContent>;
 
   constructor() {
     this.users = new Map();
@@ -78,6 +96,8 @@ export class MemStorage implements IStorage {
     this.affiliatePartners = new Map();
     this.contactMessages = new Map();
     this.siteConfig = new Map();
+    this.instrumentRecommendations = new Map();
+    this.obsGuideContent = new Map();
     
     this.initializeSampleData();
   }
@@ -125,6 +145,15 @@ export class MemStorage implements IStorage {
       { id: "4", key: "whatsapp", value: "https://wa.me/919876543210" },
     ];
     defaultConfig.forEach(config => this.siteConfig.set(config.key, config));
+    
+    // Default admin user
+    this.users.set("admin", {
+      id: "admin",
+      username: "admin",
+      email: "admin@nathanielschool.com",
+      password: "nph2024admin",
+      isAdmin: true
+    });
   }
 
   // Users
@@ -313,6 +342,62 @@ export class MemStorage implements IStorage {
     const newConfig: SiteConfig = { id, key, value };
     this.siteConfig.set(key, newConfig);
     return newConfig;
+  }
+
+  // Instrument Recommendations
+  async getInstrumentRecommendations(category?: string): Promise<InstrumentRecommendation[]> {
+    const recs = Array.from(this.instrumentRecommendations.values());
+    if (category) {
+      return recs.filter(r => r.category === category).sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    }
+    return recs.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async createInstrumentRecommendation(rec: InsertInstrumentRecommendation): Promise<InstrumentRecommendation> {
+    const id = randomUUID();
+    const newRec: InstrumentRecommendation = { ...rec, id };
+    this.instrumentRecommendations.set(id, newRec);
+    return newRec;
+  }
+
+  async updateInstrumentRecommendation(id: string, rec: Partial<InsertInstrumentRecommendation>): Promise<InstrumentRecommendation | undefined> {
+    const existing = this.instrumentRecommendations.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...rec };
+    this.instrumentRecommendations.set(id, updated);
+    return updated;
+  }
+
+  async deleteInstrumentRecommendation(id: string): Promise<boolean> {
+    return this.instrumentRecommendations.delete(id);
+  }
+
+  // OBS Guide Content
+  async getObsGuideContent(section?: string): Promise<ObsGuideContent[]> {
+    const content = Array.from(this.obsGuideContent.values());
+    if (section) {
+      return content.filter(c => c.section === section).sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    }
+    return content.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  }
+
+  async createObsGuideContent(content: InsertObsGuideContent): Promise<ObsGuideContent> {
+    const id = randomUUID();
+    const newContent: ObsGuideContent = { ...content, id };
+    this.obsGuideContent.set(id, newContent);
+    return newContent;
+  }
+
+  async updateObsGuideContent(id: string, content: Partial<InsertObsGuideContent>): Promise<ObsGuideContent | undefined> {
+    const existing = this.obsGuideContent.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...content };
+    this.obsGuideContent.set(id, updated);
+    return updated;
+  }
+
+  async deleteObsGuideContent(id: string): Promise<boolean> {
+    return this.obsGuideContent.delete(id);
   }
 }
 

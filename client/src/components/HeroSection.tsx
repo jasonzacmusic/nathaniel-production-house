@@ -7,26 +7,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Music, Mic2, Users, Handshake, ArrowRight, Disc3, Headphones, Waves } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Music, Mic2, Users, Handshake, ArrowRight, Disc3, Headphones, Waves, Sliders, Award, CheckCircle } from "lucide-react";
 
-type FormTab = 'learn' | 'record' | 'rehearse' | 'collaborate';
+type FormTab = 'record' | 'mix' | 'produce' | 'collaborate';
+
+const highlights = [
+  { icon: Mic2, label: "Recording", desc: "Multi-Track" },
+  { icon: Sliders, label: "Mixing", desc: "All Genres" },
+  { icon: Disc3, label: "Mastering", desc: "CD Ready" },
+  { icon: Waves, label: "Production", desc: "Full Service" },
+];
 
 export default function HeroSection() {
-  const [activeTab, setActiveTab] = useState<FormTab>('learn');
+  const [activeTab, setActiveTab] = useState<FormTab>('record');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     toast({
       title: "Inquiry Submitted!",
       description: "We'll get back to you within 24 hours.",
     });
-    
+
     setIsSubmitting(false);
     (e.target as HTMLFormElement).reset();
   };
@@ -37,75 +45,76 @@ export default function HeroSection() {
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/30 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-600/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
       </div>
-      
+
       <div className="container mx-auto px-4 py-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm text-primary">
-              <Disc3 className="h-4 w-4 animate-spin" style={{ animationDuration: '3s' }} />
-              Recording Studio & Tech Resources
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm text-primary">
+                <Award className="h-4 w-4" />
+                Certified AVID Pro Tools Operators
+              </div>
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                <span className="block">Nathaniel</span>
+                <span className="block gradient-text">Production House</span>
+              </h1>
             </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              <span className="block">Nathaniel</span>
-              <span className="block gradient-text">Production House</span>
-            </h1>
-            
-            <p className="text-lg text-muted-foreground max-w-lg">
-              Professional recording studio services including mixing, mastering, arrangement, 
-              and production. Your one-stop tech resource for music education.
+
+            <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
+              A state-of-the-art, <span className="text-foreground font-medium">fully digital facility</span> producing
+              the cleanest, most defined sound you will find. Full service production including recording,
+              editing, mixing, mastering, and musical arrangement.
             </p>
-            
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Mic2 className="h-6 w-6 text-primary" />
+
+            <div className="flex flex-wrap items-center gap-3 text-sm">
+              <Badge variant="secondary" className="py-1.5">
+                <CheckCircle className="h-3 w-3 mr-1" /> Grammy Winner Collaborations
+              </Badge>
+              <Badge variant="outline" className="py-1.5">
+                <CheckCircle className="h-3 w-3 mr-1" /> Multi-Track Recording
+              </Badge>
+              <Badge variant="outline" className="py-1.5">
+                <CheckCircle className="h-3 w-3 mr-1" /> All Genres
+              </Badge>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {highlights.map((item, index) => (
+                <div key={index} className="flex items-center gap-3 p-3 bg-card/50 rounded-lg border border-border/50 hover:border-primary/30 transition-colors">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <item.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{item.label}</p>
+                    <p className="text-xs text-muted-foreground">{item.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium">Recording</p>
-                  <p className="text-sm text-muted-foreground">Studio Quality</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Headphones className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-medium">Mixing</p>
-                  <p className="text-sm text-muted-foreground">Pro Audio</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary/10 rounded-lg">
-                  <Waves className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-medium">Production</p>
-                  <p className="text-sm text-muted-foreground">Full Service</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
           <Card className="border-border/50 bg-card/80 backdrop-blur glow-orange">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl">Get Started</CardTitle>
+              <CardTitle className="text-xl">Start Your Project</CardTitle>
+              <p className="text-sm text-muted-foreground">Tell us about your vision</p>
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as FormTab)}>
                 <TabsList className="grid grid-cols-4 mb-6">
-                  <TabsTrigger value="learn" className="flex items-center gap-1 text-xs sm:text-sm" data-testid="tab-learn">
-                    <Music className="h-3 w-3 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Learn</span>
-                  </TabsTrigger>
                   <TabsTrigger value="record" className="flex items-center gap-1 text-xs sm:text-sm" data-testid="tab-record">
                     <Mic2 className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">Record</span>
                   </TabsTrigger>
-                  <TabsTrigger value="rehearse" className="flex items-center gap-1 text-xs sm:text-sm" data-testid="tab-rehearse">
-                    <Users className="h-3 w-3 sm:h-4 sm:w-4" />
-                    <span className="hidden sm:inline">Rehearse</span>
+                  <TabsTrigger value="mix" className="flex items-center gap-1 text-xs sm:text-sm" data-testid="tab-mix">
+                    <Headphones className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Mix</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="produce" className="flex items-center gap-1 text-xs sm:text-sm" data-testid="tab-produce">
+                    <Music className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Produce</span>
                   </TabsTrigger>
                   <TabsTrigger value="collaborate" className="flex items-center gap-1 text-xs sm:text-sm" data-testid="tab-collaborate">
                     <Handshake className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -124,44 +133,11 @@ export default function HeroSection() {
                       <Input id="phone" type="tel" placeholder="+91" required data-testid="input-phone" />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input id="email" type="email" placeholder="you@example.com" required data-testid="input-email" />
                   </div>
-
-                  <TabsContent value="learn" className="mt-0 space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>Instrument</Label>
-                        <Select data-testid="select-instrument">
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="piano">Piano / Keyboard</SelectItem>
-                            <SelectItem value="guitar">Guitar</SelectItem>
-                            <SelectItem value="vocals">Vocals</SelectItem>
-                            <SelectItem value="drums">Drums</SelectItem>
-                            <SelectItem value="production">Music Production</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Level</Label>
-                        <Select data-testid="select-level">
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="beginner">Beginner</SelectItem>
-                            <SelectItem value="intermediate">Intermediate</SelectItem>
-                            <SelectItem value="advanced">Advanced</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </TabsContent>
 
                   <TabsContent value="record" className="mt-0 space-y-4">
                     <div className="grid grid-cols-2 gap-4">
@@ -175,52 +151,89 @@ export default function HeroSection() {
                             <SelectItem value="single">Single Track</SelectItem>
                             <SelectItem value="ep">EP (3-5 tracks)</SelectItem>
                             <SelectItem value="album">Album Production</SelectItem>
-                            <SelectItem value="podcast">Podcast</SelectItem>
+                            <SelectItem value="podcast">Podcast / Voice Over</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label>Duration</Label>
-                        <Select data-testid="select-duration">
+                        <Label>Genre</Label>
+                        <Select data-testid="select-genre">
                           <SelectTrigger>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="half-day">Half Day</SelectItem>
-                            <SelectItem value="full-day">Full Day</SelectItem>
-                            <SelectItem value="multi-day">Multiple Days</SelectItem>
+                            <SelectItem value="rock">Rock / Metal</SelectItem>
+                            <SelectItem value="pop">Pop</SelectItem>
+                            <SelectItem value="folk">Folk / Country</SelectItem>
+                            <SelectItem value="blues">Blues / Jazz</SelectItem>
+                            <SelectItem value="indian">Indian Classical</SelectItem>
+                            <SelectItem value="christian">Christian / Devotional</SelectItem>
+                            <SelectItem value="electronic">Electronic</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="rehearse" className="mt-0 space-y-4">
+                  <TabsContent value="mix" className="mt-0 space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label>Band Size</Label>
-                        <Select data-testid="select-band-size">
+                        <Label>Service Needed</Label>
+                        <Select data-testid="select-mix-service">
                           <SelectTrigger>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="solo">Solo</SelectItem>
-                            <SelectItem value="duo">Duo</SelectItem>
-                            <SelectItem value="band-small">Band (3-5)</SelectItem>
-                            <SelectItem value="band-large">Band (6+)</SelectItem>
+                            <SelectItem value="mixing">Mixing Only</SelectItem>
+                            <SelectItem value="mastering">Mastering Only</SelectItem>
+                            <SelectItem value="both">Mixing & Mastering</SelectItem>
+                            <SelectItem value="editing">Editing & Cleanup</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label>Hours Needed</Label>
-                        <Select data-testid="select-hours">
+                        <Label>Track Count</Label>
+                        <Select data-testid="select-track-count">
                           <SelectTrigger>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="2">2 Hours</SelectItem>
-                            <SelectItem value="4">4 Hours</SelectItem>
-                            <SelectItem value="8">Full Day</SelectItem>
+                            <SelectItem value="1">1 Track</SelectItem>
+                            <SelectItem value="3">3-5 Tracks</SelectItem>
+                            <SelectItem value="10">6-10 Tracks</SelectItem>
+                            <SelectItem value="album">Full Album</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="produce" className="mt-0 space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Production Type</Label>
+                        <Select data-testid="select-production-type">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="arrangement">Arrangement</SelectItem>
+                            <SelectItem value="orchestration">Orchestration</SelectItem>
+                            <SelectItem value="songwriting">Songwriting Help</SelectItem>
+                            <SelectItem value="full">Full Production</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Session Artists Needed?</Label>
+                        <Select data-testid="select-session-artists">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="no">No, I have musicians</SelectItem>
+                            <SelectItem value="some">Some instruments</SelectItem>
+                            <SelectItem value="full">Full band needed</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -236,26 +249,24 @@ export default function HeroSection() {
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="songwriting">Songwriting</SelectItem>
-                            <SelectItem value="production">Production</SelectItem>
-                            <SelectItem value="arrangement">Arrangement</SelectItem>
-                            <SelectItem value="mixing">Mixing/Mastering</SelectItem>
+                            <SelectItem value="album-design">Album Cover Design</SelectItem>
+                            <SelectItem value="video">Video Recording</SelectItem>
+                            <SelectItem value="jingle">Jingle / Ad Music</SelectItem>
+                            <SelectItem value="score">Background Score</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label>Genre</Label>
-                        <Select data-testid="select-genre">
+                        <Label>Budget Range</Label>
+                        <Select data-testid="select-budget">
                           <SelectTrigger>
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="pop">Pop</SelectItem>
-                            <SelectItem value="rock">Rock</SelectItem>
-                            <SelectItem value="jazz">Jazz</SelectItem>
-                            <SelectItem value="classical">Classical</SelectItem>
-                            <SelectItem value="electronic">Electronic</SelectItem>
-                            <SelectItem value="indian">Indian Classical</SelectItem>
+                            <SelectItem value="starter">Starter</SelectItem>
+                            <SelectItem value="standard">Standard</SelectItem>
+                            <SelectItem value="premium">Premium</SelectItem>
+                            <SelectItem value="custom">Custom / Enterprise</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -263,17 +274,18 @@ export default function HeroSection() {
                   </TabsContent>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Additional Details</Label>
-                    <Textarea 
-                      id="message" 
-                      placeholder="Tell us about your project..."
+                    <Label htmlFor="message">Tell us about your project</Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Describe your musical vision, reference tracks, or any specific requirements..."
                       className="resize-none"
+                      rows={3}
                       data-testid="input-message"
                     />
                   </div>
 
                   <Button type="submit" className="w-full" disabled={isSubmitting} data-testid="button-submit">
-                    {isSubmitting ? "Submitting..." : "Submit Inquiry"}
+                    {isSubmitting ? "Submitting..." : "Get a Quote"}
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </form>

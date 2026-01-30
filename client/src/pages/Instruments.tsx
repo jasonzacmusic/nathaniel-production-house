@@ -29,41 +29,99 @@ const pianoVideos = [
 ];
 
 const pianoSpecs = [
-  { name: "Yamaha PSR-E373", keys: "61", weighted: "No", polyphony: "48", price: "₹11,000", rating: 4, level: "Budget" },
-  { name: "Yamaha P-45", keys: "88", weighted: "Yes", polyphony: "64", price: "₹35,000", rating: 5, level: "Entry Pro" },
-  { name: "Roland FP-30X", keys: "88", weighted: "Yes", polyphony: "256", price: "₹65,000", rating: 5, level: "Intermediate" },
-  { name: "Yamaha CK-88", keys: "88", weighted: "Yes", polyphony: "128", price: "₹85,000", rating: 5, level: "Professional" },
-  { name: "Roland RD-88", keys: "88", weighted: "Yes", polyphony: "128", price: "₹95,000", rating: 5, level: "Professional" },
+  {
+    name: "Yamaha PSR-E373",
+    keys: "61",
+    weighted: "No",
+    polyphony: "48",
+    price: "₹14,000 - ₹16,000",
+    rating: 4,
+    level: "Budget",
+    amazonLink: "https://www.amazon.in/YAMAHA-PSR-E373-61-Keys-Portable-Keyboard/dp/B08GHXB78L",
+    bajaaoLink: "https://www.bajaao.com/products/yamaha-psr-e363-61-key-touch-sensitive-portable-keyboard-with-adapter"
+  },
+  {
+    name: "Yamaha P-45",
+    keys: "88",
+    weighted: "Yes",
+    polyphony: "64",
+    price: "₹38,990 - ₹44,000",
+    rating: 5,
+    level: "Entry Pro",
+    amazonLink: "https://www.amazon.in/Yamaha-P-45B-P45B-Digital-Piano/dp/B018K1D7L4",
+    bajaaoLink: "https://www.bajaao.com/products/yamaha-p45-88-key-digital-piano"
+  },
+  {
+    name: "Roland FP-30X",
+    keys: "88",
+    weighted: "Yes",
+    polyphony: "256",
+    price: "₹72,990",
+    rating: 5,
+    level: "Intermediate",
+    amazonLink: "https://www.amazon.in/Roland-FP-30X-Digital-Piano-Black/dp/B08SBZW46G",
+    bajaaoLink: "https://www.bajaao.com/products/roland-fp-30x-digital-piano"
+  },
+  {
+    name: "Yamaha CK-88",
+    keys: "88",
+    weighted: "Yes",
+    polyphony: "128",
+    price: "₹89,990",
+    rating: 5,
+    level: "Professional",
+    amazonLink: "https://www.amazon.in/s?k=yamaha+ck88",
+    bajaaoLink: "https://www.bajaao.com/collections/yamaha-digital-pianos"
+  },
+  {
+    name: "Roland RD-88",
+    keys: "88",
+    weighted: "Yes",
+    polyphony: "128",
+    price: "₹1,37,847",
+    rating: 5,
+    level: "Professional",
+    amazonLink: "https://www.amazon.in/Roland-Professional-Stage-88-Key-RD-88/dp/B083Z72KJM",
+    bajaaoLink: "https://www.bajaao.com/collections/roland-digital-pianos"
+  },
 ];
 
 const guitarRecommendations = [
   {
     name: "Yamaha F310",
     type: "Acoustic",
-    price: "₹8,500",
-    description: "Best entry-level acoustic guitar. Reliable, great resale value.",
+    price: "₹9,500",
+    description: "The most reliable entry-level acoustic. Made in India with excellent resale value. This is where every modern guitarist starts.",
     recommended: true,
+    amazonLink: "https://www.amazon.in/Yamaha-F310-6-Strings-Acoustic-Natural/dp/B000RVYW7E",
+    bajaaoLink: "https://www.bajaao.com/products/yamaha-f310-acoustic-guitar"
   },
   {
-    name: "Yamaha FX310A",
+    name: "Yamaha FX310AII",
     type: "Semi-Acoustic",
-    price: "₹12,000",
-    description: "Semi-acoustic with pickup. Perfect for gigs and practice.",
+    price: "₹15,191",
+    description: "Our top recommendation. Sounds great unplugged, plug into any PA system for gigs. One guitar does everything. Buy this.",
     recommended: true,
+    amazonLink: "https://www.amazon.in/Yamaha-FX310A-Electro-Acoustic-Guitar-Natural/dp/B000UH4P18",
+    bajaaoLink: "https://www.bajaao.com/products/yamaha-fx310aii-dreadnought-electro-acoustic-guitar-natural"
   },
   {
     name: "Cort AD810E",
     type: "Semi-Acoustic",
-    price: "₹10,000",
-    description: "Great bang for buck. Solid build quality.",
+    price: "₹13,500",
+    description: "Solid alternative to Yamaha. Spruce top, mahogany back & sides. Great bang for buck.",
     recommended: true,
+    amazonLink: "https://www.amazon.in/Cort-AD810-OP-Acoustic-Guitar-Brown/dp/B00VQ7YDCM",
+    bajaaoLink: "https://www.bajaao.com/products/cort-ad810e-dreadnought-electro-acoustic-guitar"
   },
   {
     name: "Pluto HW41CE-201",
     type: "Semi-Acoustic",
-    price: "₹8,000",
-    description: "Budget option. Acceptable for absolute beginners.",
+    price: "₹9,500",
+    description: "Acceptable for absolute budget buyers. Get this only if Yamaha/Cort are out of stock or out of budget.",
     recommended: false,
+    amazonLink: "https://www.amazon.in/Pluto-HW41C-201-Acoustic-Guitar-Sunburst/dp/B0154UQNWE",
+    bajaaoLink: "https://www.bajaao.com/products/pluto-hw41ce-101sp-cutway-semi-acoustic-guitar"
   },
 ];
 
@@ -185,10 +243,10 @@ export default function Instruments() {
                         <div className="grid md:grid-cols-2 gap-6 mb-8">
                           <Card className="bg-muted/30">
                             <CardContent className="p-4">
-                              <h4 className="font-semibold mb-2">Budget Buyer (₹11,000)</h4>
+                              <h4 className="font-semibold mb-2">Budget Buyer (₹14,000 - ₹16,000)</h4>
                               <p className="text-sm text-muted-foreground mb-3">
-                                Get a 61-key instrument with touch sensitivity from Yamaha. 
-                                The <strong>Yamaha PSR-E373</strong> is your only option at this price.
+                                The threshold is simple: you need a 61-key instrument with touch sensitivity from a reputable brand. That brand is Yamaha. Period. 
+                                Get the <strong>Yamaha PSR-E373</strong>. At this level, there are literally no other options worth considering.
                               </p>
                               <Badge variant="outline" className="text-primary border-primary">
                                 <CheckCircle2 className="h-3 w-3 mr-1" /> Recommended
@@ -198,10 +256,10 @@ export default function Instruments() {
 
                           <Card className="bg-muted/30">
                             <CardContent className="p-4">
-                              <h4 className="font-semibold mb-2">Serious Student (₹35,000+)</h4>
+                              <h4 className="font-semibold mb-2">Serious Student (₹39,000+)</h4>
                               <p className="text-sm text-muted-foreground mb-3">
-                                Get an 88-key fully weighted digital piano. 
-                                <strong> Yamaha P-45</strong> is the gold standard starter.
+                                If money isn't an issue, get an 88-key fully weighted digital piano. 
+                                The <strong>Yamaha P-45</strong> is the gold standard starter. These are portable, unlike furniture-style pianos.
                               </p>
                               <Badge variant="outline" className="text-primary border-primary">
                                 <CheckCircle2 className="h-3 w-3 mr-1" /> Recommended
@@ -214,10 +272,11 @@ export default function Instruments() {
                           <CardContent className="p-4 flex items-start gap-3">
                             <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                             <div>
-                              <h4 className="font-semibold text-destructive">What to Avoid</h4>
+                              <h4 className="font-semibold text-destructive">The Minimum Rules</h4>
                               <p className="text-sm text-muted-foreground">
-                                Avoid 25-key and 49-key MIDI controllers for learning - they're toys for TikTok videos, 
-                                not real music production. Stay away from "iPiANO 3423" type gimmicky Indian rebranded keyboards.
+                                61 keys minimum for everyone. No exceptions. 25-key and 49-key controllers are for quick productions, not for learning piano.
+                                If you're not tech-savvy, avoid MIDI controllers and get a digital piano with built-in sounds instead.
+                                And definitely avoid furniture-style pianos with MDF wood cabinets - they're not portable and don't add musical value.
                               </p>
                             </div>
                           </CardContent>
@@ -234,6 +293,7 @@ export default function Instruments() {
                                 <TableHead>Polyphony</TableHead>
                                 <TableHead>Price</TableHead>
                                 <TableHead>Level</TableHead>
+                                <TableHead>Buy</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -253,11 +313,28 @@ export default function Instruments() {
                                   <TableCell>
                                     <Badge variant="secondary">{spec.level}</Badge>
                                   </TableCell>
+                                  <TableCell>
+                                    <div className="flex gap-1">
+                                      <a href={spec.amazonLink} target="_blank" rel="noopener noreferrer">
+                                        <Button variant="outline" size="sm" className="h-7 px-2">
+                                          <SiAmazon className="h-3 w-3" />
+                                        </Button>
+                                      </a>
+                                      <a href={spec.bajaaoLink} target="_blank" rel="noopener noreferrer">
+                                        <Button variant="outline" size="sm" className="h-7 px-2">
+                                          <ShoppingCart className="h-3 w-3" />
+                                        </Button>
+                                      </a>
+                                    </div>
+                                  </TableCell>
                                 </TableRow>
                               ))}
                             </TableBody>
                           </Table>
                         </div>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          * Prices are approximate and may vary. Click the icons to check current prices on Amazon and Bajaao.
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
@@ -290,13 +367,35 @@ export default function Instruments() {
                       <div className="prose prose-invert max-w-none">
                         <h3 className="text-lg font-semibold mb-3">Start with Acoustic</h3>
                         <p className="text-muted-foreground mb-4">
-                          If you're dreaming of shredding like Slash on an electric guitar - hold that thought. 
-                          You start like everyone else: on an acoustic. Build calluses first, then talk about distortion pedals.
+                          If you grew up dreaming of shredding like your rock heroes, I've got news: you're not ready for electric yet.
+                          You start like everyone else starts - on an acoustic. Build your calluses first, then we can talk about distortion pedals.
+                          Yes, it makes you feel less cool. Good. That's part of the journey.
                         </p>
+
+                        <div className="grid md:grid-cols-2 gap-4 mb-6">
+                          <Card className="bg-muted/30">
+                            <CardContent className="p-4">
+                              <h4 className="font-semibold mb-2">Nylon String (Classical)</h4>
+                              <p className="text-sm text-muted-foreground">
+                                Wide neck, soft strings, played fingerstyle. Best for classical music studies.
+                                If you're not specifically studying classical guitar, you can skip this.
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card className="bg-muted/30">
+                            <CardContent className="p-4">
+                              <h4 className="font-semibold mb-2">Steel String (Recommended)</h4>
+                              <p className="text-sm text-muted-foreground">
+                                Standard acoustic sound, playable with fingers or a pick.
+                                This is where most modern guitarists start their journey.
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
 
                         <Card className="bg-primary/10 border-primary/30 mb-6">
                           <CardContent className="p-4">
-                            <h4 className="font-semibold mb-2">Our Recommendation: Semi-Acoustic</h4>
+                            <h4 className="font-semibold mb-2">Our Recommendation: Semi-Acoustic (Electro-Acoustic)</h4>
                             <ul className="text-sm text-muted-foreground space-y-2">
                               <li className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-primary" />
@@ -304,21 +403,21 @@ export default function Instruments() {
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-primary" />
-                                Has a pickup and output jack for amps/PA
+                                Built-in pickup and output jack for amps/PA systems
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-primary" />
-                                Perfect for parties, open mics, or small gigs
+                                Perfect for parties, open mics, office events, or small gigs
                               </li>
                               <li className="flex items-center gap-2">
                                 <CheckCircle2 className="h-4 w-4 text-primary" />
-                                One guitar does everything
+                                One guitar does everything - no need to buy separate acoustic and electric
                               </li>
                             </ul>
                           </CardContent>
                         </Card>
 
-                        <h3 className="text-lg font-semibold mb-4">Recommended Guitars (₹8,000 - ₹12,000)</h3>
+                        <h3 className="text-lg font-semibold mb-4">Recommended Guitars (₹9,000 - ₹16,000)</h3>
                         <div className="grid md:grid-cols-2 gap-4 mb-8">
                           {guitarRecommendations.map((guitar, index) => (
                             <Card key={index} className={guitar.recommended ? "bg-muted/30" : "bg-muted/10"}>
@@ -331,26 +430,70 @@ export default function Instruments() {
                                   <span className="text-lg font-bold text-primary">{guitar.price}</span>
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-3">{guitar.description}</p>
-                                {guitar.recommended && (
-                                  <Badge className="bg-primary/20 text-primary border-0">
-                                    <Star className="h-3 w-3 mr-1 fill-primary" /> Recommended
-                                  </Badge>
-                                )}
+                                <div className="flex items-center justify-between">
+                                  {guitar.recommended && (
+                                    <Badge className="bg-primary/20 text-primary border-0">
+                                      <Star className="h-3 w-3 mr-1 fill-primary" /> Recommended
+                                    </Badge>
+                                  )}
+                                  <div className="flex gap-2 ml-auto">
+                                    <a href={guitar.amazonLink} target="_blank" rel="noopener noreferrer">
+                                      <Button variant="outline" size="sm">
+                                        <SiAmazon className="h-4 w-4 mr-1" />
+                                        Amazon
+                                      </Button>
+                                    </a>
+                                    <a href={guitar.bajaaoLink} target="_blank" rel="noopener noreferrer">
+                                      <Button variant="outline" size="sm">
+                                        <ShoppingCart className="h-4 w-4 mr-1" />
+                                        Bajaao
+                                      </Button>
+                                    </a>
+                                  </div>
+                                </div>
                               </CardContent>
                             </Card>
                           ))}
                         </div>
+                        <p className="text-xs text-muted-foreground mb-6">
+                          * Prices are approximate and may vary. Click the buttons to check current prices.
+                        </p>
 
-                        <Card className="bg-destructive/10 border-destructive/30 mb-6">
+                        <Card className="bg-amber-500/10 border-amber-500/30 mb-6">
                           <CardContent className="p-4 flex items-start gap-3">
-                            <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+                            <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
                             <div>
-                              <h4 className="font-semibold text-destructive">AVOID: Cadence Guitars</h4>
-                              <p className="text-sm text-muted-foreground">
-                                This brand is a scam. They sell overpriced garbage to clueless beginners. 
-                                The intonation is terrible, tuning pegs slip, and you'll outgrow it in 3 months. 
-                                Don't let them swindle you.
-                              </p>
+                              <h4 className="font-semibold text-amber-500">What to Look Out For</h4>
+                              <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                                <li>• Stick to Yamaha, Cort, or verified Rooster models. Everything else is noise.</li>
+                                <li>• If someone tries to sell you "full body mahogany" from an unknown brand for ₹15,000+, walk out.</li>
+                                <li>• Intonation and tuning peg quality matter more than wood type at this price.</li>
+                                <li>• Always compare prices across Sound Glitz, Rooster, and Reynolds before buying.</li>
+                              </ul>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <h3 className="text-lg font-semibold mb-4">Total Setup Cost</h3>
+                        <Card className="bg-muted/30 mb-6">
+                          <CardContent className="p-4">
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <p className="text-muted-foreground">Guitar (semi-acoustic)</p>
+                                <p className="font-semibold">₹9,000 - ₹16,000</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground">Instrument Cable (3m)</p>
+                                <p className="font-semibold">₹300 - ₹500</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground">Plectrums (pack of 5)</p>
+                                <p className="font-semibold">₹100</p>
+                              </div>
+                              <div>
+                                <p className="text-muted-foreground font-semibold">Total</p>
+                                <p className="font-bold text-primary">Under ₹17,000</p>
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
@@ -362,20 +505,25 @@ export default function Instruments() {
                               <h4 className="font-semibold">Sound Glitz</h4>
                               <p className="text-sm text-muted-foreground">Brigade Road</p>
                               <p className="text-xs text-muted-foreground mt-2">Good Yamaha & Cort selection</p>
+                              <a href="https://soundglitz.com" target="_blank" rel="noopener noreferrer">
+                                <Button variant="link" size="sm" className="px-0 mt-2">
+                                  Visit Website <ExternalLink className="h-3 w-3 ml-1" />
+                                </Button>
+                              </a>
                             </CardContent>
                           </Card>
                           <Card className="bg-muted/30">
                             <CardContent className="p-4">
                               <h4 className="font-semibold">Rooster Guitars</h4>
                               <p className="text-sm text-muted-foreground">Church Street</p>
-                              <p className="text-xs text-muted-foreground mt-2">Local manufacturing</p>
+                              <p className="text-xs text-muted-foreground mt-2">Local manufacturing, custom setups</p>
                             </CardContent>
                           </Card>
                           <Card className="bg-muted/30">
                             <CardContent className="p-4">
                               <h4 className="font-semibold">Reynolds Music</h4>
                               <p className="text-sm text-muted-foreground">Multiple Locations</p>
-                              <p className="text-xs text-muted-foreground mt-2">Good alternative option</p>
+                              <p className="text-xs text-muted-foreground mt-2">Good alternative with comparable pricing</p>
                             </CardContent>
                           </Card>
                         </div>
