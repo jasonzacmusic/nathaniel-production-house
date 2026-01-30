@@ -342,6 +342,31 @@ export default function OBSGuide() {
                 My actual teaching setup - iPad, DSLR via Camlink, iPhone via Camo App, with Loopback for audio mixing
               </p>
             </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg">Multi-Cam Layouts</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <img src="/images/obs-guide/img-023.png" alt="Multi-cam view" className="w-full h-auto border-t" />
+                  <div className="p-4">
+                    <p className="text-sm text-muted-foreground">Example of a multi-camera layout in OBS combining face and instrument angles.</p>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-lg">Scene Transitions</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <img src="/images/obs-guide/img-026.png" alt="OBS Scene switching" className="w-full h-auto border-t" />
+                  <div className="p-4">
+                    <p className="text-sm text-muted-foreground">Using OBS to switch between different views like the piano roll and face camera.</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
 
@@ -664,6 +689,17 @@ export default function OBSGuide() {
                           <strong>MICROPHONE</strong> is your Input source - could be your Webcam Mic, Audio Interface, or the "Hybrid" audio setup using an app like Loopback or Soundflower.
                         </p>
                       </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="rounded-xl overflow-hidden border border-border/50">
+                          <img src="/images/obs-guide/img-016.png" alt="Zoom Audio Settings" className="w-full h-auto" />
+                          <p className="p-2 text-xs text-center bg-muted/30">Audio input selection</p>
+                        </div>
+                        <div className="rounded-xl overflow-hidden border border-border/50">
+                          <img src="/images/obs-guide/img-017.png" alt="Zoom Music Mode" className="w-full h-auto" />
+                          <p className="p-2 text-xs text-center bg-muted/30">Music mode configuration</p>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -680,6 +716,15 @@ export default function OBSGuide() {
                         </p>
                       </div>
                       
+                      <div className="rounded-xl overflow-hidden border border-border/50 mb-4">
+                        <img
+                          src="/images/obs-guide/img-021.png"
+                          alt="Zoom Camera Selection"
+                          className="w-full h-auto"
+                        />
+                        <p className="p-2 text-xs text-center bg-muted/30">Selecting OBS Virtual Camera in Zoom settings</p>
+                      </div>
+
                       <div className="p-4 bg-muted/50 rounded-lg">
                         <h4 className="font-semibold mb-2">HD Video</h4>
                         <p className="text-sm text-muted-foreground">
@@ -767,6 +812,17 @@ export default function OBSGuide() {
                         <p className="text-sm text-muted-foreground">
                           You can even RECORD your performances and STREAM from OBS to YouTube and other platforms!
                         </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="rounded-xl overflow-hidden border border-border/50">
+                        <img src="/images/obs-guide/img-025.png" alt="OBS Recording Settings" className="w-full h-auto" />
+                        <p className="p-2 text-xs text-center bg-muted/30">Output and recording setup</p>
+                      </div>
+                      <div className="rounded-xl overflow-hidden border border-border/50">
+                        <img src="/images/obs-guide/img-020.png" alt="OBS Scene Sources" className="w-full h-auto" />
+                        <p className="p-2 text-xs text-center bg-muted/30">Managing sources and scenes</p>
                       </div>
                     </div>
                   </div>
