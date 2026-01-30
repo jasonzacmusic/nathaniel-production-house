@@ -39,7 +39,7 @@ const services = [
   {
     icon: Mic2,
     title: "Recording",
-    description: "Equipped to record any musical instrument with Certified AVID Pro Tools Operators. Multi-track recording available.",
+    description: "Equipped to record any musical instrument with professional-grade equipment. Multi-track recording available.",
     color: "from-red-500/20 to-orange-500/20"
   },
   {
@@ -101,7 +101,7 @@ const clients = [
   {
     name: "Bhoomi",
     genre: "Rock",
-    description: "Album mixed and produced by Grammy Award Winner, Neil Kernon. We tracked Guitars, Bass and Keyboards.",
+    description: "Album mixed and produced by internationally acclaimed producer Neil Kernon. We tracked Guitars, Bass and Keyboards.",
     testimonial: "Nathaniel provides an awesome and professional recording experience...we look forward to working with them on our future projects",
     author: "Sujay Harthi, Vocalist",
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400"
@@ -176,7 +176,7 @@ const resources = [
 const equipment = [
   {
     category: "Workstation",
-    items: ["Pro Tools 10", "Mac Computers", "Focusrite & Mbox 3 Pro", "Waves, AVID, IK Multimedia"]
+    items: ["Digital Audio Workstation", "Mac Computers", "Focusrite & Mbox 3 Pro", "Waves, IK Multimedia"]
   },
   {
     category: "Monitoring",
@@ -225,7 +225,7 @@ export default function Home() {
                 what really matters — <span className="text-foreground font-medium">the best sounding product</span>.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Badge className="px-4 py-2 text-sm">Certified AVID Pro Tools Operators</Badge>
+                <Badge className="px-4 py-2 text-sm">Professional Audio Engineers</Badge>
                 <Badge className="px-4 py-2 text-sm" variant="secondary">Multi-Track Recording</Badge>
                 <Badge className="px-4 py-2 text-sm" variant="outline">Industry Standard Output</Badge>
               </div>
@@ -431,8 +431,8 @@ export default function Home() {
                 </p>
                 <div className="space-y-4">
                   {[
-                    "Certified AVID Pro Tools Operators",
-                    "Grammy Award-winning collaborations",
+                    "Professional Audio Engineers",
+                    "International Producer Collaborations",
                     "Multi-genre expertise: Rock, Metal, Blues, Folk & more",
                     "In-house session musicians available",
                     "Industry-standard mastering for all platforms",

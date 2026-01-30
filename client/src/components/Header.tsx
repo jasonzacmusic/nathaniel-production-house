@@ -75,7 +75,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="hidden md:flex items-center gap-1 text-xs">
             <Mic2 className="h-3 w-3" />
-            AVID Certified
+            Pro Studio
           </Badge>
           <a
             href="https://wa.me/917760456847"

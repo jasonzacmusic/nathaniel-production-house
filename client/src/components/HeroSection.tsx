@@ -54,7 +54,7 @@ export default function HeroSection() {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm text-primary">
                 <Award className="h-4 w-4" />
-                Certified AVID Pro Tools Operators
+                Professional Recording Studio
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
@@ -71,7 +71,7 @@ export default function HeroSection() {
 
             <div className="flex flex-wrap items-center gap-3 text-sm">
               <Badge variant="secondary" className="py-1.5">
-                <CheckCircle className="h-3 w-3 mr-1" /> Grammy Winner Collaborations
+                <CheckCircle className="h-3 w-3 mr-1" /> International Collaborations
               </Badge>
               <Badge variant="outline" className="py-1.5">
                 <CheckCircle className="h-3 w-3 mr-1" /> Multi-Track Recording

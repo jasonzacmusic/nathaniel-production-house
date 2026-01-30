@@ -1,8 +1,8 @@
 /**
  * Site Configuration
  *
- * ADMIN: Edit this file to control which pages are visible on the site.
- * Set `visible: false` to hide a page from navigation and routing.
+ * ADMIN: Page visibility is now controlled via the admin dashboard.
+ * The API-based settings override these defaults when available.
  *
  * Quick Links appear as a floating button on the right side of the screen.
  * Set `quickLink: true` to include a page in the quick links menu.
@@ -32,83 +32,83 @@ export interface SiteConfig {
   };
 }
 
+// Default page configurations (can be overridden by API)
+const defaultPages: PageConfig[] = [
+  {
+    id: "home",
+    path: "/",
+    label: "Home",
+    visible: true,
+    quickLink: false,
+  },
+  {
+    id: "services",
+    path: "/#services",
+    label: "Services",
+    visible: true,
+    isAnchor: true,
+    quickLink: false,
+  },
+  {
+    id: "clients",
+    path: "/#clients",
+    label: "Clients",
+    visible: true,
+    isAnchor: true,
+    quickLink: false,
+  },
+  {
+    id: "midi-visualizer",
+    path: "/midi-visualizer",
+    label: "MIDI Visualizer",
+    visible: true,
+    quickLink: true,
+    quickLinkIcon: "music",
+    badge: "New",
+  },
+  {
+    id: "instruments",
+    path: "/instruments",
+    label: "Instruments",
+    visible: true,
+    quickLink: true,
+    quickLinkIcon: "piano",
+  },
+  {
+    id: "obs-guide",
+    path: "/obs-guide",
+    label: "OBS Guide",
+    visible: true,
+    quickLink: true,
+    quickLinkIcon: "video",
+  },
+  {
+    id: "marketplace",
+    path: "/marketplace",
+    label: "Marketplace",
+    visible: false,
+    quickLink: true,
+    quickLinkIcon: "shopping-bag",
+  },
+  {
+    id: "partners",
+    path: "/partners",
+    label: "Partners",
+    visible: false,
+    quickLink: false,
+  },
+  {
+    id: "contact",
+    path: "/contact",
+    label: "Contact",
+    visible: true,
+    quickLink: true,
+    quickLinkIcon: "mail",
+  },
+];
+
 const siteConfig: SiteConfig = {
-  pages: [
-    // ============================================
-    // MAIN PAGES - Set visible: false to hide
-    // ============================================
-    {
-      id: "home",
-      path: "/",
-      label: "Home",
-      visible: true,
-      quickLink: false,
-    },
-    {
-      id: "services",
-      path: "/#services",
-      label: "Services",
-      visible: true,
-      isAnchor: true,
-      quickLink: false,
-    },
-    {
-      id: "clients",
-      path: "/#clients",
-      label: "Clients",
-      visible: true,
-      isAnchor: true,
-      quickLink: false,
-    },
-    {
-      id: "midi-visualizer",
-      path: "/midi-visualizer",
-      label: "MIDI Visualizer",
-      visible: true,
-      quickLink: true,
-      quickLinkIcon: "music",
-      badge: "New",
-    },
-    {
-      id: "instruments",
-      path: "/instruments",
-      label: "Instruments",
-      visible: true,
-      quickLink: true,
-      quickLinkIcon: "piano",
-    },
-    {
-      id: "obs-guide",
-      path: "/obs-guide",
-      label: "OBS Guide",
-      visible: true,
-      quickLink: true,
-      quickLinkIcon: "video",
-    },
-    {
-      id: "marketplace",
-      path: "/marketplace",
-      label: "Marketplace",
-      visible: false, // Hidden for now - not fully connected to backend
-      quickLink: true,
-      quickLinkIcon: "shopping-bag",
-    },
-    {
-      id: "partners",
-      path: "/partners",
-      label: "Partners",
-      visible: false, // Hidden for now
-      quickLink: false,
-    },
-    {
-      id: "contact",
-      path: "/contact",
-      label: "Contact",
-      visible: true,
-      quickLink: true,
-      quickLinkIcon: "mail",
-    },
-  ],
+  pages: defaultPages,
   quickLinks: {
     enabled: true,
     showWhatsApp: true,
@@ -118,22 +118,62 @@ const siteConfig: SiteConfig = {
   },
 };
 
+// Store for API-based page settings (overrides defaults)
+let apiPageSettings: Map<string, boolean> = new Map();
+
+// Initialize from API (call this on app load)
+export async function loadPageSettings(): Promise<void> {
+  try {
+    const response = await fetch("/api/page-settings");
+    if (response.ok) {
+      const settings = await response.json();
+      apiPageSettings = new Map(settings.map((s: { pageId: string; visible: boolean }) => [s.pageId, s.visible]));
+    }
+  } catch (error) {
+    console.error("Failed to load page settings:", error);
+  }
+}
+
+// Get effective visibility (API setting overrides default)
+function getEffectiveVisibility(page: PageConfig): boolean {
+  if (apiPageSettings.has(page.id)) {
+    return apiPageSettings.get(page.id)!;
+  }
+  return page.visible;
+}
+
 // Helper functions for easy access
 export const getVisiblePages = () =>
-  siteConfig.pages.filter(page => page.visible && !page.isAnchor && !page.isExternal);
+  siteConfig.pages.filter(page => getEffectiveVisibility(page) && !page.isAnchor && !page.isExternal);
 
 export const getVisibleNavLinks = () =>
-  siteConfig.pages.filter(page => page.visible);
+  siteConfig.pages.filter(page => getEffectiveVisibility(page));
 
 export const getQuickLinkPages = () =>
-  siteConfig.pages.filter(page => page.visible && page.quickLink);
+  siteConfig.pages.filter(page => getEffectiveVisibility(page) && page.quickLink);
 
-export const isPageVisible = (pageId: string) => {
+export const isPageVisible = (pageId: string): boolean => {
   const page = siteConfig.pages.find(p => p.id === pageId);
-  return page?.visible ?? false;
+  if (!page) return false;
+  return getEffectiveVisibility(page);
 };
 
 export const getPageByPath = (path: string) =>
   siteConfig.pages.find(p => p.path === path);
+
+export const getAllPages = () => siteConfig.pages;
+
+// For admin dashboard - get current visibility state
+export const getPageVisibilityState = () => {
+  return siteConfig.pages.map(page => ({
+    ...page,
+    visible: getEffectiveVisibility(page)
+  }));
+};
+
+// Update local cache (call after admin updates)
+export const updatePageVisibility = (pageId: string, visible: boolean) => {
+  apiPageSettings.set(pageId, visible);
+};
 
 export default siteConfig;

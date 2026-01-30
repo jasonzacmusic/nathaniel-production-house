@@ -160,12 +160,12 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Certifications */}
+            {/* Studio Features */}
             <div className="mt-6 pt-4 border-t border-border">
-              <p className="text-xs text-muted-foreground mb-2">Certifications</p>
+              <p className="text-xs text-muted-foreground mb-2">Studio Features</p>
               <div className="flex flex-wrap gap-2">
-                <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded">AVID Certified</span>
-                <span className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded">Pro Tools</span>
+                <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded">Professional DAW</span>
+                <span className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded">Multi-Track</span>
               </div>
             </div>
           </div>

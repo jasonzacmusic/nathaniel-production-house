@@ -8,7 +8,8 @@ import {
   insertAffiliatePartnerSchema, 
   insertContactMessageSchema,
   insertInstrumentRecommendationSchema,
-  insertObsGuideContentSchema
+  insertObsGuideContentSchema,
+  insertShareableLinkSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { randomUUID, createHash } from "crypto";
@@ -446,6 +447,93 @@ export async function registerRoutes(
         return res.status(400).json({ error: error.errors });
       }
       res.status(500).json({ error: "Failed to create content" });
+    }
+  });
+
+  // Page Settings (public endpoint to get visibility)
+  app.get("/api/page-settings", async (req, res) => {
+    try {
+      const settings = await storage.getPageSettings();
+      res.json(settings);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch page settings" });
+    }
+  });
+
+  // Admin: Update page visibility
+  app.patch("/api/page-settings/:pageId", requireAdminAuth, async (req, res) => {
+    try {
+      const { pageId } = req.params;
+      const { visible } = req.body;
+      if (typeof visible !== "boolean") {
+        return res.status(400).json({ error: "visible must be a boolean" });
+      }
+      const setting = await storage.updatePageSetting(pageId, visible);
+      res.json(setting);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update page setting" });
+    }
+  });
+
+  // Shareable Links
+  app.get("/api/share-links", requireAdminAuth, async (req, res) => {
+    try {
+      const links = await storage.getShareableLinks();
+      res.json(links);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch shareable links" });
+    }
+  });
+
+  app.post("/api/share-links", requireAdminAuth, async (req, res) => {
+    try {
+      const code = req.body.code || randomUUID().substring(0, 8);
+      const data = insertShareableLinkSchema.parse({ ...req.body, code });
+      const link = await storage.createShareableLink(data);
+      res.status(201).json(link);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create shareable link" });
+    }
+  });
+
+  app.delete("/api/share-links/:id", requireAdminAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deleted = await storage.deleteShareableLink(id);
+      if (!deleted) {
+        return res.status(404).json({ error: "Link not found" });
+      }
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete shareable link" });
+    }
+  });
+
+  // Public: Resolve shareable link and redirect
+  app.get("/s/:code", async (req, res) => {
+    try {
+      const { code } = req.params;
+      const link = await storage.getShareableLinkByCode(code);
+      
+      if (!link) {
+        return res.redirect("/?error=invalid-link");
+      }
+      
+      // Check expiration
+      if (link.expiresAt && new Date(link.expiresAt) < new Date()) {
+        return res.redirect("/?error=expired-link");
+      }
+      
+      // Increment access count
+      await storage.incrementShareableLinkAccess(code);
+      
+      // Redirect to target page
+      res.redirect(link.targetPage);
+    } catch (error) {
+      res.redirect("/");
     }
   });
 

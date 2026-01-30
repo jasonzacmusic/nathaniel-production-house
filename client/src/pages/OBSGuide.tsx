@@ -573,7 +573,7 @@ export default function OBSGuide() {
                       My Audio Signal coming to you is controlled using Loopback by Rogue Amoeba. This allows me to independently control the levels of multiple apps & audio interfaces sending audio from my computer. Zoom will then accept this combined STEREO signal from Loopback and send it out as the audio signal which you hear.
                     </p>
                     <p className="text-sm text-muted-foreground mb-4">
-                      My current setup needs Pro Tools, Reaper, MuseScore, Pianoteq, Spotify among others to go out at different levels along with my microphone & instrument DI signals coming from my audio interfaces.
+                      My current setup needs my DAW, Reaper, MuseScore, Pianoteq, Spotify among others to go out at different levels along with my microphone & instrument DI signals coming from my audio interfaces.
                     </p>
                     <p className="text-sm text-muted-foreground">
                       I monitor the audio coming to me via SoundSource. That allows me to mute unwanted audio signals which might cause feedback and also control the level of ZOOM from time to time. As teachers/students, this minimizes ear fatigue.

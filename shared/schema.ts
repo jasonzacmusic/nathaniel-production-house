@@ -140,6 +140,33 @@ export const insertObsGuideContentSchema = createInsertSchema(obsGuideContent).o
 export type InsertObsGuideContent = z.infer<typeof insertObsGuideContentSchema>;
 export type ObsGuideContent = typeof obsGuideContent.$inferSelect;
 
+// Page Settings (for admin show/hide functionality)
+export const pageSettings = pgTable("page_settings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  pageId: text("page_id").notNull().unique(), // matches the page id in siteConfig
+  visible: boolean("visible").default(true),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertPageSettingSchema = createInsertSchema(pageSettings).omit({ id: true, updatedAt: true });
+export type InsertPageSetting = z.infer<typeof insertPageSettingSchema>;
+export type PageSetting = typeof pageSettings.$inferSelect;
+
+// Shareable Links (for admin to share specific pages with students)
+export const shareableLinks = pgTable("shareable_links", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  code: text("code").notNull().unique(), // short unique code for the link
+  targetPage: text("target_page").notNull(), // the page path to redirect to
+  label: text("label"), // optional description for admin reference
+  expiresAt: timestamp("expires_at"), // optional expiration
+  createdAt: timestamp("created_at").defaultNow(),
+  accessCount: integer("access_count").default(0),
+});
+
+export const insertShareableLinkSchema = createInsertSchema(shareableLinks).omit({ id: true, createdAt: true, accessCount: true });
+export type InsertShareableLink = z.infer<typeof insertShareableLinkSchema>;
+export type ShareableLink = typeof shareableLinks.$inferSelect;
+
 // Form data types for frontend
 export interface BookingFormData {
   type: 'learn' | 'record' | 'rehearse' | 'collaborate';

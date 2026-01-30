@@ -18,7 +18,7 @@ const studioImages: StudioImage[] = [
     id: "1",
     url: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800",
     caption: "Control Room",
-    feature: "Pro Tools 10 & Mac Workstation",
+    feature: "Digital Audio Workstation & Mac Setup",
     aspectClass: "aspect-[4/5]"
   },
   {
@@ -77,7 +77,7 @@ const studioFeatures = [
   {
     icon: Disc3,
     title: "Processing",
-    description: "Waves, AVID, Valhalla plugins for mixing & mastering"
+    description: "Waves, Valhalla and other top plugins for mixing & mastering"
   },
 ];
 

@@ -12,9 +12,12 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { 
   Music, LogOut, Plus, Trash2, Save, Piano, Guitar, Package, 
-  Users, MessageSquare, Settings, ExternalLink, Edit, Loader2
+  Users, MessageSquare, Settings, ExternalLink, Edit, Loader2,
+  Eye, EyeOff, Link, Copy, Share2, FileText
 } from "lucide-react";
-import type { InstrumentRecommendation, GearListing, AffiliatePartner, ContactMessage } from "@shared/schema";
+import { Switch } from "@/components/ui/switch";
+import type { InstrumentRecommendation, GearListing, AffiliatePartner, ContactMessage, ShareableLink } from "@shared/schema";
+import { getAllPages, updatePageVisibility } from "@/config/siteConfig";
 
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem("adminToken");
@@ -112,7 +115,7 @@ export default function AdminDashboard() {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsList className="grid w-full grid-cols-7 mb-8">
             <TabsTrigger value="instruments" className="flex items-center gap-2">
               <Piano className="w-4 h-4" />
               <span className="hidden sm:inline">Instruments</span>
@@ -128,6 +131,14 @@ export default function AdminDashboard() {
             <TabsTrigger value="messages" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">Messages</span>
+            </TabsTrigger>
+            <TabsTrigger value="pages" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">Pages</span>
+            </TabsTrigger>
+            <TabsTrigger value="share-links" className="flex items-center gap-2">
+              <Share2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Share Links</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
@@ -146,6 +157,12 @@ export default function AdminDashboard() {
           </TabsContent>
           <TabsContent value="messages">
             <MessagesViewer />
+          </TabsContent>
+          <TabsContent value="pages">
+            <PageVisibilityManager />
+          </TabsContent>
+          <TabsContent value="share-links">
+            <ShareLinksManager />
           </TabsContent>
           <TabsContent value="settings">
             <SettingsManager />
@@ -560,6 +577,249 @@ function MessagesViewer() {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function PageVisibilityManager() {
+  const { toast } = useToast();
+  const pages = getAllPages();
+  
+  const { data: pageSettings, isLoading } = useQuery<{ pageId: string; visible: boolean }[]>({
+    queryKey: ["/api/page-settings"]
+  });
+  
+  const [localVisibility, setLocalVisibility] = useState<Record<string, boolean>>({});
+  
+  useEffect(() => {
+    if (pageSettings) {
+      const visMap = pageSettings.reduce((acc, s) => ({ ...acc, [s.pageId]: s.visible }), {} as Record<string, boolean>);
+      setLocalVisibility(visMap);
+    }
+  }, [pageSettings]);
+  
+  const toggleMutation = useMutation({
+    mutationFn: async ({ pageId, visible }: { pageId: string; visible: boolean }) => {
+      const response = await adminApiRequest("PATCH", `/api/page-settings/${pageId}`, { visible });
+      return response.json();
+    },
+    onSuccess: (_, variables) => {
+      updatePageVisibility(variables.pageId, variables.visible);
+      queryClient.invalidateQueries({ queryKey: ["/api/page-settings"] });
+      toast({ 
+        title: variables.visible ? "Page Shown" : "Page Hidden", 
+        description: `Page visibility updated` 
+      });
+    }
+  });
+  
+  const getVisibility = (pageId: string, defaultVisible: boolean) => {
+    if (pageId in localVisibility) return localVisibility[pageId];
+    return defaultVisible;
+  };
+  
+  const handleToggle = (pageId: string, currentVisible: boolean) => {
+    const newVisible = !currentVisible;
+    setLocalVisibility(prev => ({ ...prev, [pageId]: newVisible }));
+    toggleMutation.mutate({ pageId, visible: newVisible });
+  };
+  
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Eye className="w-5 h-5" />
+          Page Visibility
+        </CardTitle>
+        <CardDescription>Control which pages are visible on the website navigation</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {isLoading ? (
+          <div className="flex justify-center py-8">
+            <Loader2 className="w-8 h-8 animate-spin" />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {pages.filter(p => !p.isAnchor).map((page) => {
+              const isVisible = getVisibility(page.id, page.visible);
+              return (
+                <div 
+                  key={page.id} 
+                  className="flex items-center justify-between p-4 rounded-lg border bg-card"
+                  data-testid={`page-visibility-${page.id}`}
+                >
+                  <div className="flex items-center gap-4">
+                    {isVisible ? (
+                      <Eye className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <EyeOff className="w-5 h-5 text-muted-foreground" />
+                    )}
+                    <div>
+                      <p className="font-medium">{page.label}</p>
+                      <p className="text-sm text-muted-foreground">{page.path}</p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={isVisible}
+                    onCheckedChange={() => handleToggle(page.id, isVisible)}
+                    disabled={toggleMutation.isPending}
+                    data-testid={`switch-${page.id}`}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function ShareLinksManager() {
+  const { toast } = useToast();
+  const pages = getAllPages();
+  const [newLink, setNewLink] = useState({ targetPage: "/obs-guide", label: "", code: "" });
+  
+  const { data: shareLinks, isLoading } = useQuery<ShareableLink[]>({
+    queryKey: ["/api/share-links"]
+  });
+  
+  const createMutation = useMutation({
+    mutationFn: async (data: typeof newLink) => {
+      const response = await adminApiRequest("POST", "/api/share-links", data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/share-links"] });
+      toast({ title: "Link Created", description: "Share link created successfully" });
+      setNewLink({ targetPage: "/obs-guide", label: "", code: "" });
+    }
+  });
+  
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/share-links/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/share-links"] });
+      toast({ title: "Deleted", description: "Share link removed" });
+    }
+  });
+  
+  const copyToClipboard = (code: string) => {
+    const url = `${window.location.origin}/s/${code}`;
+    navigator.clipboard.writeText(url);
+    toast({ title: "Copied!", description: "Link copied to clipboard" });
+  };
+  
+  const getFullUrl = (code: string) => `${window.location.origin}/s/${code}`;
+  
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Plus className="w-5 h-5" />
+            Create Shareable Link
+          </CardTitle>
+          <CardDescription>Generate easy-to-share links to specific pages for your students</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Label>Target Page</Label>
+              <Select value={newLink.targetPage} onValueChange={(v) => setNewLink({ ...newLink, targetPage: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {pages.filter(p => !p.isAnchor && p.path !== "/").map(page => (
+                    <SelectItem key={page.id} value={page.path}>{page.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Label (optional)</Label>
+              <Input 
+                value={newLink.label} 
+                onChange={(e) => setNewLink({ ...newLink, label: e.target.value })} 
+                placeholder="e.g. For Piano Class" 
+              />
+            </div>
+            <div>
+              <Label>Custom Code (optional)</Label>
+              <Input 
+                value={newLink.code} 
+                onChange={(e) => setNewLink({ ...newLink, code: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') })} 
+                placeholder="e.g. piano-setup" 
+              />
+            </div>
+          </div>
+          <Button 
+            className="mt-4" 
+            onClick={() => createMutation.mutate(newLink)}
+            disabled={createMutation.isPending}
+          >
+            <Link className="w-4 h-4 mr-2" />
+            Create Link
+          </Button>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Active Share Links</CardTitle>
+          <CardDescription>Links you can share with students</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+          ) : shareLinks?.length === 0 ? (
+            <p className="text-center text-muted-foreground py-8">No share links created yet</p>
+          ) : (
+            <div className="space-y-3">
+              {shareLinks?.map((link) => (
+                <div 
+                  key={link.id} 
+                  className="flex items-center justify-between p-4 rounded-lg border bg-card"
+                  data-testid={`share-link-${link.id}`}
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <Share2 className="w-4 h-4 text-primary" />
+                      <p className="font-medium">{link.label || link.targetPage}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {getFullUrl(link.code)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Target: {link.targetPage} | Clicks: {link.accessCount || 0}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => copyToClipboard(link.code)}
+                      data-testid={`copy-link-${link.id}`}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      onClick={() => deleteMutation.mutate(link.id)}
+                      disabled={deleteMutation.isPending}
+                      data-testid={`delete-link-${link.id}`}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

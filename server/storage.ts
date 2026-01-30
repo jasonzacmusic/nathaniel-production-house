@@ -16,7 +16,11 @@ import {
   type InstrumentRecommendation,
   type InsertInstrumentRecommendation,
   type ObsGuideContent,
-  type InsertObsGuideContent
+  type InsertObsGuideContent,
+  type PageSetting,
+  type InsertPageSetting,
+  type ShareableLink,
+  type InsertShareableLink
 } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -75,6 +79,18 @@ export interface IStorage {
   createObsGuideContent(content: InsertObsGuideContent): Promise<ObsGuideContent>;
   updateObsGuideContent(id: string, content: Partial<InsertObsGuideContent>): Promise<ObsGuideContent | undefined>;
   deleteObsGuideContent(id: string): Promise<boolean>;
+  
+  // Page Settings
+  getPageSettings(): Promise<PageSetting[]>;
+  getPageSetting(pageId: string): Promise<PageSetting | undefined>;
+  updatePageSetting(pageId: string, visible: boolean): Promise<PageSetting>;
+  
+  // Shareable Links
+  getShareableLinks(): Promise<ShareableLink[]>;
+  getShareableLinkByCode(code: string): Promise<ShareableLink | undefined>;
+  createShareableLink(link: InsertShareableLink): Promise<ShareableLink>;
+  deleteShareableLink(id: string): Promise<boolean>;
+  incrementShareableLinkAccess(code: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -87,6 +103,8 @@ export class MemStorage implements IStorage {
   private siteConfig: Map<string, SiteConfig>;
   private instrumentRecommendations: Map<string, InstrumentRecommendation>;
   private obsGuideContent: Map<string, ObsGuideContent>;
+  private pageSettings: Map<string, PageSetting>;
+  private shareableLinks: Map<string, ShareableLink>;
 
   constructor() {
     this.users = new Map();
@@ -98,6 +116,8 @@ export class MemStorage implements IStorage {
     this.siteConfig = new Map();
     this.instrumentRecommendations = new Map();
     this.obsGuideContent = new Map();
+    this.pageSettings = new Map();
+    this.shareableLinks = new Map();
     
     this.initializeSampleData();
   }
@@ -398,6 +418,69 @@ export class MemStorage implements IStorage {
 
   async deleteObsGuideContent(id: string): Promise<boolean> {
     return this.obsGuideContent.delete(id);
+  }
+  
+  // Page Settings
+  async getPageSettings(): Promise<PageSetting[]> {
+    return Array.from(this.pageSettings.values());
+  }
+  
+  async getPageSetting(pageId: string): Promise<PageSetting | undefined> {
+    return this.pageSettings.get(pageId);
+  }
+  
+  async updatePageSetting(pageId: string, visible: boolean): Promise<PageSetting> {
+    const existing = this.pageSettings.get(pageId);
+    if (existing) {
+      const updated: PageSetting = { ...existing, visible, updatedAt: new Date() };
+      this.pageSettings.set(pageId, updated);
+      return updated;
+    }
+    const newSetting: PageSetting = {
+      id: randomUUID(),
+      pageId,
+      visible,
+      updatedAt: new Date()
+    };
+    this.pageSettings.set(pageId, newSetting);
+    return newSetting;
+  }
+  
+  // Shareable Links
+  async getShareableLinks(): Promise<ShareableLink[]> {
+    return Array.from(this.shareableLinks.values()).sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+  }
+  
+  async getShareableLinkByCode(code: string): Promise<ShareableLink | undefined> {
+    return Array.from(this.shareableLinks.values()).find(link => link.code === code);
+  }
+  
+  async createShareableLink(link: InsertShareableLink): Promise<ShareableLink> {
+    const id = randomUUID();
+    const newLink: ShareableLink = {
+      ...link,
+      id,
+      createdAt: new Date(),
+      accessCount: 0
+    };
+    this.shareableLinks.set(id, newLink);
+    return newLink;
+  }
+  
+  async deleteShareableLink(id: string): Promise<boolean> {
+    return this.shareableLinks.delete(id);
+  }
+  
+  async incrementShareableLinkAccess(code: string): Promise<void> {
+    const link = Array.from(this.shareableLinks.values()).find(l => l.code === code);
+    if (link) {
+      link.accessCount = (link.accessCount || 0) + 1;
+      this.shareableLinks.set(link.id, link);
+    }
   }
 }
 
