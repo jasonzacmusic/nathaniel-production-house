@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { 
@@ -11,7 +11,34 @@ import {
   insertObsGuideContentSchema
 } from "@shared/schema";
 import { z } from "zod";
-import { randomUUID } from "crypto";
+import { randomUUID, createHash } from "crypto";
+
+const adminTokens = new Map<string, { username: string; expires: number }>();
+
+function hashPassword(password: string): string {
+  return createHash("sha256").update(password).digest("hex");
+}
+
+function generateToken(): string {
+  return randomUUID() + "-" + Date.now().toString(36);
+}
+
+function requireAdminAuth(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Authorization required" });
+  }
+  
+  const token = authHeader.substring(7);
+  const session = adminTokens.get(token);
+  
+  if (!session || session.expires < Date.now()) {
+    adminTokens.delete(token);
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+  
+  next();
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -322,11 +349,26 @@ export async function registerRoutes(
         return res.status(401).json({ success: false, message: "Invalid credentials" });
       }
       
-      const token = randomUUID();
+      const token = generateToken();
+      const expires = Date.now() + 24 * 60 * 60 * 1000;
+      adminTokens.set(token, { username: user.username, expires });
+      
       res.json({ success: true, token, user: { username: user.username, email: user.email } });
     } catch (error) {
       res.status(500).json({ success: false, message: "Login failed" });
     }
+  });
+
+  app.get("/api/admin/verify", requireAdminAuth, (req, res) => {
+    res.json({ valid: true });
+  });
+
+  app.post("/api/admin/logout", (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      adminTokens.delete(authHeader.substring(7));
+    }
+    res.json({ success: true });
   });
 
   // Instrument Recommendations
@@ -340,7 +382,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/instruments/recommendations", async (req, res) => {
+  app.post("/api/instruments/recommendations", requireAdminAuth, async (req, res) => {
     try {
       const data = insertInstrumentRecommendationSchema.parse(req.body);
       const recommendation = await storage.createInstrumentRecommendation(data);
@@ -353,7 +395,7 @@ export async function registerRoutes(
     }
   });
 
-  app.patch("/api/instruments/recommendations/:id", async (req, res) => {
+  app.patch("/api/instruments/recommendations/:id", requireAdminAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const data = insertInstrumentRecommendationSchema.partial().parse(req.body);
@@ -370,7 +412,7 @@ export async function registerRoutes(
     }
   });
 
-  app.delete("/api/instruments/recommendations/:id", async (req, res) => {
+  app.delete("/api/instruments/recommendations/:id", requireAdminAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = await storage.deleteInstrumentRecommendation(id);
@@ -394,7 +436,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/obs-guide/content", async (req, res) => {
+  app.post("/api/obs-guide/content", requireAdminAuth, async (req, res) => {
     try {
       const data = insertObsGuideContentSchema.parse(req.body);
       const content = await storage.createObsGuideContent(data);

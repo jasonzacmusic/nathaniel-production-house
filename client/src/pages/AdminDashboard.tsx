@@ -9,26 +9,87 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { queryClient, apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { 
   Music, LogOut, Plus, Trash2, Save, Piano, Guitar, Package, 
-  Users, MessageSquare, Settings, ExternalLink, Edit
+  Users, MessageSquare, Settings, ExternalLink, Edit, Loader2
 } from "lucide-react";
 import type { InstrumentRecommendation, GearListing, AffiliatePartner, ContactMessage } from "@shared/schema";
+
+function getAuthHeaders(): HeadersInit {
+  const token = localStorage.getItem("adminToken");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+async function adminApiRequest(method: string, url: string, data?: unknown) {
+  const options: RequestInit = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders()
+    }
+  };
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+  const response = await fetch(url, options);
+  if (response.status === 401) {
+    localStorage.removeItem("adminToken");
+    window.location.href = "/admin";
+    throw new Error("Unauthorized");
+  }
+  return response;
+}
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("instruments");
+  const [isVerifying, setIsVerifying] = useState(true);
   
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      setLocation("/admin");
-    }
+    const verifyToken = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        setLocation("/admin");
+        return;
+      }
+      
+      try {
+        const response = await fetch("/api/admin/verify", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!response.ok) {
+          localStorage.removeItem("adminToken");
+          setLocation("/admin");
+        }
+      } catch {
+        localStorage.removeItem("adminToken");
+        setLocation("/admin");
+      } finally {
+        setIsVerifying(false);
+      }
+    };
+    
+    verifyToken();
   }, [setLocation]);
+  
+  if (isVerifying) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    }
     localStorage.removeItem("adminToken");
     toast({ title: "Logged out", description: "See you next time!" });
     setLocation("/admin");
@@ -116,7 +177,7 @@ function InstrumentsManager() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: typeof newItem) => apiRequest("POST", "/api/instruments/recommendations", data),
+    mutationFn: (data: typeof newItem) => adminApiRequest("POST", "/api/instruments/recommendations", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/instruments/recommendations"] });
       toast({ title: "Success", description: "Instrument added successfully" });
@@ -125,7 +186,7 @@ function InstrumentsManager() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => apiRequest("DELETE", `/api/instruments/recommendations/${id}`),
+    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/instruments/recommendations/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/instruments/recommendations"] });
       toast({ title: "Deleted", description: "Instrument removed" });
@@ -257,7 +318,7 @@ function MarketplaceManager() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: typeof newItem) => apiRequest("POST", "/api/gear", data),
+    mutationFn: (data: typeof newItem) => adminApiRequest("POST", "/api/gear", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/gear"] });
       toast({ title: "Success", description: "Gear listing added" });
@@ -265,7 +326,7 @@ function MarketplaceManager() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => apiRequest("DELETE", `/api/gear/${id}`),
+    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/gear/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/gear"] });
       toast({ title: "Deleted", description: "Listing removed" });
@@ -373,7 +434,7 @@ function PartnersManager() {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: typeof newItem) => apiRequest("POST", "/api/partners", data),
+    mutationFn: (data: typeof newItem) => adminApiRequest("POST", "/api/partners", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/partners"] });
       toast({ title: "Success", description: "Partner added" });
@@ -381,7 +442,7 @@ function PartnersManager() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => apiRequest("DELETE", `/api/partners/${id}`),
+    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/partners/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/partners"] });
       toast({ title: "Deleted", description: "Partner removed" });
@@ -530,10 +591,10 @@ function SettingsManager() {
   const saveMutation = useMutation({
     mutationFn: async () => {
       await Promise.all([
-        apiRequest("PUT", "/api/config/phone_langford", { value: settings.phone_langford }),
-        apiRequest("PUT", "/api/config/phone_sahakar", { value: settings.phone_sahakar }),
-        apiRequest("PUT", "/api/config/email", { value: settings.email }),
-        apiRequest("PUT", "/api/config/whatsapp", { value: settings.whatsapp })
+        adminApiRequest("PUT", "/api/config/phone_langford", { value: settings.phone_langford }),
+        adminApiRequest("PUT", "/api/config/phone_sahakar", { value: settings.phone_sahakar }),
+        adminApiRequest("PUT", "/api/config/email", { value: settings.email }),
+        adminApiRequest("PUT", "/api/config/whatsapp", { value: settings.whatsapp })
       ]);
     },
     onSuccess: () => {
