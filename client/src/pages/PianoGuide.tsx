@@ -702,7 +702,7 @@ export default function PianoGuide() {
                 </p>
                 <div className="mt-4">
                   <a href="https://www.modartt.com/pianoteq" target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline">
+                    <Button variant="outline" data-testid="button-pianoteq">
                       Learn About Piano Tech
                       <ExternalLink className="w-4 h-4 ml-2" />
                     </Button>
@@ -737,7 +737,7 @@ export default function PianoGuide() {
                             <p className="text-sm text-muted-foreground">{kb.keys} keys | {kb.price}</p>
                           </div>
                           <a href={kb.amazonLink} target="_blank" rel="noopener noreferrer">
-                            <Button size="sm" variant="outline">
+                            <Button size="sm" variant="outline" data-testid={`button-buy-${kb.name.toLowerCase().replace(/\s+/g, '-')}`}>
                               <SiAmazon className="w-4 h-4 mr-1" />
                               Buy
                             </Button>
@@ -765,7 +765,7 @@ export default function PianoGuide() {
                         {acc.priority}
                       </Badge>
                     </div>
-                    <p className="text-sm font-medium text-primary mb-1">{acc.recommendation}</p>
+                    <p className="text-sm font-medium mb-1">{acc.recommendation}</p>
                     <p className="text-sm text-muted-foreground mb-2">{acc.price}</p>
                     <p className="text-xs text-muted-foreground">{acc.notes}</p>
                   </CardContent>
@@ -782,13 +782,13 @@ export default function PianoGuide() {
                 </p>
                 <div className="flex gap-4 justify-center flex-wrap">
                   <Link href="/contact">
-                    <Button>
+                    <Button data-testid="button-contact-piano">
                       Contact Us
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
                   <Link href="/instruments">
-                    <Button variant="outline">
+                    <Button variant="outline" data-testid="button-view-instruments">
                       View All Instruments
                     </Button>
                   </Link>

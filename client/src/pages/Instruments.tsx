@@ -271,7 +271,7 @@ export default function Instruments() {
                                 The threshold is simple: you need a 61-key instrument with touch sensitivity from a reputable brand. That brand is Yamaha. Period. 
                                 Get the <strong>Yamaha PSR-E373</strong>. At this level, there are literally no other options worth considering.
                               </p>
-                              <Badge variant="outline" className="text-primary border-primary">
+                              <Badge variant="default">
                                 <CheckCircle2 className="h-3 w-3 mr-1" /> Recommended
                               </Badge>
                             </CardContent>
@@ -284,7 +284,7 @@ export default function Instruments() {
                                 If money isn't an issue, get an 88-key fully weighted digital piano. 
                                 The <strong>Yamaha P-45</strong> is the gold standard starter. These are portable, unlike furniture-style pianos.
                               </p>
-                              <Badge variant="outline" className="text-primary border-primary">
+                              <Badge variant="default">
                                 <CheckCircle2 className="h-3 w-3 mr-1" /> Recommended
                               </Badge>
                             </CardContent>
@@ -332,20 +332,20 @@ export default function Instruments() {
                                     )}
                                   </TableCell>
                                   <TableCell>{spec.polyphony}</TableCell>
-                                  <TableCell className="text-primary font-semibold">{spec.price}</TableCell>
+                                  <TableCell className="font-semibold">{spec.price}</TableCell>
                                   <TableCell>
                                     <Badge variant="secondary">{spec.level}</Badge>
                                   </TableCell>
                                   <TableCell>
                                     <div className="flex gap-1">
                                       <a href={spec.amazonLink} target="_blank" rel="noopener noreferrer">
-                                        <Button variant="outline" size="sm" className="h-7 px-2">
-                                          <SiAmazon className="h-3 w-3" />
+                                        <Button variant="outline" size="icon" data-testid={`button-amazon-${spec.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                                          <SiAmazon className="h-4 w-4" />
                                         </Button>
                                       </a>
                                       <a href={spec.bajaaoLink} target="_blank" rel="noopener noreferrer">
-                                        <Button variant="outline" size="sm" className="h-7 px-2">
-                                          <ShoppingCart className="h-3 w-3" />
+                                        <Button variant="outline" size="icon" data-testid={`button-bajaao-${spec.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                                          <ShoppingCart className="h-4 w-4" />
                                         </Button>
                                       </a>
                                     </div>
@@ -450,24 +450,24 @@ export default function Instruments() {
                                     <h4 className="font-semibold">{guitar.name}</h4>
                                     <Badge variant="outline" className="text-xs">{guitar.type}</Badge>
                                   </div>
-                                  <span className="text-lg font-bold text-primary">{guitar.price}</span>
+                                  <span className="text-lg font-bold">{guitar.price}</span>
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-3">{guitar.description}</p>
                                 <div className="flex items-center justify-between">
                                   {guitar.recommended && (
-                                    <Badge className="bg-primary/20 text-primary border-0">
-                                      <Star className="h-3 w-3 mr-1 fill-primary" /> Recommended
+                                    <Badge variant="default">
+                                      <Star className="h-3 w-3 mr-1" /> Recommended
                                     </Badge>
                                   )}
                                   <div className="flex gap-2 ml-auto">
                                     <a href={guitar.amazonLink} target="_blank" rel="noopener noreferrer">
-                                      <Button variant="outline" size="sm">
+                                      <Button variant="outline" size="sm" data-testid={`button-guitar-amazon-${guitar.name.toLowerCase().replace(/\s+/g, '-')}`}>
                                         <SiAmazon className="h-4 w-4 mr-1" />
                                         Amazon
                                       </Button>
                                     </a>
                                     <a href={guitar.bajaaoLink} target="_blank" rel="noopener noreferrer">
-                                      <Button variant="outline" size="sm">
+                                      <Button variant="outline" size="sm" data-testid={`button-guitar-bajaao-${guitar.name.toLowerCase().replace(/\s+/g, '-')}`}>
                                         <ShoppingCart className="h-4 w-4 mr-1" />
                                         Bajaao
                                       </Button>
@@ -515,7 +515,7 @@ export default function Instruments() {
                               </div>
                               <div>
                                 <p className="text-muted-foreground font-semibold">Total</p>
-                                <p className="font-bold text-primary">Under ₹17,000</p>
+                                <p className="font-bold">Under ₹17,000</p>
                               </div>
                             </div>
                           </CardContent>
@@ -529,7 +529,7 @@ export default function Instruments() {
                               <p className="text-sm text-muted-foreground">Brigade Road</p>
                               <p className="text-xs text-muted-foreground mt-2">Good Yamaha & Cort selection</p>
                               <a href="https://soundglitz.com" target="_blank" rel="noopener noreferrer">
-                                <Button variant="ghost" size="sm" className="px-0 mt-2">
+                                <Button variant="ghost" size="sm" className="mt-2" data-testid="button-soundglitz">
                                   Visit Website <ExternalLink className="h-3 w-3 ml-1" />
                                 </Button>
                               </a>
@@ -593,16 +593,16 @@ export default function Instruments() {
                         </div>
                         <CardContent className="p-4">
                           <h4 className="font-semibold mb-1">{item.name}</h4>
-                          <p className="text-lg font-bold text-primary mb-4">{item.price}</p>
+                          <p className="text-lg font-bold mb-4">{item.price}</p>
                           <div className="flex gap-2">
                             <a href={item.amazonLink} target="_blank" rel="noopener noreferrer" className="flex-1">
-                              <Button variant="outline" size="sm" className="w-full">
+                              <Button variant="outline" size="sm" className="w-full" data-testid={`button-acc-amazon-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
                                 <SiAmazon className="h-4 w-4 mr-1" />
                                 Amazon
                               </Button>
                             </a>
                             <a href={item.bajaaoLink} target="_blank" rel="noopener noreferrer" className="flex-1">
-                              <Button variant="outline" size="sm" className="w-full">
+                              <Button variant="outline" size="sm" className="w-full" data-testid={`button-acc-bajaao-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
                                 <ShoppingCart className="h-4 w-4 mr-1" />
                                 Bajaao
                               </Button>
