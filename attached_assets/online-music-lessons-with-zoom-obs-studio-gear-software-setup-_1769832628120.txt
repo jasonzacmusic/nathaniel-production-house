@@ -1,0 +1,69 @@
+Nathaniel Nsm (00:00.226)
+Hi guys, this is Jason here from Nathaniel. In this lesson, we are going to learn how to properly conduct a Zoom class or a Zoom music class specifically for music as a student or as a teacher. If you're a teacher, you could watch along. But especially for those of you learning music using Zoom, we've been doing Zoom classes since the pandemic and we've seen that the app has improved a lot and grown.
+
+to serve musicians, to do live streaming concerts, to handle all sorts of performances of different natures with taking the entire sound system into an audio interface, into Zoom, to the audience. So we've used it for streaming concerts and then I figured that why not take some of the same concepts to a normal music class and try to make a music class as good as possible, right?
+
+And I've learned a few things from students as well who've been learning from me. A lot of their feedback has helped certainly bring this to life. And yeah, I hope all these tips and this entire guide will help you to either learn a Zoom music class really well and also teach it if you'd like. And you'll also get an insight as to how we conduct our music lessons at the music school, which is Nathaniel School of Music.
+
+Right? So let's get cracking and before we do it'll be great if you can hit that subscribe button and hit the bell icon for regular notifications. So what are the goals for this lesson? The goal would be to set it up from a teacher's perspective so that the teacher is really comfortable with the class and from a student's perspective so that the student can engage with the teacher, can share whatever they want and the teacher can give relevant feedback. Also with a Zoom music class remember
+
+The class is not just the class, right? There are things you may want to give your teacher before the class, like an assignment, or there are lot of things the teacher would want to give the student after the class or vice versa. For example, something as simple as the recording of the class in a timely manner to be able to send that recording to your student or your batch and so on. Right. So for assignments, for homework and all of that, we need to figure out
+
+Nathaniel Nsm (02:26.211)
+the entire ecosystem, not just how to do the class. And also we would want a system which is rather scalable. By scalable, mean online music lessons doesn't have to happen only in your house. It can happen anywhere. It could happen in a hotel room. It could happen, well, wherever, right? Wherever you can attend the lesson. So scalability also in terms of a class which you really like and you wanted to stream it to your friends.
+
+you wanted to send it to YouTube, you know, so things like that will add to the scalability. And also I like this setup, which I've kind of evolved to because it you can add many devices to the setup. You don't have to rely on one gadget or one application to get you running. If one fails, you always have a setup. So as a gigging musician for years using MIDI.
+
+using MIDI for my gigs as a keyboard player uses a laptop. So there are lot of changeable parts. You you update the computer, there could be some problem. You could then lose out on a software which won't work. For example, when 32 bit change to 64 bit, very difficult. lot of the applications stop working. So you need a setup which is very scalable, which will work for any computer, any OS, wherever you are, and so on and so forth.
+
+So those are the goals for this lesson. So here's the setup and tech requirements which you'd need to do an amazing zoom lesson. First of all, a really good or stable, at least stable internet connection, right? To handle the internet, well, you have a router, but that router is wireless. So one of the concerns regarding the router is most of the routers are provided by the broadband company.
+
+and in all honesty it will be absolutely crappy to say the least. So you need to figure out a decent router perhaps upgrade a router to something like a TP-Link Archer or something like that. That has worked for us quite often. So a router may not be enough, right? You may not get the relevant speed especially if the router is far away from you. So what would help is a simple LAN cable or an Ethernet cable or an RJ45 cable as they call it.
+
+Nathaniel Nsm (04:46.956)
+This clicks into the router and then depending on how much cable length you need, you could get a cable and get an as reliable cable as possible, which you can just take with you. even if you're learning in any environment, all wireless routers have a tap point, have an ethernet tap point. So you just have to plug into that and the speed of the internet is going to be ridiculously faster. It's not going to be like
+
+20 % faster or it'll be like close to 100 times faster possibly right you'll be able to like upload something like 10 gigs in no time versus you know waiting it out later so use a LAN cable very very important another important thing for a zoom class is to install the latest version of zoom and don't use the web browser while joining your class in other words zoom may take you to a google chrome or a safari or whatever
+
+Don't go there. Make sure the lesson or the link is inserted in the zoom app and make sure it's the latest version. And I'm going to tell you the settings along the way. So owing to a lot of drawbacks of zoom in terms of video clarity, in terms of mixing of audio signals, you would want a third party app, which is absolutely I would have to say open source. And you don't have to spend anything for it to.
+
+It's called OBS, Open Broadcaster Software. We will have a link in the description. You need to install the latest version of that for your respective OS or operating system, be it Windows, Mac or whatever. If you're like me while learning anything, I don't like learning from phones and these tiny devices. I want to project it. I want to see it on a big screen, on a big monitor or at least or even my TV, if that's possible. I do a lot of my
+
+my own learning on a TV. So just figure out a way if it's possible for you to project your your zoom machine which could be your iPad, your tablet or your desktop laptop to a bigger screen or a TV via maybe wireless projection. There are so many ways out there you can get a dongle you can get like a Chromecast something like that or you could even you know just use a HDMI cable and connect it to your television directly.
+
+Nathaniel Nsm (07:08.687)
+So consider that that will help you see the teacher, you know in all its glory. Another very obvious thing in a Zoom class is keep the environment as quiet as possible. These are music lessons. So you don't want to distract the teacher or vice versa if you are the teacher. and yes, Zoom has a lot of noise reduction features inbuilt. But what happens with noise reduction is quite obvious, right? It's also going to treat the piano or the guitar.
+
+or the drums as noise. It's because Zoom's noise reduction algorithm pretty much works for the human voice. So if you're talking great, maybe the noise reduction will work. But we are talking music here and a music lesson where noise is something we don't want a noise reducer, especially to target the human voice. want it. We don't want any noise reduction or we want control over that if we are audio engineers ourselves. So
+
+You need to disable your noise settings in Zoom, which I'm going to come to and thus you need to keep the environment as quiet as possible. In a lot of the music lessons which you might have to encounter, especially things like piano and drums, you will need multi-angle setups. The teacher will want to see your fingers playing the piano and also your face because what is a music lesson if you can't see each other's face, right? So
+
+the face angle could probably be the webcam of the laptop while the keyboard angle or the keys angle needs to come from somewhere else, right? You can't expect one camera to do its magic. zoom will not allow that. Zoom can allow you to toggle cameras but it cannot allow you to combine cameras at least at the time of shooting this. what you want to do is you want to connect another camera
+
+And the best of the cameras which I would recommend which comes absolutely free is your own phone. So you take your mobile phone whether it's Android or Apple this has worked with almost all my students from all age groups. Really young kids 10 year olds to above 60 year olds. So no one has had this issue you just need your phone your charging cable
+
+Nathaniel Nsm (09:27.757)
+You plug in the phone into the computer or the laptop and there you have it. It also charges, which is a bonus. And then you install an app which will allow OBS or your computer in general to recognize this particular gadget as a device or as a video camera. So some gadgets out there could be DroidCam, which works well for Android. You could also use OBS's own inbuilt virtual camera, which is also awesome.
+
+You could also use something called OBS Ninja which basically allows you to connect wirelessly from your phone. You don't even need a cable. You can just log into the Wi-Fi or the network or just get a code basically and just bring your video in using OBS Ninja which is also super cool. The one I use is for Mac only. It's really professional. It's called Camo. Okay. I've used it for about a year now and
+
+I just cannot use anything else. It is a paid app. Some of these are paid but it's very very affordable. So do consider an app for bringing in that extra device or that extra camera. Now you may also want an extra camera or an extra device for audio. For example laptops especially a lot of the windows laptops which I've taught from their inbuilt webcam will also take in audio and to be honest that audio is absolute nonsense.
+
+in for most cases. Apple audio is a little better but an iPhone, the audio of an iPhone is incredible. So there are some devices where you want the audio from that device's speaker. So the device can send both audio and video via a data cable to the machine, be it a laptop or a desktop. So do consider an extra app for an extra device. And if you want more devices, it's the same procedure.
+
+So need a USB slot and you just get like a cable, a charging cable or you can go wirelessly or you can just join via a server like an OBS Ninja. Now in an ideal world, we would want to join a Zoom class from one account, just stare into the thing, have it all integrated. But if things fail or if you don't have the relevant resources, you could just go old school and just join your music class from two Zoom accounts. So you could basically say,
+
+Nathaniel Nsm (11:54.862)
+My laptop is where I'm going to see my teacher from or maybe my phone is or iPad is where I'll see the teacher from while the teacher can see me through the next device. Right. So consider joining from two zoom accounts. It may be a little bit more technically taxing compared to the all fully integrated setup. But that's another way to do it. So get these things set up. I'm sure you have all this stuff.
+
+in and around you in your own house. You all have a phone. You all have a laptop. That's why you're watching this video. A couple of cables here and there. Pretty much free softwares. Right guys, so I hope you found the lesson useful in terms of setting up your Zoom class either as a student or a teacher. Let's just recap. You need decent internet setup and ethernet cable for yourself. You need to see it well as a student. So consider projecting things.
+
+and consider helping your teacher out by sharing different angles of you playing. How did I do the multi-cam setup thing using OBS, which is absolutely free and open source. So set up everything there. You can set up your audio and depending on what device you want to get, depending on your budget, figure that out. However, the software, as you can see, are pretty much free. The phone is what you already have. You just need a couple of cables and it's a very, very inexpensive setup.
+
+I understand I have taken it to a more geeky level in terms of at least audio which is my field so I have to talk as much as I want to on audio and even video if you observe it was quite functional you just have a camera or a webcam plug it in and do a great job and then there was some zoom settings so do check out this entire series whenever you have any doubt setting up a zoom class I think it holds good
+
+At the time of shooting this 2021, it will probably hold good for a good amount of time in the future as well. However, if things change, if a lot of products get hyped up and upgraded, I will be sure to be among the first characters who comes up with an updated lesson. Right guys, hope you found the lesson useful and don't forget to subscribe to our channel if you haven't already. Hit that bell icon for regular notifications.
+
+Nathaniel Nsm (14:14.638)
+Consider supporting us on Patreon. On Patreon for this lesson, I would have an entire tech guide, a tech PDF guide for you to check out. It's waiting for you on Patreon. Check it out. If you thought the video was too much of a rant and too long, just download the PDF and you should be fine. Cheers and catch you in the next one.
+
