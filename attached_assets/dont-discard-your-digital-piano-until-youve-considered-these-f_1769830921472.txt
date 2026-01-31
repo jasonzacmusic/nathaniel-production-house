@@ -1,0 +1,123 @@
+Nathaniel Nsm (00:00.366)
+Hi everyone, this is Jason here from Nathaniel. In this lesson, we are going to basically consider a scenario where you're buying a digital piano or have already bought a digital piano or need something for stage performance. You're going to another city and you you're getting, you want a keyboard, you don't know what to get and basically I'm here to help you out in this lesson. So there are a few technical things to keep in mind and the most important goal for this lesson is maybe
+
+the piano you already have is awesome but you don't really know it. So how do you tweak what you already have to make it brilliant and make it something you're really passionate about which you can play for years and years. So in my experience whenever you purchase a digital piano and first of all by digital we still call it a piano at the end of the day we say we are all pianists but then we use this digital medium which
+
+makes things more portable, which makes things more sustainable. You don't have to keep hiring a tuner and do all sorts of renovation work to a piano unless of course you can afford that in which case you could definitely consider an actual grand or an actual upright piano for your work. So assuming we are all in the market for digital pianos, you have I guess three varieties. You have what I call as the home piano or the house piano.
+
+which is really not portable at all. You're gonna just keep it in your house in one corner of the room or whatever. And it's like a showpiece thing as well as if you buy it well, it'll also sound really good and really great. And if you place it in the right part of your room, it'll be special. You buy these sort of clavinet over like these house pianos for like a permanent setup either in your house or in a church or in a school.
+
+places like that are very common where you'll find this looks like a piano. Actually, it's not. It's still digital. OK, and there's no big difference from what we call as stage pianos or portable pianos. These are just lightweight like what I have. The Kurzweil SP6 is what I'm using. This is lightweight. I can carry it at a gig. can. I don't need an assistant or any heavy duty help to help me navigate through this instrument. So.
+
+Nathaniel Nsm (02:22.965)
+I bought this primarily so that I can play in the studio, has some great sounds and I can take it on stage as well whenever I want. It's not just stuck in the house for permanently. Okay. And the other option is to just buy a MIDI controller. So MIDI controller bypasses the whole sound element. It doesn't care about sounds. It will come with nothing. It will just give you an integration to a computer or a tablet like an iPad.
+
+And on that the magic happens. You'll have to find all your sounds from there and then connect it via digital cables like MIDI cables or USB cables as well to your keyboard. And the MIDI controllers can even be powered by computers. They also send information to and fro the computer. So you have these three keyboards in the market. Possibly you have one of them. Possibly you're looking to buy one of them. The MIDI controllers, the
+
+portable stage piano kind of things and your you know showpiece pianos which you just keep in the house. whether you buy any of these it doesn't really guarantee you that the feel of it or the sound of it is going to be great. Just because you buy a showpiece for your house and it costed you a lot of money you're probably paying that money because of the furniture it comes with or because of the
+
+the nice finish or the wood used, know, those sort of things. And to be completely honest, I'm sure you'll agree with me that has nothing to do with the actual sound. So I'm here to just bypass all the glamour behind the piano, behind the brands of a piano which you could purchase and just tell you the facts. OK, so let's say you have a piano or looking to buy one, you go to the music store and you're trying to check out the piano.
+
+Now you don't want to turn the piano on and off and just play, you know, let's say
+
+Nathaniel Nsm (04:24.399)
+Now, this is a really nice sounding grand sample as most Kurzweils are but that may not be your thing. Maybe you don't like the sound of this piano so you could explore other tones of the keyboard. In this case by hitting the next button. There we go.
+
+Mr. Radha.
+
+getting a lot more highs
+
+Nathaniel Nsm (05:03.247)
+tinny, you just take one lick on that preset versus which one do you like more? Well, I don't want to be the judge of that. You should judge it because you're buying it. And then you go...
+
+Nathaniel Nsm (05:23.694)
+But for my likings, it's also called bright jazz. So, is Intermitt Piano 7 feet.
+
+Nathaniel Nsm (05:35.63)
+See how it inspires you in Punchy Edge, could say more for Rock.
+
+Nathaniel Nsm (05:44.97)
+explore these things or the keyboard you already have may come with all these presets. This is a
+
+Nathaniel Nsm (05:56.367)
+really like that and that's the sixth preset so then you have
+
+Nathaniel Nsm (06:03.406)
+especially for some thematic stuff.
+
+Nathaniel Nsm (06:22.498)
+you
+
+Nathaniel Nsm (06:26.702)
+Looks like an effect has been used.
+
+Nathaniel Nsm (06:34.926)
+as well pianos.
+
+Nathaniel Nsm (06:43.114)
+stuff so indie piano very experimental some reverb and color then
+
+Nathaniel Nsm (06:56.843)
+This is a stack and then you have layers, piano and strings and then it goes forward from there. So I'm going to go back to the first preset. So this is something you may want to do when you're, let's say you don't like the sound of what you have, you're looking to sell it or you're in a store and you you judge it. So judge it based on not the first preset, like keep exploring. You also have some EQs. You can play around with that. This could also help.
+
+Okay, so that's one very very important way to check whether it's the piano for you or before you want to sell it off or give it away or get something else. Check out all the tones. Don't forget that. Okay, the other thing which is a little bit technical but a very very crucial thing at least for me is the touch response of the existing instrument. So you will access that and you should have that you have to have that on all your keyboards. So
+
+the way I access it in most keyboards go to global and you have something here called as velocity map anything which is velocity or touch would be where you need to go so right now my velocity map is set to hard 2 now by default if I remember right it came with what did it come with it came with I guess piano touch I'm not too sure or linear and this is linear
+
+Really bad. Doesn't work for my playing at all. Especially when you've played for a few years. I don't like the linear preset. Wow, the light one is horrible for me. May not be for you, but I cannot even play this piano. It's literally unplayable. So if it came with the light one as the default, man, I would never, never want to play this thing.
+
+you know, light 2 still a bit annoying light 3 not working for me there we go, hard 1 so hard 1 seems to showcase all my dynamics a bit more and hard doesn't mean your touch is hard it means it supports light touch and when you do play hard you can slam the hell out of it, you know
+
+Nathaniel Nsm (09:20.367)
+Hard 2 requires a bit harder touch to really go for it. Hard 3 even harder. So depending on your style I would say between hard 1 to hard 3 which kind of works for me. Then they have something called piano touch which is horrible. I would never want to go for piano touch. There's something called easy touch. My word. Please do not use easy touch. man, that's bad.
+
+It's made a Kurzweil sound really crappy. So I'm going to go back to my preferred touch, which is hard too. So you can also do this if you're connecting this MIDI. If this is a MIDI controller, what you can do is you have the power to either make your key response of the entire keyboard behave a certain way or you can connect it to a virtual instrument like Piano Tech, for example, which gives you
+
+a very interesting graph to really calibrate how you play, how you generally whack your instrument and it generally gives you a graph which works or you can customize it later for sure. So when you take this to a computer, even if you have a keyboard you don't like, with the computer's ability to modify your touch, make it very personal for you via MIDI, you get a really really nice sound. Okay, so touch response adjustment, even if you're doing this
+
+to chill out and play piano and you know as a hobby and at home you still need to think of your touch response. I never want to go light. I never want to try the default preset and assume it is the thing. It is something you have to check and customize. Okay. So the other very important thing why you may not like the sound of your digital piano is the speaker quality. Now some keyboards I've observed
+
+like most Casio keyboards tend to sound really good with their inbuilt speakers because they have a lot of ways to kind of color the sound. They want you to enjoy it from the speakers. But I find that when it's this whole covered up boxed wooden thing, I don't like the sound of that that much. Even though it costs so much more, it costs almost three times more. A simple keyboard which is portable, light and the speakers are right in your face.
+
+Nathaniel Nsm (11:44.496)
+You may actually like that sound and it may inspire you way more. Also keyboards like the one I have the SP6 can be connected to a speaker system. They don't have their inbuilt speakers. So what I then have to do is I have to take a cable. I have to take a jack cable and connect it to my speakers and only then will I hear it. Then you're faced with the quality of the speakers. How good are your speakers? Are using an amp? Where is the amp placed?
+
+And most importantly, are you sending stereo? Now piano needs stereo. That means you need two cables from your instrument feeding to the speakers. If you send one cable, trust me, you'll never want to use that piano and you'll always hate it or you'll never know how good it could sound stereo. So even when you go live for a concert, always go with stereo. Tell your sound engineer,
+
+sir or madam, whoever it may be, I want two cables, send it to your mixer and some people on the sound console will pan it, they won't pan it. So when you pan a stereo pair, has to be one, the right should be actually panned right and the left should be actually panned left. So you want to tell them to do that as well. So if it's very technical for you, get a keyboard with inbuilt speakers and make sure those speakers are good.
+
+But then also, if ever you want to use that on stage, connect them using cables or use your headphone. Use a high quality headphone and actually see through the headphone, does it sound beautiful? Doesn't sound awesome? Because I've observed a few keyboards. I don't want to talk about the brands, but a few really top quality brands, brands which sound brilliant when you play them here. But when you take it on stage, it's a nightmare.
+
+The sound engineer says, what's wrong with you? Why are you giving me such a horrific keyboard? And these are some of the biggest brands out there. Because it's over compressed. They do whatever it takes to make it sound good in that world around you. So speaker quality is important. Get a good pair of headphones. You always want to connect a pair of headphones to the headphone socket and check if that actually sounds good. And maybe you enjoy playing with headphones more after a while.
+
+Nathaniel Nsm (14:10.208)
+And maybe you want to consider the fact that if you've connected to speakers, they're not really good speakers. So you want some nice speakers which give you good bass response, more clarity, and it shouldn't be so sharp to annoy your hearing and stuff like that. So output is very important. Moving on, another reason why you don't like the sound of your existing piano could be that it feels brilliant. It feels like the best thing ever. You know, it really feels good.
+
+But after all that you've done, it just sounds really bad. Now here's what you could consider doing. You could consider sending it to a MIDI generator or you could send it MIDI to your computer and then invest or you get a lot of free things as well with DAWs. They come packaged into things like Logic or maybe you already have a DAW which is a recording software or you could get third party applications like Piano Tech.
+
+which I happen to use and the source of all my magic if you want to call it that comes through that. So when I connected to a computer with using the application piano tech it sounds like this.
+
+For me, is light years better. Anyone who's played on my keyboard or any of my keyboards and when it runs through this app, no one complains about the existing piano they have because you're bypassing the sound. See, the sound is off on the instrument and that thing on my computer is giving me everything and on PianoTek, I can change my patches. I don't have to just have a...
+
+grand piano, can have anything, I can have a clavinet, I can have the same features which an actual digital piano gives me. Now in my scenario it works out really well because I can have both. I can send my Kurzweil into my computer through my audio interface because I like my Kurzweil sounds as well. But for the most part I prefer my virtual instrument or VST Piano Tech. So if your keyboard feels awesome
+
+Nathaniel Nsm (16:21.952)
+still feel it's inspiring you to play but the sound is crappy for whatever reason just get an app get an app which works on anything this works on Windows Mac or even Linux and you're then connecting it using a MIDI cable in this case a simple USB cable and you're sending it directly to the computer so yes that's that's the deal with the app the one I use is piano tech but you could use anything
+
+If you have a DAW, you'll have enough and more grand piano emulations which come with that. Right? Now the last reason why I'm telling you don't discard your piano, this is more of a room and an acoustics thing. Sometimes where you place the piano in the room, the speakers may be at a very, horrible spot in the room. Obviously in normal houses, you have a bass build up at the corners. You may have may not have a bass strap which
+
+you may really need in a normal studio environment. There may be all sorts of weird reflections which are cancelling each other out. So then what you need to do is move the piano. You have to find another spot or you need to insert absorption material, certain panels which will help you to kind of absorb the sound, you know, and maybe a carpet, a thick carpet, a few books sometimes help.
+
+Yeah, absorption material, diffusion material, where you place it in the room really matters. in conclusion, why don't you like the sound of your digital piano? Maybe because of the tones you have to explore the tones a little bit better. You could say you could explore the touch response settings, the touch response adjustments either here on board or the keyboard or on the computer if you're using a virtual instrument or an app.
+
+the speaker quality may be not so good or you're doing the main issue of sending your keyboard out mono, always send it out stereo. The sound will be always horrible if it's mono. The keyboard, the piano is designed to be a stereo instrument. Even when we mic it in the real world, we use two mics minimum. It's always mic'd twice because of such a size in an actual piano, there is one string assigned to every key.
+
+Nathaniel Nsm (18:44.656)
+So that's one string. So you have to fit 88 strings. So that makes it huge. One mic is not going to pick up the source. So you need stereo when you send it out. Okay. Or use headphones. Check it before you discard it completely. The other thing is it could feel good but sound really bad. Maybe you don't like the onboard sounds. for example, I've never been a fan of the Casio onboard sounds. Never been a fan too much of the cogs. Yamaha's
+
+Sound pro sounds professional but it just sounds very made up or artificial to me. It doesn't sound real. They do something to the presets and I'm not one who will go and then fool around with the presets anymore. So Kog, Yamaha, Casio, Notmai, I Rollands are beautiful. Kurzweils, I definitely would endorse a Kurzweil. It sounds really inspiring. Nords are great. I mean, everything is great but after a while when you play you have your own preferences.
+
+So do consider in those cases an app or virtual instrument which will keep growing on you. You know, they keep giving you updates and new features which something you purchase will be like a one time thing that sound is a one time sound. You can't really change it. And then we talked about the room, the acoustics. If you need some acoustic treatment, that may be very helpful. It'll make your piano sound a lot better. Right, guys? Hopefully you cling on to the instrument you already have.
+
+or you have some ideas in which you can purchase a new one and yeah I hope this lesson was helpful. Do make the right decision. Ultimately I want you to make some awesome music along the way and cheers. This is Jason from Nathaniel. Don't forget to subscribe. Hit the bell icon for regular notifications. See you in the next one.
+

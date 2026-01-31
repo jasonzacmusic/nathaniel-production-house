@@ -1,0 +1,163 @@
+Nathaniel Nsm (00:00.396)
+Hi guys, this is Jason here from Nathaniel School of Music. am the piano faculty here. And in this video, the goal is to help you choose your instrument which fits you best in a variety of ways. for this video, I am going to try and show you different kinds of keyboards which have different kinds of features.
+
+which also have different kinds of budgets which is obviously an important thing while choosing it and also different sounds which may fit into a specific genre which you might be playing. So let's get started. So I have quite a few keyboards around me as you can see. I have something here. This is the Yamaha
+
+PSR-E323 and then I have keyboard here it's called the Kurzweil K2600. I have also a really small one here the M-Audio Keystation Mini 32 and here I have the Roland A88 keyboard. So each of these keyboards has a different functionality.
+
+Each of these keyboards are priced differently and they all are hooked up and are designed to do different sorts of things. So before we get into the keyboards, I'm first going to talk about the varieties of keyboards there are and also the different features each of these keyboards should have. So the first thing obviously is the number of keys.
+
+keyboards come in various shapes and sizes. Generally, as a piano player, would look out for an 88 key keyboard. The 88 key keyboard will be there with almost every renowned keyboard manufacturer. But however, if you are not a piano player, and if you looking for something more portable,
+
+Nathaniel Nsm (02:23.885)
+you could look out for something like this one which has 61 keys or something smaller which has 49 and also something like this so if you're not looking at piano feel but yet you still want to play the keyboard and you know trigger your chords and synths and all that something like this works really well it's really portable it fits into a normal backpack
+
+and very easy to move around with as I said. The other thing you need to look for when you buying a keyboard is the action. Is the action something which feels like a piano which is mostly going to be weighted or a hammer action. The other, if you are not comfortable with that you could go in for a semi weighted feel which feels
+
+Almost like a piano, but it's not really heavy and then you have the synth feel which is found here which is very easy to play as you can see so this is a semi weighted keyboard and The one you see here This is a hammer action keyboard, so these are the other choices you have
+
+when choosing a keyboard and usually something as it gets to the graded and the weighted the graded hammer action and the weighted feel it will cost you a little bit more.
+
+The other thing you need to look out for while choosing a keyboard is the touch response. Now all keyboards I recommend should have touch. So touch is basically the ability for you to play soft and play loud as the energy you put in increases the volume gets louder and so on. There are some keyboards however
+
+Nathaniel Nsm (04:37.615)
+especially the beginner level keyboards which do not have touch and if you are a serious keyboard player I really recommend not getting a keyboard which doesn't have touch for example on the Yamaha keyboard here there is an option to disable touch and however loud or soft I play it's not giving me any kind of dynamics
+
+whenever buying a keyboard I think that's a very important thing having touch the other thing is polyphony so if you're a keyboard player who needs to work with multiple sounds let's say orchestral patches and you know really high quality piano sounds you really need polyphony that's the number of
+
+notes the instrument is able to handle at a time. So the higher the polyphony the better it is and the better it sound, the better kinds of samples it can work with and so on. The other thing you need to consider is multi timbrality. So do you want to be able to play multiple patches at the same time? For example do you want to play piano?
+
+and also be able to play the strings with the same go. For example, a patch like this. And then of course the ability to control the volume levels of each of those patches. And so on.
+
+along with multi timbrality you may also need to be able to split the keyboard so for a maybe your left hand wants to play a bass line and the right hand plays a melody line so that feature I think is very useful if you need it so you may have patches where you know the way I've set up this patch is a clavinova is on the left side of my keyboard and then a horn section is on
+
+Nathaniel Nsm (07:04.193)
+on the right of my keyboard so I could keep shifting between the patches.
+
+so so that's something you may want to consider as well.
+
+The next point is MIDI compatibility. So MIDI is something very important these days because a lot of the music production work, probably all the music production work happens on a computer and it's not very easy to get a lot of keyboards set up working the way you want it to. So you need to find a way to also send MIDI data to the computers.
+
+and then the computers have some amazing sounds inbuilt there. So whichever keyboard you get what I would suggest is look at the back of the keyboard. So even a keyboard as simple as the Yamaha E323 if you look at the back here it has two points a MIDI out and a MIDI in. So if you see something like this or if you see maybe a USB out it's probably going to suffer.
+
+support midi and at the most you just need a driver which usually works out just fine for example yamaha have a very standard driver which you load up into your pc or mac and whenever you connect a midi cable to it it recognizes it doesn't recognize the sound which you're playing it recognizes the performance so it will recognize the notes you've played when you shift it to
+
+Nathaniel Nsm (08:56.285)
+the next note and various other things. So I think MIDI compatibility is very important. think most keyboards come with it but you may want to just cross check before picking it up. And then computer connectivity which is quite useful. There are lots of cases and lots of keyboards which allow you to record your own sounds on the keyboard itself. A lot of Yamahas allow you to do that.
+
+you need to have a way to interface that with the computer either using maybe a firewire cable or a USB cable or something like that. think about that as well if you're looking to create a lot of your work on the keyboard itself you may need to find a way to send that data to the computer preferably not using an audio cable. You may lose
+
+quality so it's recommended to use a USB or a Firewire cable and also the tempo of your performance can then be synced to the computer can be matched later.
+
+Along with purchasing the keyboard, you may want the keyboard to do other things for you like perhaps record a microphone or record a guitar. That's a handy tool since otherwise you may have to invest in a separate sound card or a separate audio interface. So there are lots of keyboards out there which come with an XLR input or which come with a guitar input.
+
+and which behave as audio interfaces which can send really high quality audio to and fro and you could hear sound coming from your computer through the keyboards inbuilt sound module. So apart from giving you keyboard based sounds it's also an entire audio interface which is quite cool for those of you who want to also work closely with a computer and try to arrange and produce your
+
+Nathaniel Nsm (11:09.986)
+music. Coming to controllers, now if you are a serious piano player and if that's all you do, you don't really need a single controller out there except
+
+probably a pitch sorry except a sustained pedal and maybe another pedal a foot switch perhaps to change patches so when you're picking up something like when you're picking up a keyboard you need to think about stuff which is going to add to your playing like a piano player would need a sustained pedal it's part of piano playing a keyboard player however may need other things along with playing the sound you need to
+
+find a way to modulate the sound. So common controllers are your pitch wheel and your mod wheel. So most of the top keyboards out there come with that and they are controlled in different ways. So on the Kurzweil this is the pitch wheel so it allows me to control pitch. So if I go to this note
+
+you
+
+Nathaniel Nsm (12:34.64)
+And then you have the modulation wheel.
+
+Nathaniel Nsm (12:45.355)
+again changing a specific parameter which can again be controlled on the keyboard and you also may need to look into the user interface as well how easy is it to work on the keyboard you either have a really small screen to work with or you may have an app on your computer which controls whatever is on your keyboard
+
+that also may be something useful for you. Moving forward, you also have to consider the storage and expansion capabilities of the keyboards you buying. If you are choosing to record some stuff on the keyboard, it needs to have a storage facility or it needs to have the ability to support an external hard disk.
+
+and the keyboard you buy today which may be in 2014 how current will it be with the keyboard industry in 2016 or 2017? In other words is the company you're dealing with giving you a way to expand it perhaps install specific cards to give you more sounds or using software give you more
+
+or maybe firmware updates all of these things are quite crucial I think because as the years go by everything is going to get better everything is going to get quicker faster the processors are going to grow so whatever you have should also probably grow with it you can do things on the keyboard which don't actually involve keyboard playing where you go there play a chord and do everything live you could also
+
+get a lot of things to be triggered for you. can have keyboards which have pads wherein you press a pad and it just gives you a sound. It gives you a sound effect or it may give you a chord, it may give you a drum loop, may give you anything whatever you wanted to give you. You may also need something like an arpeggiator where you play something and then the entire let's say you play a chord and it while playing
+
+Nathaniel Nsm (15:11.698)
+the chord it loops in a pattern so if that's the kind of player you are well these are features to look out for while picking it up and that's about it actually these are the the decisions you need to take so to summarize the whole thing you have to figure out the number of keys you need the action the
+
+you need to ensure that there is things like touch, polyphony another thing i forgot to mention is after touch so when you play a particular key you play it further down and then the sound changes even further maybe you want that to add something to your organ playing or your synth playing something like that
+
+and then I mentioned things like multi timbrality the MIDI output features and also the allowing the keyboard itself to be a audio interface and so on so
+
+what i'm going to do now is to just give you a demonstration of the different keyboard varieties you may come across when you go to a shop and perhaps i could even give you the budget the rough budget you're looking you're going to look out for first off is something like this you have it has 61 keys and it's really light as you can see and
+
+It has quite a bit of options. This is what we probably know as a portable keyboard. And most students who end up starting their journey into the instrument will end up picking up something like this because it's very very affordable. It's something you can just go over to a store, choose a brand you like. I iRate Yamaha is the best when it comes to entry level keyboards like this.
+
+Nathaniel Nsm (17:20.152)
+and it can do a lot for starters the piano tone sounds really really nice
+
+Nathaniel Nsm (17:41.39)
+gives you a lot of other sonic options you have electric pianos like
+
+Nathaniel Nsm (17:51.774)
+the ability to have a dual sound piano with a string and also
+
+Nathaniel Nsm (18:06.288)
+You could split and have a bass sound here. You can even adjust the split point. it has quite a bit of features and in short it sounds quite good. So I think they've upgraded it now but it sort of looks the same and it also gives you beats and loops to play around with.
+
+and yeah it's something which works and what's also cool is you can plug in a sustain pedal you can also send it out to your speakers if you want a louder sound or if you're playing gigs it also runs on batteries it has a midi compatibility so it pretty much has whatever you need and what's nice about this which a lot of the more expensive keyboards have is it has inbuilt speakers
+
+which is a nice feature. So you just plug it on, put up the volume and you get a sound right away. So this is a portable keyboard, by no means a basic one because I think it sounds good and if you're someone who just likes good sounding keyboards, I think this is something which you could consider. It doesn't have fancy features but whatever it has works.
+
+Here's the next one. This is the Kurzweil K-2600 which I have and this is what we call as a workstation keyboard. So it allows you to also make an entire song on board this instrument. In order to do that it has a huge number of sounds and the samples have a much more variety.
+
+Here for instance in the Yamaha was able to just have two dual voices. Here I think I can go up to 16 or more. So there are a lot of options you get and this is 76 keys as you can see. So this is a keyboard workstation.
+
+Nathaniel Nsm (20:23.001)
+You also have arranger keyboards which I don't have one here to show you but you do have arranger keyboards which also are very similar to this. The only difference there is you can create everything in the song and even sequence music together and then send that to a computer and do a lot more things. With the workstation most of it is pretty much live I guess.
+
+and then we have digital pianos.
+
+So digital pianos are designed for a serious piano player. So if you are looking to just play piano, not do any of the other stuff like sequencing, arranging, if you pick up a digital piano, it will be really affordable. It will give you all the 88 keys which feel exactly like a piano and it sounds really, really good. So good brands which make digital pianos, of course,
+
+are the Yamaha. They again have really good budget pianos like the P35 and you also have some really good sounding pianos from Nord, from Kurzweil, from Korg. The options are endless. It goes on. You just have to get something which suits your budget.
+
+that's the bottom line. You choose what you want if digital piano is what you want. I am definitely sure that there will be something within your budget which you can purchase.
+
+Nathaniel Nsm (22:03.196)
+And finally, so we've talked about the portable keyboards, we've talked about the workstation keyboards, the digital pianos, and then we have the MIDI controllers. So a MIDI controller like this one here does not have any inbuilt sounds. What it will do is it allows you to send the data of the performance.
+
+via something like a USB out to the computer and then on the computer you have sound modules
+
+which will receive that data and then give you the sound as the output through the computer speaker. So this does not send sound, this does not have sound to begin with and it does not even receive sound. So this just sends data to a computer. So this comes in many shapes and sizes. This is the KeyStation Mini 32 which I would recommend for
+
+non-piano players only because this doesn't it doesn't feel too bad but it definitely doesn't feel like a piano and it doesn't give you as many keys as a piano has which is 88.
+
+The other MIDI controller which I have here on display is the Roland A88. So this is designed to feel just like a piano. But again like I mentioned it has absolutely no sounds on board. So what you would do is connect the output which has a USB there to the computer. I right now am using an iMac.
+
+Nathaniel Nsm (23:53.449)
+and that's about it. So when I play a note on this keyboard the sound is being controlled by my normal computer setup right here but the data is coming in from the keyboard controller. So this gives me a lot of advantages because
+
+based on the number of songs i have based on how fast my computer is based on how well i take care of it and you know manage my software i have certain songs which work so for instance piano for my piano playing i use something called piano tech which works really well for me
+
+Nathaniel Nsm (24:47.707)
+So here's the interface and this is basically the software which is giving me the sound of the piano.
+
+Nathaniel Nsm (25:03.631)
+could go over here and maybe change the sound as well.
+
+Nathaniel Nsm (25:12.624)
+microphone.
+
+Nathaniel Nsm (25:17.458)
+So as you can see the control of my sound is coming from the computer and what I have running now is a software called Mainstage which basically puts all the software plugins I have all together in one neat interface. So it allows me to toggle between the patches, it allows me to make patches and it gives me all of these features which are normally going to be there on these keyboards.
+
+The other advantage of using MIDI or using a MIDI controller is the software you use will have a really really amazing interface. It's just like working on a computer. for me my preferred choice is a MIDI controller but your choice could be something else of course. So I hope this video was useful to give you all the possibilities and again if you're still a serious piano player
+
+and you want a piano well you could always just buy a piano
+
+If you buy a piano you have upright pianos and you have grand pianos. that however will be a lot more expensive and it will be a lot more difficult to maintain and manage. You will have to tune it. Temperature will change the tuning. You may have to replace strings. It's basically like managing a normal acoustical instrument. So these are your options. There are lots of nice brands out there for the
+
+portable keyboards as I mentioned I would definitely go with Yamaha all the way and nothing else. For digital pianos you have a lot of options. Yamaha of course is the best sounding for the price but then again you have a lot of other nice models like I mentioned Nord, Kurzweil and Korg as well. So in the MIDI controller range
+
+Nathaniel Nsm (27:22.565)
+well you have a lot of options you can get something as tiny as this or a fully blown keyboard like this which is a Roland 88 something else could also be perhaps an Akai MPK 88 which apart from giving you all these keys also gives you pads which allow you to play drum loops, trigger samples and all of this other additional stuff
+
+So find the keyboard which suits you and then go ahead and buy it. And I think the knowledge, you need to have enough and more knowledge.
+
+before buying the instrument because after you buy it you don't want to realize that there is a feature you really wanted which is not there. So hope you found this video useful and if you have any questions please let us know in the comments section.
+

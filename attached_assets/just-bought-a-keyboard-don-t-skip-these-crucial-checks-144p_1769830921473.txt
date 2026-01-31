@@ -1,0 +1,135 @@
+Nathaniel Nsm (00:00.354)
+Hi everyone, this is Jason Zach from Nathaniel School of Music. Now if you've just bought a keyboard or if you're looking to buy one, do not miss these crucial initial setups or checks that you might want to consider either pre-buying the keyboard or maybe you already have a keyboard and you would like to optimize it to its fullest potential. This video is for you. So first of all,
+
+Let's assume you haven't yet got one or you're looking at getting a keyboard or you're looking to upgrade. So here are some reasons or what you would need to think before buying that specific digital piano or MIDI controller or whatever keyboard out there in the market. First of all, the assumption is you might be a hobbyist. You might be someone who just wants to play music for fun or you may be buying it for
+
+one of your youngsters at home or you might be setting it up for your church or maybe you want to use it primarily as a music producer. You want to just leave it in your studio space or your bedroom studio, wherever it might be. You just want to leave it there and use it to control a door or a recording workstation or a computer software which does music production. Or maybe you're looking at it as a professional musician to
+
+perform concerts or you're looking at it to do some studio recordings where you have multiple projects where you do ad jingles and movies and what not or else maybe you want something which suits all where you can practice at home well enough where it's easy to just put it on and play as well as you can do concerts so it should be lightweight and portable
+
+as well as it should work for studio recording. So I fall into that category. I like to practice my music at home. I like to just wake up in the morning, put my piano on and just start playing. I don't care about the computer also. I just want to just enjoy, compose, play and just do it old school, like as though it was a real piano, so to speak, which it isn't because real pianos can be pretty costly at times. So first of all,
+
+Nathaniel Nsm (02:18.049)
+you would want to check as many boxes as you need to check. So also if you've got something already, there will always be a workaround. And I'm also here to optimize what you already have. So the first thing to consider, what about those heavy digital pianos? Now, if you buy a piano or a digital piano with all of that furniture, if you ask me,
+
+Yes, you can put some candles on it, you can put your notation on it, but it just occupies a lot of space. And in this day and age, space is a huge problem. And when you buy those digital pianos which come with that furniture, it's near impossible to screw out and take for a concert or perform with it. So you'll need a lot of transportation help and you need to train your muscles to actually carry that thing.
+
+Right? And also the furniture is generally cheap quality. It'll be low quality MDF wood which is going to crack with just someone just jarring into it. So you might want to keep that in mind unless looks are really a factor. The other consideration is if you're buying a MIDI controller. A MIDI controller could be like a Novation or an Akai MPK-88. You need to understand that to get sound out of that
+
+You'd need a computer, you'd need a tablet, you'll need an iPad, and then you need external speakers or headphones from the iPad or the computer. So it's not so easy to hook up a MIDI controller. There are no sounds on a MIDI device, which is why what I've gone, the route I've taken over the past maybe six to eight years is to get a piano which has onboard sounds, first of all. And when you have onboard sounds,
+
+You know, you just put the thing on and I've just put my Roland on and things things kind of work instantly. And if you have connected it to your computer via a MIDI cable and if you installed all the drivers, it's just going to work. Right now, my keyboard's working in my DAW. In my DAW, I'm running the app Piano Tech. Definitely working MIDI.
+
+Nathaniel Nsm (04:32.791)
+and the audio of my keyboard is also coming in to my respective DAW. So is my other keyboard, which is called a Yamaha CK88. So even without all of that, even if MIDI is not there and even if you haven't hooked it up to the speakers, that's exactly what I'm doing here. Just plug it in, volume comes on and you're good to go and you play. So this is already a house piano. You can use it for parties.
+
+The Roland keyboards sound great, so do the Yamaha's. Actually every keyboard out there, all digital pianos have great onboard sounds. May not be Casios, I'm not so much a fan of Casios. And Cogs also are a bit uncertain for me, but Roland's and Yamaha's for sure will sound great. Just put the speakers on and it will work brilliantly well.
+
+So assuming you've got something, assuming you've got something which is first of all portable, which I prefer, something which doesn't weigh too much, assuming you got something with onboard sounds, I'm now going to tell you once you have it in front of you, what specifically do you need to be aware of on this keyboard to make it really, really work for you? And first of all, I like to look at all the words of or the points of caution.
+
+What are all the wrong buttons that you might hit by mistake? You need to first know your instrument well. First of all, some keyboards will have the tuning, the master tune set to all sorts of random things. Maybe you're hiring this keyboard for a gig. You need to check the master tuning settings because it should always be A 440 Hz. That would be A which would be at
+
+a multiple of 110, 220 and then 440 Hz. So it should be tuned at A440. Then you need to be very much aware of where the transpose buttons are because sometimes this can go south. If you hit the transpose and for example now it's transpose to what?
+
+Nathaniel Nsm (06:43.822)
+stuff to even know. Right now it's transposed to plus two. You need to know where the transpose button is and on the Roland whenever it is transposed you'll see it highlight or you'll see the red light and anytime you play C you're actually hearing D. It's actually concert D. So if ever you do transpose be aware of that particular button. Now I've turned it off and it's C. Now on some keyboards like the Yamaha which I have here
+
+The transpose button is right in front of you. So if I play a note
+
+Nathaniel Nsm (07:19.663)
+So if I play a note C and now if I hit the transpose on I'm still playing C but it's going all over the place. So understand where your master tune settings are, your transpose button is and also your octave switch button. If you have a digital piano it doesn't really matter. Now another thing to keep in mind is these arrangement buttons and the drum loop buttons and all of those
+
+things which can make sounds which just seem to come from nowhere. get drums and orchestra, rock band playing with some salsa preset or something like that. So brands like Korg and especially Casio are very tricky because you'll have a play. First of all, I hate keyboards which have play, start, stop, arrange. I really do not like arranger keyboards because of the fear when playing live.
+
+You never know what will be initiated and to be completely honest if you're using a keyboard for arrangement purposes it's 2024. Why can't you just use Logic Pro or any DAW or a recording software. Those are way more professional and arranger keyboards are strangely insanely expensive. So I wouldn't recommend an arranger keyboard because they don't even have great loops. It's all
+
+standard things which never change and it's also not a great path if you're learning an instrument especially piano in a traditional way because your entire left hand is going to be drum beats, bass guitar which you're not even playing you're just using the keys to push buttons. It's also very scary on stage like I did this one show it was Joseph and his amazing Technicolor dream code where Joseph was in this scene where he was in the
+
+jail cell singing close every door. It was a very sad, sorrowful kind of moment. And then one of our one of the pianists in our orchestra pit by mistake, she hit that button, that fateful button, and the whole audience was absolutely laughing. And it was it was a sad moment. the hats off to the actor. He kept crying throughout the scene. So anyway, that's just a fun story.
+
+Nathaniel Nsm (09:41.732)
+So be careful with those buttons when you're buying a keyboard and or a digital piano. And then when you're using this setup, be aware of your MIDI sources. Sometimes the keyboard will allow you to connect only USB to your computer. So maybe before you're buying, you need to cross check. Is it USB or is it DIN MIDI? Is it a DIN port in the keyboards I have?
+
+I've made sure that it's both. So I have a MIDI out as well as a USB out. Currently I've connected USB because my audio interface doesn't have a MIDI in. But on stage I can connect it to my live audio interface which has a MIDI in. So MIDI can be sent either through USB or else through a MIDI out. Sometimes you might even want a keyboard that has a MIDI in in some rare cases. So
+
+What are the MIDI sources? It could be USB, it could be DIN or in some cases it could even be Bluetooth. So you need to know that if you're using MIDI. And you also have something called Local Control on and off. Now if you're using a DAW, sometimes if Local Control is turned on and if you enable it from your DAW, literally any of these buttons can mess up with mess around with whatever you do in your computer software. So
+
+If you just want to change the patch, it'll just randomly go and mute a track and so on. So you want to figure those things out. You might want to start by turning local control off and then only MIDI control on just to use it like a MIDI keyboard. You know, and all keyboards will have these in the settings. So go through that. And last but not least, in terms of the wrong button or knobs department, I would say be careful with your effects.
+
+So on a keyboard like a Yamaha CK88 where all the effects are hands-on, if I play something I can so easily change the reverb. Sometimes that will not be very comfortable. can so easily... You know, the EQ, all the faders are down. Now I'm still getting a sound, but it doesn't sound the way it should sound.
+
+Nathaniel Nsm (12:00.847)
+because you want the EQ to at least start by being flat. So this is an example of a flat EQ. Sounds so much more like the keyboard you wanted. Okay? And similarly, be careful, you don't want to add some random distortion. Well, you may want it, but you need to be aware. So generally, I would put all my effects off, my filters should be off.
+
+my attack and release will be off. So generally make a note of all the knobs, buttons, faders that might alter the default sound which you wanted, which you heard in the demo before buying the piano. Right? And also be a bit careful with the mod wheel. Like in some keyboards, if the mod wheel is fully up, this is how my grand piano sounds. And then you don't want to call your...
+
+customer care executive and say give me a new keyboard your electronics have malfunctioned or whatever you know so be careful of things like the mod wheel should be off when you're playing piano for the most part so when you buy something which has more power as they say with great power comes great responsibility something on those lines nod keyboards are very tricky they have
+
+too many things on board and they cost a bomb and to be honest I don't like the piano sound so much so I prefer Yamaha and Roland and even Kurzweil I highly recommend these three brands for just the local on board piano sound and they cost also they are very affordable if you buy them. The other thing you need to be aware of is there's a safety mechanism so if you turn on the panel lock
+
+There are a couple of ways to do it. can just press and hold the panel lock. You'll see a little lock. There's a way to do it in each of your keyboards. What happens is then by mistake if you move things around it won't damage. So that's a good way to be confident that nothing's going to go wrong by hitting that panel lock button. So make sure that the keyboard you have has a panel lock or figure out where the panel lock button is for proper safety.
+
+Nathaniel Nsm (14:22.466)
+Last but not least, I would use a MIDI metering tool if you have access to MIDI to see if everything is working fine. Now, I've been using keyboards, digital pianos, and lot of things in different places, at different cities, in different churches for almost 25 years now. So I've probably faced every kind of problem there is to face. I hope so. I hope there are not
+
+too many more problems to find out there. things like if you use a used keyboard, if you're playing on a used keyboard, what I like to do, it may seem very weird, but I like to just punch or play some tabla on my keyboard. Just hit it. Just hit your keyboard a bit. Don't whack it to break it, but hit it and then open a midi metering tool. My piano app has one. So what happens when I play?
+
+is showing only the note on and the note off message. You play the note and then you release the key it sends a note off message. If you move your pitch wheel your pitch bend can move that's fine but when it resolves it needs to resolve back to zero. Check that out. Mod wheel should always be zero you know and when you kind of tap the keyboard you should make sure no extra MIDI signal is being sent.
+
+If any issues like that happens, you may need to give it to your tech support or if you're on stage and you just have to live with this, turn off, turn the panel lock. So only the keys work. Be careful when you use the wheels. Be careful when you move anything. What I like to do when I go on stage is to control all my sounds with a third party external controller. when I'm traveling, carrying these things is not easy. You'll be paying a lot for flights.
+
+So this I can put in a bag and it's just a basic controller. It just gives me what most keyboards will give me. In any case, it's called a Kog Nano Control Studio. I would highly recommend this for live and studio. figure out ways to avoid failure on stage and be aware of what might go wrong. So a midi metering tool can be used to check if any false signals are being sent. And there are gigs where
+
+Nathaniel Nsm (16:46.798)
+the pitch bend has gone south just because I'm in a rock band and I want to really play or the singer is jumping next to me the keyboard's getting wobbly and the pitch the wheels all go south. Some random knobs, buttons, pads also for MIDI controllers they come with these MIDI pads generally very flimsy. lot of the MIDI controller making brands don't make it in a very rugged way.
+
+like the trusted keyboard brands like Yamaha, Roland, Kurzweil and so on. So be a bit careful. The MIDI controllers are generally for very delicate studio kind of work. You don't bust those instruments a lot. So be a bit careful. Finally, a few things for setup to protect your keyboard as best as possible and to get a bit more control. First of all, look at the power adapter which your keyboard manufacturer is giving you. Understand the rating.
+
+Sometimes you might have bought a keyboard from another country and shipped it to your country So the rating of the power adapter will change it may be a two-pin. They may not be grounding or earthing So be a bit careful or contact your nearest trusted tech person or electronics or electrical engineer and ask him to customize an adapter for you or ask Yamaha or Roland if you're in India, where can I get the Indian adapter?
+
+And there are some manufacturers like Yamaha whose adapters to be honest are really bad. So I inevitably always get my sound engineer or my tech friend to make me a new adapter which is stable and helps me. Because the adapter could destroy your keyboard if some power surge goes crazy. And look at also backing up your keyboard.
+
+with a power backup, get a UPS dedicated for your keyboard, that can be very helpful. The other thing I like to do when I'm getting a keyboard, it feels a bit geeky, is to understand where your speaker on and off switches are in the first place. Speaker off, speaker on. And what I then like to do is send this sound to the computer and also send MIDI.
+
+Nathaniel Nsm (19:07.833)
+and when you hear it back there should not be any kind of phase cancellation. That means the computer might be picking up the sound a lot later. There could be some issue with the MIDI cable. There could be some issue with the latency of your audio interface or your computer, you never know. So it will be good when you buy a keyboard to send the sound, the native sound of the piano and compare it with a MIDI virtual piano and just see if there's any latency.
+
+if ever. These are just precautions. And I guess the most important thing for me whenever I buy a keyboard or use something on stage or use something used would be to go to your settings, especially go to your touch settings. On the Roland I have a dedicated place called Key Touch. So I can go here and set my velocity curve to in this case medium or heavy.
+
+or super heavy. So what that means is I have to hit the keyboard really hard for it to give me a sound. So the velocity curve by default, if I go to medium, it's going to basically be this. It's just going to be a 45 degree line between the volume you send, which would be, let's say, in MIDI terms anywhere ranging from 0 to 128. How does that translate into
+
+listening volume. Do you want it to be normal or do you want it to be more harder? So this is a more harder feel where it goes exponentially like this and this is a more lighter feel. So I do not sometimes a lot of piano teachers go light and super light also. The problem with super light now is
+
+you hit it's already reached its maximum peak and this is not a recommended way if you're a piano teacher don't teach your students this way because they'll never get strong fingers if you customize it. Some keyboards actually have a thing a button which says touch should be off. I think that's absolutely ridiculous then what is the point of playing piano in the first place? So I prefer a medium touch on the Roland while if I go to my Yamaha keyboard and adjust the touch curve
+
+Nathaniel Nsm (21:32.333)
+I can change it from hard, it starts normal, which I really hate. It feels like a very plasticky feel, you know. So I prefer hard and when I change this to hard, it's absolutely perfect. This works supremely well for me to play and to further customize it, you can go into your DAW settings and in your
+
+VST application if you're recording this you can have velocity curves so the app I use called Piano Tech you can go to ModArt site itself and get velocity curves for each keyboard which I try as a starting point and then I tweak it the way I would normally play and sometimes you will have a different velocity curve for each genre if you're playing rock
+
+you'll have to set it a certain way. you're playing pop, you'll have to set it a certain way. So a couple more things to set up your keyboard or your digital piano really well. You need two audio cables to connect that particular instrument to your audio interface, to your mixer on stage or to your DI box. So you'll have to ask for a stereo DI box if you're performing a concert. Two, piano is stereo. You take one out.
+
+L-mono for example as I see a lot of people and it literally says mono. Mono just means it's going to sound half as good or I would actually say it's going to diminish the quality by about 70 to 80 percent. You it'll just sound really bad. It'll start phasing, it'll start resonating randomly. You do not want mono for piano. So you need two cables going out from the keyboard
+
+into your mixer slash audio interface or stereo DI box and then you would need to pan those hard left and hard right. It should be either a stereo track so then it automatically happens or you need to tell your sound engineer to move it left and right. Then you will get a proper true stereo sound. And also you might need to if ever you're using this as a MIDI device you might want to install the drivers.
+
+Nathaniel Nsm (23:43.853)
+If your keyboard is not class compliant, you need to install the drivers and then enable them in the DAW under your MIDI input settings and install a software control app if any, for example, a MIDI controller, almost all of them like the Studio Logic SL88 will have its dedicated app. So there I go and adjust the key touch, adjust the type of pedal which you're connecting and so on.
+
+And the final thing, as you would know in a lot of my videos, I'm a very particular sustain pedal user. Now, there are a variety of sustain pedals that you could try out. You can use a switch pedal. You can use a universal pedal, which kind of works for anything. You can use what I call a fake pedal. I'll get to that. Or you can use a dedicated three pedal unit, which.
+
+will give you sustain, sustenuto as well as the soft pedal capability or the una coda pedal as they call it or you can use for correct pianist to simulate a correct actual piano the continuous pedal or the half damper pedal or the pedal with half damper on so I'm going to spend a little bit extra time on this before we wind up so the pedal I have came with my Roland RD88 digital piano
+
+and it gives you two modes. You have a continuous mode and you have a switch mode. So if I do continuous, then I don't I don't have to press the pedal fully and there are percentages of sustain. So if I go fully down, I get the full on effect of that pedal, but I can also do little sustain. See, little bit.
+
+Little more and full. So hats off to Roland for giving a really good quality pedal and if you're playing this on another keyboard, let's say you're playing, you want to connect this to a Yamaha, you can then just do normal regular old switch and you can use this as a switch. So just be aware that you need a really good continuous or a pedal with half damper capabilities. For Yamaha, you have this FC3A which doesn't have any buttons.
+
+Nathaniel Nsm (26:07.013)
+but you can assign it in your Yamaha keyboard. The problem with an FC3A is it doesn't work on a lot of other keyboards. Then you might want to keep a universal sustain pedal in your backpack for your gigs. For example, an M-Audio SP2, which I found works for almost every keyboard out there, from MIDI controllers to digital pianos to whatever. And then there are these fake pedals, which sometimes come as obvious fakes. You'll have a switch.
+
+They literally have a square button which you press and people call that sustain. I think that's ridiculous. You should never get that. But then some of them will make it look like a piano pedal, but then it just is nothing but a switch. And it'll barely be a few, maybe a $10 cheaper or 500 odd rupees cheaper than a proper pedal. So you might as well get the proper pedal. And if you really want, if you want to invest, you can invest in a
+
+three pedal unit. So you will get all the three available. So then you need to check if your keyboard supports that before you're buying you could make that decision. remember piano playing is hand and at least one foot. So it's not just your hands and fingers. It's also the pedal. The pedal is an active part of your piano playing journey. So hopefully this video has given you some insights into buying your next digital piano or
+
+giving you some of the options or if you already have one what can you do to make it work as best as possible for you be it some of the cabling be it the right drivers or be it the right pedal or any such thing right again this is Jason Zach from Nathaniel School of Music thanks a ton for watching this explainer video and I will catch you in the next one Cheers
+
