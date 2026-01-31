@@ -12,6 +12,7 @@ import Marketplace from "@/pages/Marketplace";
 import Partners from "@/pages/Partners";
 import Contact from "@/pages/Contact";
 import MidiVisualizer from "@/pages/MidiVisualizer";
+import PianoGuide from "@/pages/PianoGuide";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import QuickLinks from "@/components/QuickLinks";
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/partners" component={Partners} />
       <Route path="/contact" component={Contact} />
       <Route path="/midi-visualizer" component={MidiVisualizer} />
+      <Route path="/piano-guide" component={PianoGuide} />
       <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route component={NotFound} />

@@ -75,6 +75,15 @@ const defaultPages: PageConfig[] = [
     quickLinkIcon: "piano",
   },
   {
+    id: "piano-guide",
+    path: "/piano-guide",
+    label: "Piano Guide",
+    visible: true,
+    quickLink: true,
+    quickLinkIcon: "piano",
+    badge: "New",
+  },
+  {
     id: "obs-guide",
     path: "/obs-guide",
     label: "OBS Guide",

@@ -225,11 +225,34 @@ export default function Instruments() {
 
               <TabsContent value="piano" id="piano">
                 <div className="space-y-12">
+                  <Card className="bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 border-primary/30">
+                    <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-primary/20 rounded-lg">
+                          <Piano className="h-8 w-8 text-primary" />
+                        </div>
+                        <div>
+                          <Badge className="mb-1">New Comprehensive Guide</Badge>
+                          <h3 className="text-xl font-bold">Complete Piano Buying Guide</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Yamaha CK-88 vs Roland RD-88 comparison, touch settings, accessories, and expert recommendations from 25+ years of experience.
+                          </p>
+                        </div>
+                      </div>
+                      <a href="/piano-guide">
+                        <Button size="lg" data-testid="button-view-piano-guide">
+                          Read Full Guide
+                          <ExternalLink className="h-4 w-4 ml-2" />
+                        </Button>
+                      </a>
+                    </CardContent>
+                  </Card>
+
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Piano className="h-5 w-5 text-primary" />
-                        Piano & Keyboard Buying Guide
+                        Piano & Keyboard Quick Reference
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -506,7 +529,7 @@ export default function Instruments() {
                               <p className="text-sm text-muted-foreground">Brigade Road</p>
                               <p className="text-xs text-muted-foreground mt-2">Good Yamaha & Cort selection</p>
                               <a href="https://soundglitz.com" target="_blank" rel="noopener noreferrer">
-                                <Button variant="link" size="sm" className="px-0 mt-2">
+                                <Button variant="ghost" size="sm" className="px-0 mt-2">
                                   Visit Website <ExternalLink className="h-3 w-3 ml-1" />
                                 </Button>
                               </a>
