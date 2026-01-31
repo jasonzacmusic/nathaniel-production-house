@@ -1,0 +1,82 @@
+Nathaniel Nsm (00:00.184)
+So welcome to the world of OBS, OBS Studio, which you're going to use for your, your, your class, right? And what is actually going to happen with OBS is you're going to send the feed of OBS, whatever you decide to put out here, you can send video as well as audio. So in this case, I'm only sending video because I have a third party audio app, as I showed you earlier loop back.
+
+But if you'd like, can even send audio happily via OBS. So as you can see, OBS is a free and open source video recording and live streaming software. So you can use this particular software to not only do Zoom classes, you also have, let's just go through some of the options here. You have start recording. So you can record whatever you want to do. So you can do like YouTube videos and stuff like that with.
+
+multiple edits like for example in my particular class I set it up like this which looks quite cool. I have my notes which are here. I have my face which you can see which is very important obviously and then you have the piano. Well so you can learn things quite well through through this resource and I don't have to rely on zoom to kind of put it all together switch angles and the software is open source and free. So
+
+It's really good. It's a very strong community. They keep developing plugins and so on and so forth. So you have the option of recording, which you'd want to do. Obviously, if you want to give it to your students or record an assignment and give it to your teachers, that's very cool. You also have this option called start virtual camera, which I'll talk about later. When you hit start, it just initiates it into zoom. then zoom, if zoom selects the OBS virtual camera,
+
+you will get this feed coming into zoom. Okay, so you hit the start virtual camera thing. And before all that, let me just go through the usual settings which you may need for OBS. So under general, I think you leave pretty much everything as it is. It's perfectly fine. Then you have stream, which is very important. You can connect your YouTube account and stream whenever you want. So sometimes you're doing a class and you think it's quite cool. You can stream this to YouTube just by
+
+Nathaniel Nsm (02:21.263)
+selecting the server as primary YouTube ingest server YouTube RTMPS and then you can customize or put your code your streaming code which you'll get from the YouTube video and go live. It's quite cool and it works the quality of this live stream is way better than zoom will give you that I can guarantee you I have tested it before. Okay then you go to output. I would always prefer advanced output.
+
+You would probably have it on the simple by default. You'd go to advanced. That's always cool. And then under streaming recording you have these audio settings which you can control. If you have a good video encoder always select the hardware encoder option otherwise leave it at x 264 or whatever the default is bitrate depending on what your system can handle. Generally I can manage between 4500 to about 5000 odd.
+
+which is decent enough for a YouTube video. It gives you that that high quality 1080p thing. Okay. Recording. How are you going to record by default? It gives you FLV. I prefer MP4 and you can adjust your file size depending on your bitrate and depending on your audio bitrate. Audio if you want to go super hi-fi you can take it all the way to 320 but I think 160 is a good enough start for most requirements. Coming to audio.
+
+You can choose the sample rate of your audio which is important for certain applications. Otherwise leave it as high as possible. Channels always stereo desktop audio. If you're recording your audio card your sound card or your existing computers webcam you can enable that right away here which is a very cool video. You can choose your canvas resolution which by default is set to 1920 by 1080 which is the standard one.
+
+And this is what I really love hot keys for everything. You can pretty much put a hot key to your keyboard and just change anything. You can bring in a scene, take out a scene, whatever you want. think OBS is a very popular gaming software. People use it to stream video games across the internet using things like Twitch and YouTube, of course. So hot keys are very important. So if it works for a gaming application, I think it can definitely work for a music class, right?
+
+Nathaniel Nsm (04:47.508)
+Advanced I honestly don't know what this means so I will leave it the way it is but it's worth checking out if you'd like Right guys. So those are the OBS settings and what you'd want to do after setting it up Well, you have what's called as scenes which you'll find here So I have something called face, which is my face then I have top view I've just called it top. So you get to see my entire keyboard you get to see
+
+This which is an iOS device. This is an iPad which I have connected via the usual charging cable the lightning cable and I'm using an app called paper. I'm using a simple app if you're interested. It's an app called paper. I've been using it for for years and years even during offline workshops and presentations. I just like this style. It allows me to draw everything and it gives you a very personal interaction with your students.
+
+as opposed to let's say is traditional PPT or you know notes which you share via PDF file or whatever. I just prefer that an app like this allows me to control my lesson and I can obviously send you the entire recording once the lesson is over. So it's really cool for a teacher. You should consider the app paper which is a little it is free to begin with but for the additional features you may want to consider going for the pro version.
+
+This one, this particular the top angle you see here is coming from my iPhone. So I have this very very old prehistoric iPhone which I'll not get any money for I'm sure. So instead of that well it's used for a music class some of our YouTube videos as well to stream stuff so it's been very very reliable as you can see it's quite cool.
+
+The latency is very good in terms of all my machines. So using an iPhone will always help. If you have one or a normal a normal phone, even an Android, you can set it up via this app called Droid Cam. And how am I getting this angle? I'm getting it using an app called Camo Studio. Reincubate Camo Studio Pro. So this allows me to plug in a phone and kind of charge it as well as it shows you. And I can even make
+
+Nathaniel Nsm (07:08.683)
+adjustments to the angle. can improve the saturation if I want, reduce the brightness if I want, contrast and the usual video settings which you'll find in pretty much every video editing platform out there. And I'm sure you can connect other devices as well. You can connect more as I think as long as it's an Apple device it will work and you can do pretty much anything with reincubate camo studio pro. So that's the app which is allowing me to come here
+
+And now the final question is how am I bringing all this here into OBS? So let me just try and show you my the way I would go about it. First of all, I have something called desktop, which looks a bit weird right now. But actually, the desktop is where you can just I just have a view where and I can kind of share you my entire screen. So there's desktop for you coming back to my face.
+
+So let's just look at how to create a scene in OBS, do a little bit of tweaks and see how we go from there. So you hit the plus button under scenes and you have to know that there are scenes and sources. So you hit the plus button here and then you call it a scene. I'm just going to call it demo for now. And now I don't have any sources. So let me add a couple of sources. First of all, I need to capture my audio input. So I'm just going to say audio and let's see what I can choose for audio.
+
+I will choose something called Nathaniel Studio, which is our entire audio setup in one way. So it just comes up here, which is super neat. And I get my entire audio here, which shows up quite neatly. Or I can mute it. This is how you mute stuff or remove stuff without deleting. Then you want some video. So you hit plus you go to oops, you go to video capture device, which is for video.
+
+And I already have existing stuff. So I'm going to add existing. I have Cam Link, which is my DSLR Sony camera or camo, which is my top angle iPad, if I ever want iPhone, which is also available. Or I can create a new one if I have a new device. So in this case, I'm going to add existing, make source visible, add Cam Link. And there you have it. My face comes up and I can reduce the size of this if I wish, depending on the requirement.
+
+Nathaniel Nsm (09:28.789)
+Add a couple of new sources, maybe video capture to add existing in this case, my iPad. There we have it. My iPad. can crop it a bit. Holding the alt key and dragging these things would help if you would like to crop. Resize is also a very, very cool thing. In OBS, pretty much anything you would do in a traditional editing software, right? You can crop your view.
+
+If you're doing an interview with friends, you can kind of make this as small as possible. Make this big there. And then you have the iPhone finally. So how do I bring in the iPhone? Same story, right? Video capture device, add existing camo. And there we go. Looks perfect. So let me just try and adjust it here. Crop it so to not see the top too much. Remove this slightly. And there we have it.
+
+My face is somewhere here. My Apple iPad is somewhere here and I'm quite set up for a zoom class. So even if you want to get like fancier apps to do a zoom class like if you want to show the keys of what you're playing in a midi or in a kind of a interactive way to show the keys highlighting you just open up your app. So for example I'm using Caudi.
+
+which for all of you who ask me for my YouTube videos, this is the app we use for our YouTube. We use this for piano. As you can see, it shows up the chord name immediately. C7 also shows you the manuscript view. So this is the app we use for our YouTube videos. You can perhaps bring that in. So now I would like to go to window capture, window capture, meaning CAUTI, the actual app. So I just type the name of the app.
+
+and now it allows me to find which window. So maybe I would like the piano of Coddy. So you have your Coddy as well and you have the app showing up for you. So you pretty much have control over anything visually or sonically using OBS. You put it all together. Yes, there are it's not the world's tightest software.
+
+Nathaniel Nsm (11:45.486)
+But then there is not too much competition for this in any case. So it's definitely worth it. It's free. It's open source. It keeps growing. The community keeps improving it. And what's cool is it serves three purposes for a music environment. One is you can let me go back to my view. And by the way, I'm using a keyboard to change my patches. So OBS allows you to do these geeky things. I don't have like a fancy
+
+Scene changing thing which would have costed me a lot of money So I just have a keyboard which I anyways use in the studio and I'm just you doing scene changes through that particular keyboard This would be my desktop. This would be my face and this would be the jet the general class view so we have our keyboard just a tiny keyboard which fits on a table it's like a 25 or a 32 key it helps me out to change scenes whenever I want right and apart from that
+
+My other hardware being used apart from the iPad, the iPhone, which people have a keyboard, of course, which you need microphones if you are using a mic for the class or you use your internal webcam. I'm using a couple of mice. If you are interested to know, I'm using one to control the iPad. I'm using one to just control the normal computer. So it's a fairly understandable setup. It works for me and it can get.
+
+to a point where it also can easily work for you. So this is about OBS. You can do enough and more things. You can tweak your video and it serves three requirements or purposes. As I told you, one is you can record the lecture, can record the entire class. If I just go over some of the recordings which I've done. Here we go. You have an entire class. Wait for you. Song changes. Style of this nine world.
+
+So that was recorded pretty much by OBS itself. No zoom, no zoom at all. Start virtual camera. Now what happens is if you start a zoom call, let me go into my zoom call. So I have a zoom class running now. I would like to change the video to OBS virtual camera from zoom. As you can see, it shows up this kind of a visual indicating that OBS virtual camera has not been started. So you hit the start button.
+
+Nathaniel Nsm (14:11.408)
+Go back to zoom and this is zoom. This is the zoom call right here and this is what you're showing your folks or your student and when the next student joins they will come into you know all this stuff for the class. So also remember the zoom settings were on turn original sound should always be on. You can reconfigure your microphone here if you have any changes you can reconfigure your video if you have any further changes.
+
+Right. You can also do things like share screen from Zoom, record from Zoom and do all these other things with Zoom has. But I mean, you have OBS, right? OBS is way better at these efficient things. Hitting a recording can happen. Sending to Zoom can happen. And what's also cool is you can even stream. You can go to YouTube. That's a bonus. So that's about OBS. Right, guys. So I hope you found the lesson useful in terms of setting up.
+
+your zoom class either as a student or a teacher. Let's just recap. You need decent internet setup and ethernet cable for yourself. You need to see it well as a student. So consider projecting things and consider helping your teacher out by sharing different angles of you playing. How did I do the multi cam setup thing using OBS which is absolutely free and open source. So set up everything there. You can set up your audio.
+
+And depending on what device you want to get, depending on your budget, figure that out. However, the software, as you can see, are pretty much free. The phone is what you already have. You just need a couple of cables and it's a very, very inexpensive setup. I understand I have taken it to a more geeky level in terms of at least audio, which is my field. So I have to talk as much as I want to on audio and.
+
+Even video if you observe it was quite functional. You just have a camera or a webcam Plug it in and do a great job and then there were some zoom settings. So do check out this entire series Whenever you have any doubt setting up a zoom class I think it holds good at the time of shooting this 2021 it will probably hold good for a good amount of time in the future as well, right? however, if things change if a lot of
+
+Nathaniel Nsm (16:30.33)
+products get hyped up and upgraded, I will be sure to be among the first characters who comes up with an updated lesson. Right guys, hope you found the lesson useful and don't forget to subscribe to our channel if you haven't already. Hit that bell icon for regular notifications. Consider supporting us on Patreon. On Patreon for this lesson, I would have an entire tech guide, a tech PDF guide for you to check out. It's waiting for you on Patreon.
+
+Check it out, if you thought the video was too much of a rant and too long, just download the PDF and you should be fine. Cheers and catch you in the next one.
+

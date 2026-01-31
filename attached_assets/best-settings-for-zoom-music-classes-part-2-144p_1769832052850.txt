@@ -1,0 +1,80 @@
+Nathaniel Nsm (00:00.332)
+Right guys, so let's first look at some zoom settings which will be great for a music class and make sure you follow this and understand why you need them that is very very important. So first thing we do is go to zoom settings wherever it may be in your zoom app go to zoom settings and I'm just going to walk you through these under general I pretty much leave this as it is. I prefer the dark theme it's better on the eyes and so on and so forth.
+
+copy invite link when starting a meeting these are just general things which you could consider I care more about video and audio in this lesson so I go to video and under video you want to make sure that the camera you're connecting is integrated so the cameras which I have connected right now there's something called cam link 4k as you can see now cam link 4k is nothing but a HDMI adapter it's just an adapter because
+
+You can't plug in a HDMI directly into a computer. So there's lot of tech which goes on for HDMI connections. So the cam link adapter is basically what you plug in your external camera into, be it a DSLR or a mirrorless camera. Most of the cameras seem to work fine. The one I'm using is a Sony. So well, anything if you have a camera, it should work fine. Otherwise, you would want to choose your webcam.
+
+Now I do not have a webcam because I'm using a Mac Mini. It doesn't come with anything. It's just a box. So I need an external camera or I could have purchased another webcam which you could do. Right. You want to turn on HD for your video only if you have a decent internet connection. And as I mentioned earlier if you're using ethernet. So make sure you use ethernet for this and then hit the HD button.
+
+If you're using some of the other cameras just to give you an idea, I'm using this app camo which allows me to showcase my fingers, my top angle looks quite nice. And I come back to my Sony camera, which is via cam link. And there's also something called OBS virtual camera, which you will have once you install the software OBS. Now OBS will need to be enabled, which I will talk about later, right?
+
+Nathaniel Nsm (02:23.071)
+So let's move forward. I'm just going to enable this camera. If there's an issue with lighting, they have a setting adjust for low light as you can see. Right. I already have a light but just to give you an idea if I turn my light off as you can see the lights are really bad and I don't think anything will help in this case. But you do have light settings. You have manual settings if you'd like to adjust it. Let's say if the power goes off. I think this would
+
+this would really help you. So I'm going to turn back my light, which now looks quite cool. Right. So this is important for a teacher. You maximum participants displayed per screen in gallery view. Sometimes a lot of my classes have more than 50 60 students. So I'd like to enable this 49 participants thing. Very important. Always display participant name on their videos. I tend to take it off because I know my students names.
+
+I would suggest you do too if you're a teacher. There's also a nice feature called hide non video participants, which I think is useful to always put on in a class. If I don't hide them, what is the value of really seeing that the students name is in a zoom call? I mean, how does it help me as a teacher? What helps me is when I actually see the students. And it's also a nice way to kind of tell my students see
+
+I don't see you, I don't know you exist unless you put on your video. Unless of course it's an emergency. So you want to encourage your students to put on their video at all times. So you can tick this hide non video thing then you can just encourage them to put it on. I would leave everything with advanced on it's ticked by by default. If you have a very good video graphics card I think you can always use the hardware acceleration for receiving video.
+
+It works really fast even for things like live streaming as I've tested. Coming to audio. So audio is where it gets a bit geeky for people like me because I do audio, I mix music and all of that. So I like my audio to be as good as possible. So I choose my speaker. My speaker here is really cool. It can be the sound card. So if you have an external sound card like a focus right or
+
+Nathaniel Nsm (04:46.478)
+an antelope audio or a pre-son is something or in my case a Zen Studio sound card which I've been using for years now I can actually get sound from there which is really cool so what that allows me to do is now if I bring my Zen Studio into the forefront I can actually see what you're hearing now is my SE electronics condenser mic which is in front of me which I can adjust here this is a mic
+
+which I can control the preamp gain and other such things here. If I'm using headphones, I can actually turn on and off my headphones, which I rarely do because I'm in a studio. This is my other mic. So as a piano teacher, I found that I don't like the piano in front of me while teaching. For some reason, I like it to my side, to my right. This allows me to focus a bit more when I'm playing piano. So because of that, I've had to put two mics. It may not be for you.
+
+but this is the other mic which we use. So my piano is coming from this mic or rather I'm talking from here now and in this case I'm talking to you. So when I go away you will still hear the teacher. So this is why an audio interface may be very helpful. The one I'm using is Zen Studio. It may be an overkill because this is a music studio so we need a lot of inputs. In this case this gives me about 20 off the top.
+
+You just need a couple so focus right should be more than enough if you ask me a two channel or even a one channel more than enough. So choose your audio interface here and output volume doesn't matter because you're controlling everything from the device. Now you have two options in zoom. One is for the speaker. This is essentially your output volume or everything to do with output which you control here.
+
+or like I said earlier you can control it through your own app. Right. This is microphone or what I like to call input volume. This is the volume you are sending your student or you are sending your teacher. So for the microphone also I could set up my Zen Studio playback feature where I could get all my preamps coming in. But for me since I'm a bit more
+
+Nathaniel Nsm (07:09.315)
+trying to be a bit more assertive about the audio. I have used a third party app for audio and I've set up my own audio device called as Nathaniel Studio and the third party device which I'm using is called loop back. So this is how loop back looks. This is for Mac but you do get similar things for Windows. You will get things like sound flower. You do get geeky stuff. So what this allows me to do is it allows me to kind of
+
+give you as a student exactly what I want to give you. Right. So if I want to give you my audio interface this is what I've done. I've given you my audio interface but I can even mute it. So now you will not hear my audio interface at all. You will however hear my piano. Why will you hear my piano. As you can see the piano is comfortably going to my output. The reason being my piano is via
+
+another app which is a virtual instrument app called Piano Tech which I use for a lot of my live concerts. This is how Piano Tech looks. Right. We do a lot of production classes also at our school. So I would want to send Reaper which is an app I use. MuseScore we use for notation. Irial Pro we use for chord charts and chord jamming. Spotify is always useful.
+
+but sometimes students complain, Spotify is too loud, your voice is getting drowned, so then I have my own control. So this app is great. If you're on a Mac, Loopback is something you have to use, and VLC of course, and Zoom. So right now also, I would like the volume of my students in the class to be recorded, because I also want to hear it later, or the class, once we record it, will be a lot more interactive.
+
+So with zoom I can control the level of zoom coming into the platform. Right. And all of this is heard by the student. Right. All of this is heard by the student in my Nathaniel studio microphone which is with zoom calls microphone. Then you have options automatically adjust microphone volume. You can take it off if you want to play around further. Then this is the important area.
+
+Nathaniel Nsm (09:31.32)
+suppress background noise. So if you're in a piano class and if you're in a fairly closed environment like a bedroom or without too much of background noise, you could hit the button low. You could hit low. That means it's designed for music. If you play something on Spotify or if you play a chord on the guitar, the chord will go perfectly to your student or vice versa. So please use the low button.
+
+if you're in a quiet room if you're not use auto but then if it gets too annoying if you're dropping out lot of audio go back to low and just tell the student or the teacher please you know chill out with the noise or whatever a dog might be barking or things like that if you can control if you can control the fan noise stuff like that could definitely enhance and make the lesson a lot more professional and a lot more interactive okay
+
+There's another great thing with Zoom have recently put out. It's called music and professional audio. So you want to do show in meeting option to enable original sound. That means it gives you that option. And now you have certain settings. You have the high fidelity music mode. So this takes up a lot more CPU bandwidth and all that, but it's worth it. If you can try to turn on the high fidelity music mode.
+
+turn on the echo cancellation which prevents echo or feedback from happening in the lesson especially when you use speakers and more importantly or maybe most importantly use stereo audio whenever possible otherwise it's going to be mono. Zoom is sending everything in mono unless you decide to choose otherwise. So the zoom gives you these things and if you'd like to do like a little gig for your students or if you want to perform a concert for your friends or
+
+broadcast it or whatever you know zoom can stream things to YouTube and Facebook so when you do concerts just make sure this is always going in the professional audio requirements I don't care much about ringtones then you have the other options share screen I would always ensure maintain current size when sharing so that you don't get messed up visuals there the rest of the settings are completely fine
+
+Nathaniel Nsm (11:51.13)
+You have chat, which I don't care about. don't encourage chat in my classes as much as possible. I just prefer the student to just talk to me directly. Then you have zoom apps, which you could check out. You have backgrounds and filters if you want to play around. If you have a green screen, you could take that. I don't. So I don't really care about that particular feature. You have video filters, which you use sometimes to kind of
+
+you know make make a bit interesting like this which I honestly don't like but a lot of students annoy me with this eyewear thing. Okay or you could just go with filters you have some black and white stuff and it just makes the class interesting at times you could say. Then you have zoom recording which I'm not going to talk about because I'm going to use OBS to actually record all this so I don't need zoom to help me out with this. I had to do their cloud thing and what not.
+
+And the rest is just a matter of all your shortcuts and accessibility features. If you cannot see things as big as you'd like, right? You have statistics which you could check out from time to time. So these are all the Zoom settings which you would want for a music class. And just to add to it, all the apps which I'm using minus OBS, which I'm going to talk to you shortly. I'm using Loopback for all my audio needs.
+
+This is all my audio coming to you as a teacher. I can control it. I know it's a bit geeky, but it is highly worth it for a person like me who does a variety of music classes. Sometimes I'm doing piano. Sometimes I'm doing bass. Sometimes I'm doing production. Sometimes I'm just playing music, you know, so I would want everything to have absolute control. So a software like Loopback and the company who makes it is called Rogue Amoeba.
+
+You could check them out. Rogue Amoeba is an amazing software and I have loopback, which is what I'm sending to you. But then what you are sending to me can also be controlled by another Rogue Amoeba software called Sound Source. So Sound Source means as you can see, my zoom levels are 30 or 40 percent. That means I am hearing it really low.
+
+Nathaniel Nsm (14:09.21)
+to protect my hearing. There are some students who haven't tweaked their levels. I don't want to bust my ears over nothing. So sound source will allow you to control the application or the level coming to you through your output speakers. So in this case, zoom. If there's a loud student, you can turn him soft. You don't want to mute your student, even though you can. I wouldn't recommend that. Or you can take the student level all the way up.
+
+and you can even control levels of specific other apps like Safari if you're browsing or Google Chrome if you're watching YouTube or sending YouTube and of course our very own Spotify so you have sound source for Mac which is super cool you have loopback for Mac which is super cool this is how I'm controlling my audio and all this is via an audio interface now this can be any old thing now what happens if for whatever reason
+
+you don't have any of this. Well, you all know that in a laptop you will have a default webcam. The webcam will have its own microphone or the laptop will have its own microphone. Every phone has its microphone. So I just wanted to share you the more geeky setups or the more studio specific setups for audio. And for my piano, I don't want the sound of my piano to come to you like, you know, my vocal mic.
+
+which is picking up the speakers of the piano. Rather, I'm sending the audio of the piano directly from my app. Right. So that these features I think are really cool. So you'll hear my piano in stereo and so on and so forth. So this is about using Zoom for a music lesson. All the settings involved, all the tweaks, all the geeky gadgets if you want to install. Let's now move on to how I set up OBS for a class.
+
+Right guys, so I hope you found the lesson useful in terms of setting up your zoom class either as a student or a teacher. So do check out this entire series. Whenever you have any doubt setting up a zoom class, I think it holds good at the time of shooting this 2021. It will probably hold good for a good amount of time in the future as well. Right guys, hope you found the lesson useful and don't forget to subscribe to our channel if you haven't already.
+
+Nathaniel Nsm (16:30.533)
+hit that bell icon for regular notifications. Consider supporting us on Patreon. On Patreon for this lesson, I would have an entire tech guide, a tech PDF guide for you to check out. It's waiting for you on Patreon. Cheers and catch you in the next one.
+
