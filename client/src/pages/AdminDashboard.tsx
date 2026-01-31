@@ -688,14 +688,27 @@ function ShareLinksManager() {
       const response = await adminApiRequest("POST", "/api/share-links", data);
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/share-links"] });
       const url = `${window.location.origin}/s/${data.code}`;
-      navigator.clipboard.writeText(url).then(() => {
-        toast({ title: "Link Created & Copied", description: "Share link created and copied to clipboard" });
-      }).catch(() => {
-        toast({ title: "Link Created", description: "Share link created successfully" });
-      });
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = url;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-9999px";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textArea);
+        }
+        toast({ title: "Link Created & Copied", description: url });
+      } catch {
+        toast({ title: "Link Created", description: url, duration: 10000 });
+      }
       setNewLink({ targetPage: "/obs-guide", label: "", code: "" });
     }
   });
@@ -708,10 +721,26 @@ function ShareLinksManager() {
     }
   });
   
-  const copyToClipboard = (code: string) => {
+  const copyToClipboard = async (code: string) => {
     const url = `${window.location.origin}/s/${code}`;
-    navigator.clipboard.writeText(url);
-    toast({ title: "Copied!", description: "Link copied to clipboard" });
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = url;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+      toast({ title: "Copied!", description: url });
+    } catch (err) {
+      toast({ title: "Link URL", description: url, duration: 10000 });
+    }
   };
   
   const getFullUrl = (code: string) => `${window.location.origin}/s/${code}`;
