@@ -95,7 +95,7 @@ const defaultPages: PageConfig[] = [
     id: "marketplace",
     path: "/marketplace",
     label: "Marketplace",
-    visible: false,
+    visible: true,
     quickLink: true,
     quickLinkIcon: "shopping-bag",
   },
