@@ -1,16 +1,16 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { 
-  insertStudioImageSchema, 
-  insertVideoSchema, 
-  insertGearListingSchema, 
-  insertAffiliatePartnerSchema, 
+import {
+  insertStudioImageSchema,
+  insertVideoSchema,
+  insertGearListingSchema,
+  insertAffiliatePartnerSchema,
   insertContactMessageSchema,
   insertInstrumentRecommendationSchema,
   insertObsGuideContentSchema,
   insertShareableLinkSchema
-} from "@shared/schema";
+} from "../shared/schema";
 import { z } from "zod";
 import { randomUUID, createHash } from "crypto";
 

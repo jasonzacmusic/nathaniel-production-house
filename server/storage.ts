@@ -1,5 +1,5 @@
-import { 
-  type User, 
+import {
+  type User,
   type InsertUser,
   type StudioImage,
   type InsertStudioImage,
@@ -21,7 +21,7 @@ import {
   type InsertPageSetting,
   type ShareableLink,
   type InsertShareableLink
-} from "@shared/schema";
+} from "../shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
