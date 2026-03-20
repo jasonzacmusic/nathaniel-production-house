@@ -398,7 +398,7 @@ export async function registerRoutes(
 
   app.patch("/api/instruments/recommendations/:id", requireAdminAuth, async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const data = insertInstrumentRecommendationSchema.partial().parse(req.body);
       const recommendation = await storage.updateInstrumentRecommendation(id, data);
       if (!recommendation) {
@@ -415,7 +415,7 @@ export async function registerRoutes(
 
   app.delete("/api/instruments/recommendations/:id", requireAdminAuth, async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const deleted = await storage.deleteInstrumentRecommendation(id);
       if (!deleted) {
         return res.status(404).json({ error: "Recommendation not found" });
@@ -463,7 +463,7 @@ export async function registerRoutes(
   // Admin: Update page visibility
   app.patch("/api/page-settings/:pageId", requireAdminAuth, async (req, res) => {
     try {
-      const { pageId } = req.params;
+      const pageId = req.params.pageId as string;
       const { visible } = req.body;
       if (typeof visible !== "boolean") {
         return res.status(400).json({ error: "visible must be a boolean" });
@@ -501,7 +501,7 @@ export async function registerRoutes(
 
   app.delete("/api/share-links/:id", requireAdminAuth, async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const deleted = await storage.deleteShareableLink(id);
       if (!deleted) {
         return res.status(404).json({ error: "Link not found" });

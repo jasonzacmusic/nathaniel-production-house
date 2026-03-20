@@ -207,7 +207,7 @@ export class MemStorage implements IStorage {
 
   async createStudioImage(image: InsertStudioImage): Promise<StudioImage> {
     const id = randomUUID();
-    const newImage: StudioImage = { ...image, id };
+    const newImage = { ...image, id } as StudioImage;
     this.studioImages.set(id, newImage);
     return newImage;
   }
@@ -239,7 +239,7 @@ export class MemStorage implements IStorage {
 
   async createVideo(video: InsertVideo): Promise<Video> {
     const id = randomUUID();
-    const newVideo: Video = { ...video, id };
+    const newVideo = { ...video, id } as Video;
     this.videos.set(id, newVideo);
     return newVideo;
   }
@@ -281,7 +281,7 @@ export class MemStorage implements IStorage {
 
   async createGearListing(listing: InsertGearListing): Promise<GearListing> {
     const id = randomUUID();
-    const newListing: GearListing = { ...listing, id };
+    const newListing = { ...listing, id } as GearListing;
     this.gearListings.set(id, newListing);
     return newListing;
   }
@@ -309,7 +309,7 @@ export class MemStorage implements IStorage {
 
   async createAffiliatePartner(partner: InsertAffiliatePartner): Promise<AffiliatePartner> {
     const id = randomUUID();
-    const newPartner: AffiliatePartner = { ...partner, id };
+    const newPartner = { ...partner, id } as AffiliatePartner;
     this.affiliatePartners.set(id, newPartner);
     return newPartner;
   }
@@ -337,7 +337,7 @@ export class MemStorage implements IStorage {
 
   async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
     const id = randomUUID();
-    const newMessage: ContactMessage = { ...message, id, createdAt: new Date() };
+    const newMessage = { ...message, id, createdAt: new Date() } as ContactMessage;
     this.contactMessages.set(id, newMessage);
     return newMessage;
   }
@@ -375,7 +375,7 @@ export class MemStorage implements IStorage {
 
   async createInstrumentRecommendation(rec: InsertInstrumentRecommendation): Promise<InstrumentRecommendation> {
     const id = randomUUID();
-    const newRec: InstrumentRecommendation = { ...rec, id };
+    const newRec = { ...rec, id } as InstrumentRecommendation;
     this.instrumentRecommendations.set(id, newRec);
     return newRec;
   }
@@ -403,7 +403,7 @@ export class MemStorage implements IStorage {
 
   async createObsGuideContent(content: InsertObsGuideContent): Promise<ObsGuideContent> {
     const id = randomUUID();
-    const newContent: ObsGuideContent = { ...content, id };
+    const newContent = { ...content, id } as ObsGuideContent;
     this.obsGuideContent.set(id, newContent);
     return newContent;
   }
@@ -461,12 +461,12 @@ export class MemStorage implements IStorage {
   
   async createShareableLink(link: InsertShareableLink): Promise<ShareableLink> {
     const id = randomUUID();
-    const newLink: ShareableLink = {
+    const newLink = {
       ...link,
       id,
       createdAt: new Date(),
       accessCount: 0
-    };
+    } as ShareableLink;
     this.shareableLinks.set(id, newLink);
     return newLink;
   }
