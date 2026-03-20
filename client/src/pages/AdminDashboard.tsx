@@ -14,7 +14,7 @@ import { queryClient } from "@/lib/queryClient";
 import {
   Music, LogOut, Plus, Trash2, Save, Piano, Guitar, Package,
   Users, MessageSquare, Settings, ExternalLink, Edit, Loader2,
-  Eye, EyeOff, Link, Copy, Share2, FileText, Globe, Check, X
+  Eye, EyeOff, Link, Copy, Share2, FileText, Globe, Check, X, Video
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import type { InstrumentRecommendation, GearListing, AffiliatePartner, ContactMessage, ShareableLink } from "@shared/schema";
@@ -468,6 +468,50 @@ function MarketplaceManager() {
     },
   });
 
+  const { data: zoomSlots } = useQuery<any[]>({
+    queryKey: ["/api/admin/zoom-slots"],
+    queryFn: async () => { const res = await adminApiRequest("GET", "/api/admin/zoom-slots"); return res.json(); },
+  });
+
+  const { data: zoomRequests } = useQuery<any[]>({
+    queryKey: ["/api/admin/zoom-requests"],
+    queryFn: async () => { const res = await adminApiRequest("GET", "/api/admin/zoom-requests"); return res.json(); },
+  });
+
+  const createSlotMutation = useMutation({
+    mutationFn: (data: {date: string; timeSlot: string; zoomAccount: string}) =>
+      adminApiRequest("POST", "/api/admin/zoom-slots", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/zoom-slots"] });
+      toast({ title: "Slot Created" });
+    },
+  });
+
+  const deleteSlotMutation = useMutation({
+    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/admin/zoom-slots/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/zoom-slots"] });
+      toast({ title: "Slot Removed" });
+    },
+  });
+
+  const approveZoomMutation = useMutation({
+    mutationFn: ({ id, zoomLink }: { id: string; zoomLink: string }) =>
+      adminApiRequest("PATCH", `/api/admin/zoom-requests/${id}/approve`, { zoomLink }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/zoom-requests"] });
+      toast({ title: "Approved", description: "Zoom link sent to buyer and seller" });
+    },
+  });
+
+  const cancelZoomMutation = useMutation({
+    mutationFn: (id: string) => adminApiRequest("PATCH", `/api/admin/zoom-requests/${id}/cancel`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/zoom-requests"] });
+      toast({ title: "Cancelled" });
+    },
+  });
+
   const formatPrice = (price: number) =>
     new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(price);
 
@@ -497,6 +541,9 @@ function MarketplaceManager() {
             {tab === "pending" ? `Pending Review (${pendingListings?.length || 0})` : tab === "all" ? "All Listings" : "Users"}
           </Button>
         ))}
+        <Button key="zoom" variant={subTab === "zoom" ? "default" : "ghost"} size="sm" onClick={() => setSubTab("zoom")}>
+          Zoom Calls ({zoomRequests?.length || 0})
+        </Button>
       </div>
 
       {/* Pending Review */}
@@ -607,6 +654,109 @@ function MarketplaceManager() {
           </CardContent>
         </Card>
       )}
+
+      {/* Zoom */}
+      {subTab === "zoom" && (
+        <div className="space-y-6">
+          {/* Pending Zoom Requests */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Zoom Verification Requests</CardTitle>
+              <CardDescription>Buyers requesting live gear inspection</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {!zoomRequests?.length ? (
+                <p className="text-muted-foreground text-center py-4">No pending requests</p>
+              ) : (
+                <div className="space-y-3">
+                  {zoomRequests.map((req: any) => (
+                    <div key={req.id} className="p-4 border rounded-lg space-y-2">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-medium">Listing: {req.listing?.title}</p>
+                          <p className="text-sm text-muted-foreground">
+                            Buyer: {req.buyer?.displayName} ({req.buyer?.phone})
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Slot: {req.slot?.date} {req.slot?.timeSlot} ({req.slot?.zoomAccount})
+                          </p>
+                          {req.buyerNotes && <p className="text-sm mt-1">Notes: {req.buyerNotes}</p>}
+                        </div>
+                        <div className="flex gap-2">
+                          <Button size="sm" onClick={() => {
+                            const link = prompt("Enter Zoom meeting link:");
+                            if (link) approveZoomMutation.mutate({ id: req.id, zoomLink: link });
+                          }}>Approve</Button>
+                          <Button size="sm" variant="destructive" onClick={() => cancelZoomMutation.mutate(req.id)}>Cancel</Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Manage Slots */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Available Zoom Slots</CardTitle>
+              <CardDescription>Manage time slots for gear verification calls</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex gap-3 mb-4 flex-wrap">
+                {/* Simple add slot form - inline */}
+                <ZoomSlotForm onSubmit={(data) => createSlotMutation.mutate(data)} />
+              </div>
+              <div className="space-y-2">
+                {zoomSlots?.map((slot: any) => (
+                  <div key={slot.id} className="flex items-center justify-between p-3 border rounded-md">
+                    <div>
+                      <p className="font-medium">{slot.date} - {slot.timeSlot}</p>
+                      <p className="text-sm text-muted-foreground">{slot.zoomAccount} {!slot.isAvailable && "(Booked)"}</p>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => deleteSlotMutation.mutate(slot.id)}>
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ZoomSlotForm({ onSubmit }: { onSubmit: (data: { date: string; timeSlot: string; zoomAccount: string }) => void }) {
+  const [date, setDate] = useState("");
+  const [timeSlot, setTimeSlot] = useState("");
+  const [account, setAccount] = useState("music@nathanielschool.com");
+
+  return (
+    <div className="flex gap-2 items-end flex-wrap">
+      <div>
+        <Label className="text-xs">Date</Label>
+        <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-40" />
+      </div>
+      <div>
+        <Label className="text-xs">Time Slot</Label>
+        <Input value={timeSlot} onChange={(e) => setTimeSlot(e.target.value)} placeholder="10:00 AM - 10:30 AM" className="w-52" />
+      </div>
+      <div>
+        <Label className="text-xs">Zoom Account</Label>
+        <Select value={account} onValueChange={setAccount}>
+          <SelectTrigger className="w-56"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="music@nathanielschool.com">music@nathanielschool.com</SelectItem>
+            <SelectItem value="tech@nathanielschool.com">tech@nathanielschool.com</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <Button size="sm" onClick={() => { if (date && timeSlot) { onSubmit({ date, timeSlot, zoomAccount: account }); setDate(""); setTimeSlot(""); } }}>
+        <Plus className="w-3 h-3 mr-1" /> Add Slot
+      </Button>
     </div>
   );
 }

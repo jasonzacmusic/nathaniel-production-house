@@ -28,6 +28,16 @@ export const INDIAN_CITIES = [
   "Bangalore", "Mumbai", "Delhi", "Chennai", "Hyderabad", "Pune", "Kolkata", "Goa", "Other"
 ] as const;
 
+export const IMAGE_LABEL_OPTIONS = [
+  "Front view", "Back view", "Side view", "Close-up of damage",
+  "Accessories included", "Serial number", "Original box", "In action"
+] as const;
+
+export const ZOOM_ACCOUNTS = [
+  "music@nathanielschool.com",
+  "tech@nathanielschool.com",
+] as const;
+
 // Users table for authentication
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -213,6 +223,16 @@ export const marketplaceListings = pgTable("marketplace_listings", {
   viewCount: integer("view_count").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  videoUrl: text("video_url"),
+  imageLabels: text("image_labels"), // JSON: {"0":"Front view","1":"Damage close-up"}
+  newMarketPrice: integer("new_market_price"),
+  amazonProductLink: text("amazon_product_link"),
+  bajaaoProductLink: text("bajaao_product_link"),
+  gearHealthCosmeticScore: integer("gear_health_cosmetic_score"), // 1-5
+  gearHealthElectronicsWorking: boolean("gear_health_electronics_working"),
+  gearHealthOriginalAccessories: boolean("gear_health_original_accessories"),
+  gearHealthOriginalBox: boolean("gear_health_original_box"),
+  gearHealthWarrantyMonths: integer("gear_health_warranty_months"),
 });
 
 export const insertMarketplaceListingSchema = createInsertSchema(marketplaceListings).omit({
@@ -240,6 +260,41 @@ export type InsertMarketplaceListing = z.infer<typeof insertMarketplaceListingSc
 export type MarketplaceListing = typeof marketplaceListings.$inferSelect;
 export type RegisterUser = z.infer<typeof registerUserSchema>;
 export type LoginUser = z.infer<typeof loginSchema>;
+
+// Zoom Verification Slots (admin-managed)
+export const zoomVerificationSlots = pgTable("zoom_verification_slots", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  date: text("date").notNull(),
+  timeSlot: text("time_slot").notNull(),
+  zoomAccount: text("zoom_account").notNull(),
+  zoomLink: text("zoom_link"),
+  isAvailable: boolean("is_available").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertZoomSlotSchema = createInsertSchema(zoomVerificationSlots).omit({ id: true, createdAt: true });
+export type InsertZoomSlot = z.infer<typeof insertZoomSlotSchema>;
+export type ZoomVerificationSlot = typeof zoomVerificationSlots.$inferSelect;
+
+// Zoom Verification Requests (buyer requests)
+export const zoomVerificationRequests = pgTable("zoom_verification_requests", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  listingId: varchar("listing_id").notNull(),
+  buyerId: varchar("buyer_id").notNull(),
+  slotId: varchar("slot_id").notNull(),
+  status: text("status").notNull().default("requested"),
+  buyerNotes: text("buyer_notes"),
+  adminNotes: text("admin_notes"),
+  zoomLink: text("zoom_link"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertZoomRequestSchema = createInsertSchema(zoomVerificationRequests).omit({
+  id: true, createdAt: true, updatedAt: true, status: true, adminNotes: true, zoomLink: true
+});
+export type InsertZoomRequest = z.infer<typeof insertZoomRequestSchema>;
+export type ZoomVerificationRequest = typeof zoomVerificationRequests.$inferSelect;
 
 // Form data types for frontend
 export interface BookingFormData {

@@ -14,8 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { MARKETPLACE_CATEGORIES, LISTING_CONDITIONS, INDIAN_CITIES } from "@shared/schema";
-import { Plus, Edit, Trash2, CheckCircle, Loader2, Save, Package } from "lucide-react";
+import { MARKETPLACE_CATEGORIES, LISTING_CONDITIONS, INDIAN_CITIES, IMAGE_LABEL_OPTIONS } from "@shared/schema";
+import { Plus, Edit, Trash2, CheckCircle, Loader2, Save, Package, X, ChevronDown, ChevronUp } from "lucide-react";
 
 interface Listing {
   id: string;
@@ -55,7 +55,51 @@ export default function MyAccount() {
     description: "",
     imageUrls: "",
     city: "",
+    videoUrl: "",
+    newMarketPrice: "",
+    amazonProductLink: "",
+    bajaaoProductLink: "",
   });
+
+  // Multi-image entries
+  const [imageEntries, setImageEntries] = useState<{url: string; label: string}[]>([{url: "", label: ""}]);
+
+  // Gear health report
+  const [healthData, setHealthData] = useState({
+    cosmeticScore: null as number | null,
+    electronicsWorking: null as boolean | null,
+    originalAccessories: null as boolean | null,
+    originalBox: null as boolean | null,
+    warrantyMonths: null as number | null,
+  });
+  const [healthSectionOpen, setHealthSectionOpen] = useState(false);
+
+  function computeHealthScore() {
+    let score = 0;
+    let maxScore = 0;
+    if (healthData.cosmeticScore !== null) {
+      score += (healthData.cosmeticScore / 5) * 30;
+      maxScore += 30;
+    }
+    if (healthData.electronicsWorking !== null) {
+      score += (healthData.electronicsWorking ? 1 : 0) * 25;
+      maxScore += 25;
+    }
+    if (healthData.originalAccessories !== null) {
+      score += (healthData.originalAccessories ? 1 : 0) * 15;
+      maxScore += 15;
+    }
+    if (healthData.originalBox !== null) {
+      score += (healthData.originalBox ? 1 : 0) * 10;
+      maxScore += 10;
+    }
+    if (healthData.warrantyMonths !== null) {
+      score += Math.min(healthData.warrantyMonths / 12, 1) * 20;
+      maxScore += 20;
+    }
+    if (maxScore === 0) return null;
+    return Math.round((score / maxScore) * 100);
+  }
 
   useEffect(() => {
     if (user) {
@@ -142,7 +186,20 @@ export default function MyAccount() {
         description: "",
         imageUrls: "",
         city: user?.city || "",
+        videoUrl: "",
+        newMarketPrice: "",
+        amazonProductLink: "",
+        bajaaoProductLink: "",
       });
+      setImageEntries([{url: "", label: ""}]);
+      setHealthData({
+        cosmeticScore: null,
+        electronicsWorking: null,
+        originalAccessories: null,
+        originalBox: null,
+        warrantyMonths: null,
+      });
+      setHealthSectionOpen(false);
       setActiveTab("listings");
     },
     onError: (err: Error) => {
@@ -165,18 +222,33 @@ export default function MyAccount() {
 
   function handleCreateListing(e: React.FormEvent) {
     e.preventDefault();
-    const urls = sellForm.imageUrls
-      .split(",")
-      .map((u) => u.trim())
-      .filter(Boolean);
+    const filteredEntries = imageEntries.filter((e) => e.url);
+    const imageUrls = JSON.stringify(filteredEntries.map((e) => e.url));
+    const imageLabels = JSON.stringify(
+      Object.fromEntries(
+        filteredEntries
+          .filter((e) => e.label)
+          .map((e, i) => [i.toString(), e.label])
+      )
+    );
     createMutation.mutate({
       title: sellForm.title,
       category: sellForm.category,
       condition: sellForm.condition,
       price: Number(sellForm.price),
       description: sellForm.description || undefined,
-      imageUrls: JSON.stringify(urls),
+      imageUrls,
+      imageLabels,
       city: sellForm.city,
+      videoUrl: sellForm.videoUrl || undefined,
+      newMarketPrice: sellForm.newMarketPrice ? Number(sellForm.newMarketPrice) : undefined,
+      amazonProductLink: sellForm.amazonProductLink || undefined,
+      bajaaoProductLink: sellForm.bajaaoProductLink || undefined,
+      gearHealthCosmeticScore: healthData.cosmeticScore,
+      gearHealthElectronicsWorking: healthData.electronicsWorking,
+      gearHealthOriginalAccessories: healthData.originalAccessories,
+      gearHealthOriginalBox: healthData.originalBox,
+      gearHealthWarrantyMonths: healthData.warrantyMonths,
     });
   }
 
@@ -410,6 +482,38 @@ export default function MyAccount() {
                     </div>
                   </div>
 
+                  {/* Price Comparison */}
+                  <div className="space-y-2">
+                    <Label>New Market Price (₹) (optional)</Label>
+                    <Input
+                      type="number"
+                      value={sellForm.newMarketPrice}
+                      onChange={(e) => setSellForm({ ...sellForm, newMarketPrice: e.target.value })}
+                      placeholder="What does this cost new?"
+                    />
+                  </div>
+                  {Number(sellForm.price) > 0 && Number(sellForm.newMarketPrice) > 0 && (
+                    <p className="text-sm text-green-500">
+                      Buyers save {Math.round(((Number(sellForm.newMarketPrice) - Number(sellForm.price)) / Number(sellForm.newMarketPrice)) * 100)}% vs buying new
+                    </p>
+                  )}
+                  <div className="space-y-2">
+                    <Label>Amazon.in Product Link (optional)</Label>
+                    <Input
+                      value={sellForm.amazonProductLink}
+                      onChange={(e) => setSellForm({ ...sellForm, amazonProductLink: e.target.value })}
+                      placeholder="https://amazon.in/dp/..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Bajaao Product Link (optional)</Label>
+                    <Input
+                      value={sellForm.bajaaoProductLink}
+                      onChange={(e) => setSellForm({ ...sellForm, bajaaoProductLink: e.target.value })}
+                      placeholder="https://bajaao.com/..."
+                    />
+                  </div>
+
                   <div>
                     <Label htmlFor="description">Description</Label>
                     <Textarea
@@ -421,14 +525,200 @@ export default function MyAccount() {
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="imageUrls">Image URLs (comma-separated)</Label>
+                  {/* Video Showcase */}
+                  <div className="space-y-2">
+                    <Label>Product Video (optional)</Label>
                     <Input
-                      id="imageUrls"
-                      placeholder="https://example.com/image1.jpg, https://example.com/image2.jpg"
-                      value={sellForm.imageUrls}
-                      onChange={(e) => setSellForm({ ...sellForm, imageUrls: e.target.value })}
+                      value={sellForm.videoUrl}
+                      onChange={(e) => setSellForm({ ...sellForm, videoUrl: e.target.value })}
+                      placeholder="YouTube, Google Drive, or Dropbox link"
                     />
+                    <p className="text-xs text-muted-foreground">Share a video showing the gear in action - helps buyers hear the tone and see the condition</p>
+                  </div>
+
+                  {/* Multi-image system */}
+                  <div className="space-y-3">
+                    <Label>Images</Label>
+                    {imageEntries.map((entry, index) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <Input
+                          className="flex-1"
+                          placeholder="Image URL"
+                          value={entry.url}
+                          onChange={(e) => {
+                            const updated = [...imageEntries];
+                            updated[index] = { ...updated[index], url: e.target.value };
+                            setImageEntries(updated);
+                          }}
+                        />
+                        <Select
+                          value={entry.label}
+                          onValueChange={(v) => {
+                            const updated = [...imageEntries];
+                            updated[index] = { ...updated[index], label: v };
+                            setImageEntries(updated);
+                          }}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Label" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {IMAGE_LABEL_OPTIONS.map((opt) => (
+                              <SelectItem key={opt} value={opt}>
+                                {opt}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {imageEntries.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setImageEntries(imageEntries.filter((_, i) => i !== index))}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    {imageEntries.length < 8 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setImageEntries([...imageEntries, { url: "", label: "" }])}
+                      >
+                        <Plus className="h-4 w-4 mr-1" />
+                        Add Image
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Gear Health Report */}
+                  <div className="border border-border rounded-lg">
+                    <button
+                      type="button"
+                      className="w-full flex items-center justify-between p-4 text-left"
+                      onClick={() => setHealthSectionOpen(!healthSectionOpen)}
+                    >
+                      <span className="font-medium">Gear Health Report (optional)</span>
+                      {healthSectionOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </button>
+                    {healthSectionOpen && (
+                      <div className="px-4 pb-4 space-y-4">
+                        {/* Cosmetic Score */}
+                        <div className="space-y-2">
+                          <Label>Cosmetic Score</Label>
+                          <div className="flex gap-2">
+                            {[1, 2, 3, 4, 5].map((score) => (
+                              <Button
+                                key={score}
+                                type="button"
+                                variant={healthData.cosmeticScore === score ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setHealthData({ ...healthData, cosmeticScore: score })}
+                              >
+                                {score}
+                              </Button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Electronics Working */}
+                        <div className="space-y-2">
+                          <Label>Electronics Working</Label>
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant={healthData.electronicsWorking === true ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setHealthData({ ...healthData, electronicsWorking: true })}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              type="button"
+                              variant={healthData.electronicsWorking === false ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setHealthData({ ...healthData, electronicsWorking: false })}
+                            >
+                              No
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Original Accessories */}
+                        <div className="space-y-2">
+                          <Label>Original Accessories</Label>
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant={healthData.originalAccessories === true ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setHealthData({ ...healthData, originalAccessories: true })}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              type="button"
+                              variant={healthData.originalAccessories === false ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setHealthData({ ...healthData, originalAccessories: false })}
+                            >
+                              No
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Original Box */}
+                        <div className="space-y-2">
+                          <Label>Original Box</Label>
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant={healthData.originalBox === true ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setHealthData({ ...healthData, originalBox: true })}
+                            >
+                              Yes
+                            </Button>
+                            <Button
+                              type="button"
+                              variant={healthData.originalBox === false ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setHealthData({ ...healthData, originalBox: false })}
+                            >
+                              No
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Warranty Remaining */}
+                        <div className="space-y-2">
+                          <Label>Warranty Remaining (months)</Label>
+                          <Input
+                            type="number"
+                            min={0}
+                            value={healthData.warrantyMonths ?? ""}
+                            onChange={(e) => setHealthData({ ...healthData, warrantyMonths: e.target.value ? Number(e.target.value) : null })}
+                            placeholder="e.g. 6"
+                          />
+                        </div>
+
+                        {/* Live health score preview */}
+                        {computeHealthScore() !== null && (
+                          <div className="p-3 bg-muted rounded-md">
+                            <p className="text-sm font-medium">
+                              Health Score: <span className="text-primary">{computeHealthScore()}%</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Based on cosmetic (30%) + electronics (25%) + accessories (15%) + box (10%) + warranty (20%)
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <p className="text-sm text-muted-foreground">

@@ -22,7 +22,11 @@ import {
   type ShareableLink,
   type InsertShareableLink,
   type MarketplaceListing,
-  type InsertMarketplaceListing
+  type InsertMarketplaceListing,
+  type ZoomVerificationSlot,
+  type InsertZoomSlot,
+  type ZoomVerificationRequest,
+  type InsertZoomRequest
 } from "../shared/schema.js";
 import { randomUUID } from "crypto";
 
@@ -120,6 +124,20 @@ export interface IStorage {
   deleteMarketplaceListing(id: string): Promise<boolean>;
   incrementListingViewCount(id: string): Promise<void>;
   getMarketplaceStats(): Promise<{ totalListings: number; pendingListings: number; activeListings: number; soldListings: number; totalUsers: number; bannedUsers: number }>;
+
+  // Zoom Verification Slots
+  getAvailableZoomSlots(): Promise<ZoomVerificationSlot[]>;
+  getAllZoomSlots(): Promise<ZoomVerificationSlot[]>;
+  createZoomSlot(slot: InsertZoomSlot): Promise<ZoomVerificationSlot>;
+  deleteZoomSlot(id: string): Promise<boolean>;
+  markSlotUnavailable(id: string): Promise<void>;
+
+  // Zoom Verification Requests
+  getZoomRequestsForListing(listingId: string): Promise<ZoomVerificationRequest[]>;
+  getZoomRequestsByBuyer(buyerId: string): Promise<ZoomVerificationRequest[]>;
+  getPendingZoomRequests(): Promise<ZoomVerificationRequest[]>;
+  createZoomRequest(request: InsertZoomRequest & { buyerId: string }): Promise<ZoomVerificationRequest>;
+  updateZoomRequestStatus(id: string, status: string, zoomLink?: string, adminNotes?: string): Promise<ZoomVerificationRequest | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -135,6 +153,8 @@ export class MemStorage implements IStorage {
   private pageSettings: Map<string, PageSetting>;
   private shareableLinks: Map<string, ShareableLink>;
   private marketplaceListings: Map<string, MarketplaceListing>;
+  private zoomSlots: Map<string, ZoomVerificationSlot>;
+  private zoomRequests: Map<string, ZoomVerificationRequest>;
 
   constructor() {
     this.users = new Map();
@@ -149,6 +169,8 @@ export class MemStorage implements IStorage {
     this.pageSettings = new Map();
     this.shareableLinks = new Map();
     this.marketplaceListings = new Map();
+    this.zoomSlots = new Map();
+    this.zoomRequests = new Map();
 
     this.initializeSampleData();
   }
@@ -244,6 +266,16 @@ export class MemStorage implements IStorage {
         viewCount: 24,
         createdAt: new Date("2025-11-10"),
         updatedAt: new Date("2025-11-10"),
+        videoUrl: "https://youtube.com/watch?v=dQw4w9WgXcQ",
+        imageLabels: null,
+        newMarketPrice: 11000,
+        amazonProductLink: "https://amazon.in/dp/B08XYZ",
+        bajaaoProductLink: null,
+        gearHealthCosmeticScore: 4,
+        gearHealthElectronicsWorking: true,
+        gearHealthOriginalAccessories: true,
+        gearHealthOriginalBox: false,
+        gearHealthWarrantyMonths: 6,
       },
       {
         id: "ml2",
@@ -259,6 +291,16 @@ export class MemStorage implements IStorage {
         viewCount: 42,
         createdAt: new Date("2025-10-20"),
         updatedAt: new Date("2025-10-20"),
+        videoUrl: null,
+        imageLabels: null,
+        newMarketPrice: 18000,
+        amazonProductLink: null,
+        bajaaoProductLink: null,
+        gearHealthCosmeticScore: 3,
+        gearHealthElectronicsWorking: null,
+        gearHealthOriginalAccessories: false,
+        gearHealthOriginalBox: false,
+        gearHealthWarrantyMonths: null,
       },
       {
         id: "ml3",
@@ -274,6 +316,16 @@ export class MemStorage implements IStorage {
         viewCount: 18,
         createdAt: new Date("2025-09-15"),
         updatedAt: new Date("2025-09-15"),
+        videoUrl: null,
+        imageLabels: null,
+        newMarketPrice: null,
+        amazonProductLink: null,
+        bajaaoProductLink: null,
+        gearHealthCosmeticScore: null,
+        gearHealthElectronicsWorking: null,
+        gearHealthOriginalAccessories: null,
+        gearHealthOriginalBox: null,
+        gearHealthWarrantyMonths: null,
       },
       {
         id: "ml4",
@@ -289,6 +341,16 @@ export class MemStorage implements IStorage {
         viewCount: 56,
         createdAt: new Date("2025-12-01"),
         updatedAt: new Date("2025-12-01"),
+        videoUrl: null,
+        imageLabels: null,
+        newMarketPrice: 12000,
+        amazonProductLink: null,
+        bajaaoProductLink: null,
+        gearHealthCosmeticScore: 5,
+        gearHealthElectronicsWorking: true,
+        gearHealthOriginalAccessories: true,
+        gearHealthOriginalBox: true,
+        gearHealthWarrantyMonths: 10,
       },
       {
         id: "ml5",
@@ -304,6 +366,16 @@ export class MemStorage implements IStorage {
         viewCount: 33,
         createdAt: new Date("2025-11-25"),
         updatedAt: new Date("2025-11-25"),
+        videoUrl: null,
+        imageLabels: null,
+        newMarketPrice: null,
+        amazonProductLink: null,
+        bajaaoProductLink: null,
+        gearHealthCosmeticScore: null,
+        gearHealthElectronicsWorking: null,
+        gearHealthOriginalAccessories: null,
+        gearHealthOriginalBox: null,
+        gearHealthWarrantyMonths: null,
       },
       {
         id: "ml6",
@@ -319,9 +391,28 @@ export class MemStorage implements IStorage {
         viewCount: 0,
         createdAt: new Date("2025-12-05"),
         updatedAt: new Date("2025-12-05"),
+        videoUrl: null,
+        imageLabels: null,
+        newMarketPrice: null,
+        amazonProductLink: null,
+        bajaaoProductLink: null,
+        gearHealthCosmeticScore: null,
+        gearHealthElectronicsWorking: null,
+        gearHealthOriginalAccessories: null,
+        gearHealthOriginalBox: null,
+        gearHealthWarrantyMonths: null,
       },
     ];
     sampleMarketplaceListings.forEach(listing => this.marketplaceListings.set(listing.id, listing));
+
+    // Sample zoom verification slots
+    const sampleSlots: ZoomVerificationSlot[] = [
+      { id: "slot1", date: "2026-03-22", timeSlot: "10:00 AM - 10:30 AM", zoomAccount: "music@nathanielschool.com", zoomLink: null, isAvailable: true, createdAt: new Date() },
+      { id: "slot2", date: "2026-03-22", timeSlot: "11:00 AM - 11:30 AM", zoomAccount: "tech@nathanielschool.com", zoomLink: null, isAvailable: true, createdAt: new Date() },
+      { id: "slot3", date: "2026-03-23", timeSlot: "2:00 PM - 2:30 PM", zoomAccount: "music@nathanielschool.com", zoomLink: null, isAvailable: true, createdAt: new Date() },
+      { id: "slot4", date: "2026-03-24", timeSlot: "10:00 AM - 10:30 AM", zoomAccount: "tech@nathanielschool.com", zoomLink: null, isAvailable: true, createdAt: new Date() },
+    ];
+    sampleSlots.forEach(s => this.zoomSlots.set(s.id, s));
   }
 
   // Users
@@ -755,6 +846,16 @@ export class MemStorage implements IStorage {
       viewCount: 0,
       createdAt: now,
       updatedAt: now,
+      videoUrl: listing.videoUrl ?? null,
+      imageLabels: listing.imageLabels ?? null,
+      newMarketPrice: listing.newMarketPrice ?? null,
+      amazonProductLink: listing.amazonProductLink ?? null,
+      bajaaoProductLink: listing.bajaaoProductLink ?? null,
+      gearHealthCosmeticScore: listing.gearHealthCosmeticScore ?? null,
+      gearHealthElectronicsWorking: listing.gearHealthElectronicsWorking ?? null,
+      gearHealthOriginalAccessories: listing.gearHealthOriginalAccessories ?? null,
+      gearHealthOriginalBox: listing.gearHealthOriginalBox ?? null,
+      gearHealthWarrantyMonths: listing.gearHealthWarrantyMonths ?? null,
     };
     this.marketplaceListings.set(id, newListing);
     return newListing;
@@ -799,6 +900,87 @@ export class MemStorage implements IStorage {
       totalUsers: allUsers.length,
       bannedUsers: allUsers.filter(u => u.isBanned).length,
     };
+  }
+  // Zoom Verification Slots
+  async getAvailableZoomSlots(): Promise<ZoomVerificationSlot[]> {
+    return Array.from(this.zoomSlots.values()).filter(s => s.isAvailable);
+  }
+
+  async getAllZoomSlots(): Promise<ZoomVerificationSlot[]> {
+    return Array.from(this.zoomSlots.values());
+  }
+
+  async createZoomSlot(slot: InsertZoomSlot): Promise<ZoomVerificationSlot> {
+    const id = randomUUID();
+    const newSlot: ZoomVerificationSlot = {
+      id,
+      date: slot.date,
+      timeSlot: slot.timeSlot,
+      zoomAccount: slot.zoomAccount,
+      zoomLink: slot.zoomLink ?? null,
+      isAvailable: slot.isAvailable ?? true,
+      createdAt: new Date(),
+    };
+    this.zoomSlots.set(id, newSlot);
+    return newSlot;
+  }
+
+  async deleteZoomSlot(id: string): Promise<boolean> {
+    return this.zoomSlots.delete(id);
+  }
+
+  async markSlotUnavailable(id: string): Promise<void> {
+    const slot = this.zoomSlots.get(id);
+    if (slot) {
+      slot.isAvailable = false;
+      this.zoomSlots.set(id, slot);
+    }
+  }
+
+  // Zoom Verification Requests
+  async getZoomRequestsForListing(listingId: string): Promise<ZoomVerificationRequest[]> {
+    return Array.from(this.zoomRequests.values()).filter(r => r.listingId === listingId);
+  }
+
+  async getZoomRequestsByBuyer(buyerId: string): Promise<ZoomVerificationRequest[]> {
+    return Array.from(this.zoomRequests.values()).filter(r => r.buyerId === buyerId);
+  }
+
+  async getPendingZoomRequests(): Promise<ZoomVerificationRequest[]> {
+    return Array.from(this.zoomRequests.values()).filter(r => r.status === "requested");
+  }
+
+  async createZoomRequest(request: InsertZoomRequest & { buyerId: string }): Promise<ZoomVerificationRequest> {
+    const id = randomUUID();
+    const now = new Date();
+    const newRequest: ZoomVerificationRequest = {
+      id,
+      listingId: request.listingId,
+      buyerId: request.buyerId,
+      slotId: request.slotId,
+      status: "requested",
+      buyerNotes: request.buyerNotes ?? null,
+      adminNotes: null,
+      zoomLink: null,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.zoomRequests.set(id, newRequest);
+    return newRequest;
+  }
+
+  async updateZoomRequestStatus(id: string, status: string, zoomLink?: string, adminNotes?: string): Promise<ZoomVerificationRequest | undefined> {
+    const existing = this.zoomRequests.get(id);
+    if (!existing) return undefined;
+    const updated: ZoomVerificationRequest = {
+      ...existing,
+      status,
+      zoomLink: zoomLink ?? existing.zoomLink,
+      adminNotes: adminNotes ?? existing.adminNotes,
+      updatedAt: new Date(),
+    };
+    this.zoomRequests.set(id, updated);
+    return updated;
   }
 }
 

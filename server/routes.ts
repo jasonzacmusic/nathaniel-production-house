@@ -13,6 +13,8 @@ import {
   insertMarketplaceListingSchema,
   registerUserSchema,
   loginSchema,
+  insertZoomSlotSchema,
+  insertZoomRequestSchema,
 } from "../shared/schema.js";
 import { z } from "zod";
 import { randomUUID, createHash } from "crypto";
@@ -70,6 +72,48 @@ function optionalUserAuth(req: Request, _res: Response, next: NextFunction) {
     }
   }
   next();
+}
+
+function computeGearHealthScore(listing: any): { score: number; label: string } | null {
+  const c = listing.gearHealthCosmeticScore;
+  const e = listing.gearHealthElectronicsWorking;
+  const a = listing.gearHealthOriginalAccessories;
+  const b = listing.gearHealthOriginalBox;
+  const w = listing.gearHealthWarrantyMonths;
+  if (c == null && e == null && a == null && b == null && w == null) return null;
+  let score = 0, weight = 0;
+  if (c != null) { score += (c / 5) * 30; weight += 30; }
+  if (e != null) { score += (e ? 25 : 0); weight += 25; }
+  if (a != null) { score += (a ? 15 : 0); weight += 15; }
+  if (b != null) { score += (b ? 10 : 0); weight += 10; }
+  if (w != null) { score += Math.min(w / 12, 1) * 20; weight += 20; }
+  const normalized = weight > 0 ? Math.round((score / weight) * 100) : 0;
+  const label = normalized >= 80 ? "Excellent" : normalized >= 60 ? "Good" : normalized >= 40 ? "Fair" : "Needs Attention";
+  return { score: normalized, label };
+}
+
+function computePriceIndicator(price: number, newMarketPrice: number | null, condition: string): { label: string; savingsPercent: number } | null {
+  if (!newMarketPrice || newMarketPrice <= 0) return null;
+  const savingsPercent = Math.round(((newMarketPrice - price) / newMarketPrice) * 100);
+  const thresholds: Record<string, [number, number]> = {
+    mint: [15, 30], excellent: [20, 40], good: [30, 50], fair: [40, 60], poor: [50, 70],
+  };
+  const [fairMin, greatMin] = thresholds[condition] || [30, 50];
+  const label = savingsPercent >= greatMin ? "Great Deal" : savingsPercent >= fairMin ? "Fair Price" : "Above Market";
+  return { label, savingsPercent };
+}
+
+function parseVideoUrl(url: string): { type: string; embedUrl: string } {
+  if (!url) return { type: "unknown", embedUrl: url };
+  // YouTube
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  if (ytMatch) return { type: "youtube", embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}` };
+  // Google Drive
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (driveMatch) return { type: "gdrive", embedUrl: `https://drive.google.com/file/d/${driveMatch[1]}/preview` };
+  // Dropbox
+  if (url.includes("dropbox.com")) return { type: "dropbox", embedUrl: url.replace("dl=0", "raw=1").replace("www.dropbox.com", "dl.dropboxusercontent.com") };
+  return { type: "unknown", embedUrl: url };
 }
 
 export async function registerRoutes(
@@ -679,9 +723,17 @@ export async function registerRoutes(
       const withSellers = await Promise.all(
         listings.map(async (listing) => {
           const seller = await storage.getUser(listing.sellerId);
+          const gearHealth = computeGearHealthScore(listing);
+          const priceIndicator = computePriceIndicator(listing.price, listing.newMarketPrice, listing.condition);
           return {
             ...listing,
             seller: seller ? { id: seller.id, displayName: seller.displayName, city: seller.city, createdAt: seller.createdAt } : null,
+            hasVideo: !!listing.videoUrl,
+            imageCount: listing.imageUrls ? JSON.parse(listing.imageUrls).length : 0,
+            gearHealthScore: gearHealth?.score ?? null,
+            gearHealthLabel: gearHealth?.label ?? null,
+            priceIndicator: priceIndicator?.label ?? null,
+            savingsPercent: priceIndicator?.savingsPercent ?? null,
           };
         })
       );
@@ -702,10 +754,16 @@ export async function registerRoutes(
       await storage.incrementListingViewCount(listing.id);
       const seller = await storage.getUser(listing.sellerId);
       const sellerListingCount = seller ? (await storage.getListingsBySeller(seller.id)).filter(l => l.status === "active").length : 0;
+      const gearHealth = computeGearHealthScore(listing);
+      const priceIndicator = computePriceIndicator(listing.price, listing.newMarketPrice, listing.condition);
+      const videoEmbed = listing.videoUrl ? parseVideoUrl(listing.videoUrl) : null;
       res.json({
         ...listing,
         viewCount: (listing.viewCount || 0) + 1,
         seller: seller ? { id: seller.id, displayName: seller.displayName, phone: seller.phone, city: seller.city, createdAt: seller.createdAt, activeListings: sellerListingCount } : null,
+        gearHealth,
+        priceIndicator,
+        videoEmbed,
       });
     } catch {
       res.status(500).json({ error: "Failed to fetch listing" });
@@ -907,6 +965,103 @@ export async function registerRoutes(
     } catch {
       res.status(500).json({ error: "Failed to update user" });
     }
+  });
+
+  // =====================
+  // ZOOM VERIFICATION
+  // =====================
+
+  // Public: available slots for a listing
+  app.get("/api/marketplace/:id/zoom-slots", async (req, res) => {
+    try {
+      const slots = await storage.getAvailableZoomSlots();
+      res.json(slots);
+    } catch {
+      res.status(500).json({ error: "Failed to fetch slots" });
+    }
+  });
+
+  // User: request zoom verification
+  app.post("/api/marketplace/:id/zoom-request", requireUserAuth, async (req, res) => {
+    try {
+      const listingId = req.params.id as string;
+      const userId = (req as any).userId;
+      const { slotId, buyerNotes } = req.body;
+      if (!slotId) return res.status(400).json({ error: "Slot selection required" });
+      const listing = await storage.getMarketplaceListing(listingId);
+      if (!listing) return res.status(404).json({ error: "Listing not found" });
+      const request = await storage.createZoomRequest({ listingId, buyerId: userId, slotId, buyerNotes: buyerNotes || null });
+      res.status(201).json(request);
+    } catch {
+      res.status(500).json({ error: "Failed to create request" });
+    }
+  });
+
+  // User: my zoom requests
+  app.get("/api/my-zoom-requests", requireUserAuth, async (req, res) => {
+    try {
+      const requests = await storage.getZoomRequestsByBuyer((req as any).userId);
+      res.json(requests);
+    } catch {
+      res.status(500).json({ error: "Failed to fetch requests" });
+    }
+  });
+
+  // Admin: manage zoom slots
+  app.get("/api/admin/zoom-slots", requireAdminAuth, async (_req, res) => {
+    try { res.json(await storage.getAllZoomSlots()); } catch { res.status(500).json({ error: "Failed" }); }
+  });
+
+  app.post("/api/admin/zoom-slots", requireAdminAuth, async (req, res) => {
+    try {
+      const data = insertZoomSlotSchema.parse(req.body);
+      const slot = await storage.createZoomSlot(data);
+      res.status(201).json(slot);
+    } catch (error) {
+      if (error instanceof z.ZodError) return res.status(400).json({ error: error.errors });
+      res.status(500).json({ error: "Failed to create slot" });
+    }
+  });
+
+  app.delete("/api/admin/zoom-slots/:id", requireAdminAuth, async (req, res) => {
+    try {
+      const deleted = await storage.deleteZoomSlot(req.params.id as string);
+      if (!deleted) return res.status(404).json({ error: "Slot not found" });
+      res.status(204).send();
+    } catch { res.status(500).json({ error: "Failed" }); }
+  });
+
+  // Admin: zoom requests management
+  app.get("/api/admin/zoom-requests", requireAdminAuth, async (_req, res) => {
+    try {
+      const requests = await storage.getPendingZoomRequests();
+      const enriched = await Promise.all(requests.map(async (r) => {
+        const listing = await storage.getMarketplaceListing(r.listingId);
+        const buyer = await storage.getUser(r.buyerId);
+        const slot = (await storage.getAllZoomSlots()).find(s => s.id === r.slotId);
+        return { ...r, listing: listing ? { id: listing.id, title: listing.title } : null, buyer: buyer ? { displayName: buyer.displayName, phone: buyer.phone } : null, slot };
+      }));
+      res.json(enriched);
+    } catch { res.status(500).json({ error: "Failed" }); }
+  });
+
+  app.patch("/api/admin/zoom-requests/:id/approve", requireAdminAuth, async (req, res) => {
+    try {
+      const { zoomLink } = req.body;
+      const updated = await storage.updateZoomRequestStatus(req.params.id as string, "approved", zoomLink);
+      if (!updated) return res.status(404).json({ error: "Not found" });
+      // Mark the slot as unavailable
+      await storage.markSlotUnavailable(updated.slotId);
+      res.json(updated);
+    } catch { res.status(500).json({ error: "Failed" }); }
+  });
+
+  app.patch("/api/admin/zoom-requests/:id/cancel", requireAdminAuth, async (req, res) => {
+    try {
+      const updated = await storage.updateZoomRequestStatus(req.params.id as string, "cancelled", undefined, req.body.adminNotes);
+      if (!updated) return res.status(404).json({ error: "Not found" });
+      res.json(updated);
+    } catch { res.status(500).json({ error: "Failed" }); }
   });
 
   return httpServer;

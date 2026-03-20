@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { MapPin, Eye, User } from "lucide-react";
+import { MapPin, Eye, User, Video } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MARKETPLACE_CATEGORIES, LISTING_CONDITIONS } from "@shared/schema";
@@ -23,6 +23,12 @@ interface ListingCardProps {
       city: string | null;
       createdAt: Date | string | null;
     } | null;
+    hasVideo?: boolean;
+    imageCount?: number;
+    gearHealthScore?: number | null;
+    gearHealthLabel?: string | null;
+    priceIndicator?: string | null;
+    savingsPercent?: number | null;
   };
   showStatus?: boolean;
 }
@@ -121,6 +127,21 @@ export default function ListingCard({ listing, showStatus }: ListingCardProps) {
           >
             {conditionEntry?.label ?? listing.condition}
           </Badge>
+
+          {/* Video badge - bottom left */}
+          {listing.hasVideo && (
+            <Badge className="absolute bottom-2 left-2 bg-black/70 text-white border-0 text-xs flex items-center gap-1">
+              <Video className="h-3 w-3" />
+              Video
+            </Badge>
+          )}
+
+          {/* Image count badge - bottom right */}
+          {listing.imageCount != null && listing.imageCount > 1 && (
+            <Badge className="absolute bottom-2 right-2 bg-black/70 text-white border-0 text-xs">
+              {listing.imageCount} photos
+            </Badge>
+          )}
         </div>
 
         <CardContent className="p-4 space-y-2">
@@ -131,6 +152,42 @@ export default function ListingCard({ listing, showStatus }: ListingCardProps) {
           <p className="text-lg font-bold text-primary">
             {formatPrice(listing.price)}
           </p>
+
+          {/* Price indicator & savings */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            {listing.priceIndicator && (
+              <Badge
+                className={`text-xs border-0 ${
+                  listing.priceIndicator === "Great Deal"
+                    ? "bg-green-600 text-white"
+                    : listing.priceIndicator === "Fair Price"
+                      ? "bg-amber-500 text-white"
+                      : "bg-gray-500 text-white"
+                }`}
+              >
+                {listing.priceIndicator}
+              </Badge>
+            )}
+            {listing.savingsPercent != null && listing.savingsPercent > 0 && (
+              <span className="text-xs font-medium text-green-500">
+                Save {listing.savingsPercent}%
+              </span>
+            )}
+            {listing.gearHealthScore != null && (
+              <Badge
+                variant="outline"
+                className={`text-xs ${
+                  listing.gearHealthScore >= 80
+                    ? "border-green-600 text-green-500"
+                    : listing.gearHealthScore >= 50
+                      ? "border-amber-500 text-amber-500"
+                      : "border-red-500 text-red-500"
+                }`}
+              >
+                Health: {listing.gearHealthScore}/100
+              </Badge>
+            )}
+          </div>
 
           {/* Status badge */}
           {showStatus && listing.status && (

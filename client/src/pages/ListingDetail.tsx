@@ -17,7 +17,11 @@ import {
   User,
   Share2,
   Copy,
+  Video,
 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
 import { MARKETPLACE_CATEGORIES, LISTING_CONDITIONS } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
@@ -29,10 +33,22 @@ interface ListingWithSeller {
   price: number;
   description: string | null;
   imageUrls: string | null;
+  imageLabels: string | null;
   city: string;
   status: string;
   viewCount: number | null;
   createdAt: string | null;
+  videoEmbed: { type: "youtube" | "gdrive" | "dropbox" | "unknown"; embedUrl: string } | null;
+  gearHealth: { score: number; label: string } | null;
+  priceIndicator: { label: string; savingsPercent: number } | null;
+  newMarketPrice: number | null;
+  amazonProductLink: string | null;
+  bajaaoProductLink: string | null;
+  gearHealthCosmeticScore: number | null;
+  gearHealthElectronicsWorking: boolean | null;
+  gearHealthOriginalAccessories: boolean | null;
+  gearHealthOriginalBox: boolean | null;
+  gearHealthWarrantyMonths: number | null;
   seller: {
     id: string;
     displayName: string | null;
@@ -92,10 +108,17 @@ function parseImages(imageUrls: string | null): string[] {
   }
 }
 
+function priceIndicatorColor(label: string) {
+  if (label === "Great Deal") return "bg-green-600";
+  if (label === "Fair Price") return "bg-amber-600";
+  return "bg-red-600";
+}
+
 export default function ListingDetail() {
   const [, params] = useRoute("/marketplace/:id");
   const id = params?.id;
   const { toast } = useToast();
+  const { user } = useAuth();
   const [selectedImage, setSelectedImage] = useState(0);
 
   const {
@@ -112,7 +135,17 @@ export default function ListingDetail() {
     enabled: !!id,
   });
 
+  const { data: zoomSlots } = useQuery<any[]>({
+    queryKey: ["/api/marketplace/zoom-slots", id],
+    queryFn: async () => {
+      const res = await fetch(`/api/marketplace/${id}/zoom-slots`);
+      return res.json();
+    },
+    enabled: !!listing,
+  });
+
   const images = listing ? parseImages(listing.imageUrls) : [];
+  const imageLabels: Record<string, string> = listing?.imageLabels ? JSON.parse(listing.imageLabels) : {};
   const conditionEntry = listing
     ? LISTING_CONDITIONS.find((c) => c.value === listing.condition)
     : null;
@@ -197,6 +230,23 @@ export default function ListingDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Image gallery (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
+            {/* Video embed */}
+            {listing.videoEmbed && (
+              <div className="mb-6">
+                <h3 className="text-sm font-medium mb-2 flex items-center gap-2">
+                  <Video className="w-4 h-4" /> Product Video
+                </h3>
+                <div className="aspect-video rounded-lg overflow-hidden bg-muted">
+                  <iframe
+                    src={listing.videoEmbed.embedUrl}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Main image */}
             <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-900">
               {images.length > 0 ? (
@@ -216,21 +266,27 @@ export default function ListingDetail() {
             {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {images.map((url, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
-                      selectedImage === index
-                        ? "border-primary"
-                        : "border-transparent hover:border-muted-foreground/50"
-                    }`}
-                  >
-                    <img
-                      src={url}
-                      alt={`${listing.title} - ${index + 1}`}
-                      className="h-full w-full object-cover"
-                    />
-                  </button>
+                  <div key={index} className="flex-shrink-0 text-center">
+                    <button
+                      onClick={() => setSelectedImage(index)}
+                      className={`relative w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
+                        selectedImage === index
+                          ? "border-primary"
+                          : "border-transparent hover:border-muted-foreground/50"
+                      }`}
+                    >
+                      <img
+                        src={url}
+                        alt={`${listing.title} - ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </button>
+                    {imageLabels[String(index)] && (
+                      <span className="text-xs text-muted-foreground mt-1 block truncate max-w-[5rem]">
+                        {imageLabels[String(index)]}
+                      </span>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
@@ -259,6 +315,84 @@ export default function ListingDetail() {
                 <p className="text-3xl font-bold text-green-500">
                   {formattedPrice}
                 </p>
+
+                {/* Price Comparison */}
+                {listing.newMarketPrice && (
+                  <div className="p-4 rounded-lg border bg-card space-y-2">
+                    <h3 className="text-sm font-medium">Price Comparison</h3>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-sm text-muted-foreground">New price:</span>
+                      <span className="font-medium">{formatPrice(listing.newMarketPrice)}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-sm text-muted-foreground">Listed price:</span>
+                      <span className="text-lg font-bold text-green-500">{formatPrice(listing.price)}</span>
+                    </div>
+                    {listing.priceIndicator && (
+                      <Badge className={priceIndicatorColor(listing.priceIndicator.label)}>
+                        {listing.priceIndicator.label} - Save {listing.priceIndicator.savingsPercent}%
+                      </Badge>
+                    )}
+                    <div className="flex gap-2 mt-2">
+                      {listing.amazonProductLink && (
+                        <a href={listing.amazonProductLink} target="_blank" rel="noopener noreferrer">
+                          <Button variant="outline" size="sm" className="text-xs">Check Amazon</Button>
+                        </a>
+                      )}
+                      {listing.bajaaoProductLink && (
+                        <a href={listing.bajaaoProductLink} target="_blank" rel="noopener noreferrer">
+                          <Button variant="outline" size="sm" className="text-xs">Check Bajaao</Button>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Gear Health Report */}
+                {listing.gearHealth && (
+                  <div className="p-4 rounded-lg border bg-card space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-sm font-medium">Gear Health Report</h3>
+                      <Badge className={listing.gearHealth.score >= 80 ? "bg-green-600" : listing.gearHealth.score >= 60 ? "bg-amber-600" : "bg-red-600"}>
+                        {listing.gearHealth.score}/100 - {listing.gearHealth.label}
+                      </Badge>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      {listing.gearHealthCosmeticScore != null && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Cosmetic Condition</span>
+                          <span>{"★".repeat(listing.gearHealthCosmeticScore)}{"☆".repeat(5 - listing.gearHealthCosmeticScore)}</span>
+                        </div>
+                      )}
+                      {listing.gearHealthElectronicsWorking != null && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Electronics</span>
+                          <span className={listing.gearHealthElectronicsWorking ? "text-green-500" : "text-red-500"}>
+                            {listing.gearHealthElectronicsWorking ? "All Working" : "Issues"}
+                          </span>
+                        </div>
+                      )}
+                      {listing.gearHealthOriginalAccessories != null && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Original Accessories</span>
+                          <span>{listing.gearHealthOriginalAccessories ? "Included" : "Not included"}</span>
+                        </div>
+                      )}
+                      {listing.gearHealthOriginalBox != null && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Original Box</span>
+                          <span>{listing.gearHealthOriginalBox ? "Yes" : "No"}</span>
+                        </div>
+                      )}
+                      {listing.gearHealthWarrantyMonths != null && listing.gearHealthWarrantyMonths > 0 && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Warranty</span>
+                          <span>{listing.gearHealthWarrantyMonths} months remaining</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Meta info */}
                 <div className="space-y-2 text-sm text-muted-foreground">
@@ -337,6 +471,26 @@ export default function ListingDetail() {
                   </div>
                 )}
 
+                {/* Zoom Verification */}
+                {zoomSlots && zoomSlots.length > 0 && (
+                  <>
+                    <hr className="border-border" />
+                    <div className="p-4 rounded-lg border bg-card space-y-3">
+                      <h3 className="text-sm font-medium flex items-center gap-2">
+                        <Video className="w-4 h-4" /> Live Video Inspection
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        Not sure about the condition? Book a free Zoom call to see the gear live, mediated by Nathaniel School.
+                      </p>
+                      {user ? (
+                        <ZoomRequestForm listingId={listing.id} slots={zoomSlots} />
+                      ) : (
+                        <Link href="/auth"><Button variant="outline" size="sm" className="w-full">Login to book inspection</Button></Link>
+                      )}
+                    </div>
+                  </>
+                )}
+
                 {/* Description */}
                 {listing.description && (
                   <>
@@ -359,5 +513,52 @@ export default function ListingDetail() {
 
       <Footer />
     </>
+  );
+}
+
+function ZoomRequestForm({ listingId, slots }: { listingId: string; slots: any[] }) {
+  const { toast } = useToast();
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [notes, setNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!selectedSlot) return;
+    setSubmitting(true);
+    try {
+      const token = localStorage.getItem("userToken");
+      const res = await fetch(`/api/marketplace/${listingId}/zoom-request`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ slotId: selectedSlot, buyerNotes: notes }),
+      });
+      if (!res.ok) throw new Error();
+      toast({ title: "Request Sent!", description: "You'll be notified once approved" });
+      setSelectedSlot("");
+      setNotes("");
+    } catch {
+      toast({ title: "Error", description: "Failed to submit request", variant: "destructive" });
+    }
+    setSubmitting(false);
+  };
+
+  return (
+    <div className="space-y-3">
+      <Select value={selectedSlot} onValueChange={setSelectedSlot}>
+        <SelectTrigger><SelectValue placeholder="Choose a time slot" /></SelectTrigger>
+        <SelectContent>
+          {slots.map((slot: any) => (
+            <SelectItem key={slot.id} value={slot.id}>
+              {slot.date} - {slot.timeSlot}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Any questions for the seller? (optional)" />
+      <Button onClick={handleSubmit} disabled={!selectedSlot || submitting} className="w-full" size="sm">
+        {submitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+        Request Zoom Inspection
+      </Button>
+    </div>
   );
 }
