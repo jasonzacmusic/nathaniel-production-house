@@ -9,12 +9,16 @@ import {
   insertContactMessageSchema,
   insertInstrumentRecommendationSchema,
   insertObsGuideContentSchema,
-  insertShareableLinkSchema
+  insertShareableLinkSchema,
+  insertMarketplaceListingSchema,
+  registerUserSchema,
+  loginSchema,
 } from "../shared/schema.js";
 import { z } from "zod";
 import { randomUUID, createHash } from "crypto";
 
 const adminTokens = new Map<string, { username: string; expires: number }>();
+const userTokens = new Map<string, { userId: string; expires: number }>();
 
 function hashPassword(password: string): string {
   return createHash("sha256").update(password).digest("hex");
@@ -38,6 +42,33 @@ function requireAdminAuth(req: Request, res: Response, next: NextFunction) {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
   
+  next();
+}
+
+function requireUserAuth(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Login required" });
+  }
+  const token = authHeader.substring(7);
+  const session = userTokens.get(token);
+  if (!session || session.expires < Date.now()) {
+    userTokens.delete(token);
+    return res.status(401).json({ error: "Session expired, please login again" });
+  }
+  (req as any).userId = session.userId;
+  next();
+}
+
+function optionalUserAuth(req: Request, _res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.substring(7);
+    const session = userTokens.get(token);
+    if (session && session.expires >= Date.now()) {
+      (req as any).userId = session.userId;
+    }
+  }
   next();
 }
 
@@ -534,6 +565,347 @@ export async function registerRoutes(
       res.redirect(link.targetPage);
     } catch (error) {
       res.redirect("/");
+    }
+  });
+
+  // =====================
+  // USER AUTH ENDPOINTS
+  // =====================
+
+  app.post("/api/auth/register", async (req, res) => {
+    try {
+      const data = registerUserSchema.parse(req.body);
+      const existingEmail = await storage.getUserByEmail(data.email);
+      if (existingEmail) {
+        return res.status(409).json({ error: "Email already registered" });
+      }
+      const existingPhone = await storage.getUserByPhone(data.phone);
+      if (existingPhone) {
+        return res.status(409).json({ error: "Phone number already registered" });
+      }
+      const user = await storage.createUser({
+        username: data.email,
+        email: data.email,
+        password: data.password,
+        displayName: data.displayName,
+        phone: data.phone,
+        city: data.city,
+      } as any);
+      const token = generateToken();
+      userTokens.set(token, { userId: user.id, expires: Date.now() + 7 * 24 * 60 * 60 * 1000 });
+      res.status(201).json({
+        token,
+        user: { id: user.id, displayName: user.displayName, email: user.email, phone: user.phone, city: user.city, bio: user.bio, createdAt: user.createdAt },
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors[0]?.message || "Validation error" });
+      }
+      res.status(500).json({ error: "Registration failed" });
+    }
+  });
+
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const data = loginSchema.parse(req.body);
+      const user = await storage.getUserByEmail(data.email);
+      if (!user || user.password !== data.password) {
+        return res.status(401).json({ error: "Invalid email or password" });
+      }
+      if (user.isBanned) {
+        return res.status(403).json({ error: "Account suspended" });
+      }
+      const token = generateToken();
+      userTokens.set(token, { userId: user.id, expires: Date.now() + 7 * 24 * 60 * 60 * 1000 });
+      res.json({
+        token,
+        user: { id: user.id, displayName: user.displayName, email: user.email, phone: user.phone, city: user.city, bio: user.bio, createdAt: user.createdAt },
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid input" });
+      }
+      res.status(500).json({ error: "Login failed" });
+    }
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      userTokens.delete(authHeader.substring(7));
+    }
+    res.json({ success: true });
+  });
+
+  app.get("/api/auth/me", requireUserAuth, async (req, res) => {
+    try {
+      const user = await storage.getUser((req as any).userId);
+      if (!user) return res.status(404).json({ error: "User not found" });
+      res.json({ id: user.id, displayName: user.displayName, email: user.email, phone: user.phone, city: user.city, bio: user.bio, createdAt: user.createdAt });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch profile" });
+    }
+  });
+
+  app.patch("/api/auth/me", requireUserAuth, async (req, res) => {
+    try {
+      const { displayName, phone, city, bio } = req.body;
+      const updated = await storage.updateUser((req as any).userId, { displayName, phone, city, bio });
+      if (!updated) return res.status(404).json({ error: "User not found" });
+      res.json({ id: updated.id, displayName: updated.displayName, email: updated.email, phone: updated.phone, city: updated.city, bio: updated.bio, createdAt: updated.createdAt });
+    } catch {
+      res.status(500).json({ error: "Failed to update profile" });
+    }
+  });
+
+  // =====================
+  // MARKETPLACE ENDPOINTS
+  // =====================
+
+  // Browse active listings (public)
+  app.get("/api/marketplace", async (req, res) => {
+    try {
+      const listings = await storage.getMarketplaceListings({
+        category: req.query.category as string,
+        condition: req.query.condition as string,
+        city: req.query.city as string,
+        priceMin: req.query.priceMin ? parseInt(req.query.priceMin as string) : undefined,
+        priceMax: req.query.priceMax ? parseInt(req.query.priceMax as string) : undefined,
+        search: req.query.search as string,
+        sort: req.query.sort as string,
+        status: "active",
+      });
+      // Attach seller info to each listing
+      const withSellers = await Promise.all(
+        listings.map(async (listing) => {
+          const seller = await storage.getUser(listing.sellerId);
+          return {
+            ...listing,
+            seller: seller ? { id: seller.id, displayName: seller.displayName, city: seller.city, createdAt: seller.createdAt } : null,
+          };
+        })
+      );
+      res.json(withSellers);
+    } catch {
+      res.status(500).json({ error: "Failed to fetch listings" });
+    }
+  });
+
+  // Single listing detail (public, increments view count)
+  app.get("/api/marketplace/:id", async (req, res) => {
+    try {
+      const id = req.params.id as string;
+      const listing = await storage.getMarketplaceListing(id);
+      if (!listing || (listing.status !== "active" && listing.status !== "sold")) {
+        return res.status(404).json({ error: "Listing not found" });
+      }
+      await storage.incrementListingViewCount(listing.id);
+      const seller = await storage.getUser(listing.sellerId);
+      const sellerListingCount = seller ? (await storage.getListingsBySeller(seller.id)).filter(l => l.status === "active").length : 0;
+      res.json({
+        ...listing,
+        viewCount: (listing.viewCount || 0) + 1,
+        seller: seller ? { id: seller.id, displayName: seller.displayName, phone: seller.phone, city: seller.city, createdAt: seller.createdAt, activeListings: sellerListingCount } : null,
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch listing" });
+    }
+  });
+
+  // Create listing (requires login)
+  app.post("/api/marketplace", requireUserAuth, async (req, res) => {
+    try {
+      const userId = (req as any).userId;
+      const user = await storage.getUser(userId);
+      if (!user) return res.status(404).json({ error: "User not found" });
+      if (user.isBanned) return res.status(403).json({ error: "Account suspended" });
+      const data = insertMarketplaceListingSchema.parse(req.body);
+      const listing = await storage.createMarketplaceListing({
+        ...data,
+        sellerId: userId,
+        city: data.city || user.city || "Other",
+      });
+      res.status(201).json(listing);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors[0]?.message || "Validation error" });
+      }
+      res.status(500).json({ error: "Failed to create listing" });
+    }
+  });
+
+  // Edit own listing
+  app.patch("/api/marketplace/:id", requireUserAuth, async (req, res) => {
+    try {
+      const id = req.params.id as string;
+      const listing = await storage.getMarketplaceListing(id);
+      if (!listing) return res.status(404).json({ error: "Listing not found" });
+      if (listing.sellerId !== (req as any).userId) return res.status(403).json({ error: "Not your listing" });
+      const data = insertMarketplaceListingSchema.partial().parse(req.body);
+      const updated = await storage.updateMarketplaceListing(id, data);
+      res.json(updated);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors[0]?.message || "Validation error" });
+      }
+      res.status(500).json({ error: "Failed to update listing" });
+    }
+  });
+
+  // Mark as sold (owner only)
+  app.patch("/api/marketplace/:id/sold", requireUserAuth, async (req, res) => {
+    try {
+      const id = req.params.id as string;
+      const listing = await storage.getMarketplaceListing(id);
+      if (!listing) return res.status(404).json({ error: "Listing not found" });
+      if (listing.sellerId !== (req as any).userId) return res.status(403).json({ error: "Not your listing" });
+      const updated = await storage.updateListingStatus(id, "sold");
+      res.json(updated);
+    } catch {
+      res.status(500).json({ error: "Failed to mark as sold" });
+    }
+  });
+
+  // Delete own listing
+  app.delete("/api/marketplace/:id", requireUserAuth, async (req, res) => {
+    try {
+      const id = req.params.id as string;
+      const listing = await storage.getMarketplaceListing(id);
+      if (!listing) return res.status(404).json({ error: "Listing not found" });
+      if (listing.sellerId !== (req as any).userId) return res.status(403).json({ error: "Not your listing" });
+      await storage.deleteMarketplaceListing(id);
+      res.status(204).send();
+    } catch {
+      res.status(500).json({ error: "Failed to delete listing" });
+    }
+  });
+
+  // My listings (all statuses)
+  app.get("/api/marketplace-my-listings", requireUserAuth, async (req, res) => {
+    try {
+      const listings = await storage.getListingsBySeller((req as any).userId);
+      res.json(listings.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      }));
+    } catch {
+      res.status(500).json({ error: "Failed to fetch your listings" });
+    }
+  });
+
+  // Seller public profile
+  app.get("/api/sellers/:id", async (req, res) => {
+    try {
+      const user = await storage.getUser(req.params.id as string);
+      if (!user || user.isAdmin) return res.status(404).json({ error: "Seller not found" });
+      const listings = (await storage.getListingsBySeller(user.id)).filter(l => l.status === "active");
+      res.json({
+        id: user.id,
+        displayName: user.displayName,
+        city: user.city,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        activeListings: listings.length,
+        listings,
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch seller profile" });
+    }
+  });
+
+  // =====================
+  // ADMIN: MARKETPLACE MANAGEMENT
+  // =====================
+
+  app.get("/api/admin/marketplace/stats", requireAdminAuth, async (_req, res) => {
+    try {
+      const stats = await storage.getMarketplaceStats();
+      res.json(stats);
+    } catch {
+      res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
+
+  app.get("/api/admin/marketplace/pending", requireAdminAuth, async (_req, res) => {
+    try {
+      const listings = await storage.getPendingListings();
+      const withSellers = await Promise.all(
+        listings.map(async (listing) => {
+          const seller = await storage.getUser(listing.sellerId);
+          return { ...listing, seller: seller ? { id: seller.id, displayName: seller.displayName, city: seller.city } : null };
+        })
+      );
+      res.json(withSellers);
+    } catch {
+      res.status(500).json({ error: "Failed to fetch pending listings" });
+    }
+  });
+
+  app.get("/api/admin/marketplace/all", requireAdminAuth, async (req, res) => {
+    try {
+      const listings = await storage.getMarketplaceListings({ status: req.query.status as string });
+      const withSellers = await Promise.all(
+        listings.map(async (listing) => {
+          const seller = await storage.getUser(listing.sellerId);
+          return { ...listing, seller: seller ? { id: seller.id, displayName: seller.displayName } : null };
+        })
+      );
+      res.json(withSellers);
+    } catch {
+      res.status(500).json({ error: "Failed to fetch listings" });
+    }
+  });
+
+  app.patch("/api/admin/marketplace/:id/approve", requireAdminAuth, async (req, res) => {
+    try {
+      const updated = await storage.updateListingStatus(req.params.id as string, "active");
+      if (!updated) return res.status(404).json({ error: "Listing not found" });
+      res.json(updated);
+    } catch {
+      res.status(500).json({ error: "Failed to approve listing" });
+    }
+  });
+
+  app.patch("/api/admin/marketplace/:id/reject", requireAdminAuth, async (req, res) => {
+    try {
+      const updated = await storage.updateListingStatus(req.params.id as string, "rejected");
+      if (!updated) return res.status(404).json({ error: "Listing not found" });
+      res.json(updated);
+    } catch {
+      res.status(500).json({ error: "Failed to reject listing" });
+    }
+  });
+
+  app.delete("/api/admin/marketplace/:id", requireAdminAuth, async (req, res) => {
+    try {
+      const deleted = await storage.deleteMarketplaceListing(req.params.id as string);
+      if (!deleted) return res.status(404).json({ error: "Listing not found" });
+      res.status(204).send();
+    } catch {
+      res.status(500).json({ error: "Failed to remove listing" });
+    }
+  });
+
+  app.get("/api/admin/users", requireAdminAuth, async (_req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users.map(u => ({
+        id: u.id, displayName: u.displayName, email: u.email, phone: u.phone, city: u.city, isBanned: u.isBanned, createdAt: u.createdAt,
+      })));
+    } catch {
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id/ban", requireAdminAuth, async (req, res) => {
+    try {
+      const { banned } = req.body;
+      const updated = await storage.banUser(req.params.id as string, !!banned);
+      if (!updated) return res.status(404).json({ error: "User not found" });
+      res.json({ id: updated.id, displayName: updated.displayName, isBanned: updated.isBanned });
+    } catch {
+      res.status(500).json({ error: "Failed to update user" });
     }
   });
 

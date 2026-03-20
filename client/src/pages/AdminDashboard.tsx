@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -400,204 +401,212 @@ function InstrumentsManager() {
 
 function MarketplaceManager() {
   const { toast } = useToast();
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editData, setEditData] = useState<Record<string, any>>({});
-  const [newItem, setNewItem] = useState({
-    name: "",
-    category: "keyboards",
-    description: "",
-    price: 0,
-    originalPrice: 0,
-    imageUrl: "",
-    amazonLink: "",
-    bajaaoLink: "",
-    soundGlitzLink: "",
-    isSold: false
+  const [subTab, setSubTab] = useState("pending");
+
+  const { data: stats } = useQuery<any>({
+    queryKey: ["/api/admin/marketplace/stats"],
+    queryFn: async () => {
+      const res = await adminApiRequest("GET", "/api/admin/marketplace/stats");
+      return res.json();
+    },
   });
 
-  const { data: listings, isLoading } = useQuery<GearListing[]>({
-    queryKey: ["/api/gear"]
+  const { data: pendingListings, isLoading: pendingLoading } = useQuery<any[]>({
+    queryKey: ["/api/admin/marketplace/pending"],
+    queryFn: async () => {
+      const res = await adminApiRequest("GET", "/api/admin/marketplace/pending");
+      return res.json();
+    },
   });
 
-  const createMutation = useMutation({
-    mutationFn: (data: typeof newItem) => adminApiRequest("POST", "/api/gear", data),
+  const { data: allListings, isLoading: allLoading } = useQuery<any[]>({
+    queryKey: ["/api/admin/marketplace/all"],
+    queryFn: async () => {
+      const res = await adminApiRequest("GET", "/api/admin/marketplace/all");
+      return res.json();
+    },
+  });
+
+  const { data: users, isLoading: usersLoading } = useQuery<any[]>({
+    queryKey: ["/api/admin/users"],
+    queryFn: async () => {
+      const res = await adminApiRequest("GET", "/api/admin/users");
+      return res.json();
+    },
+  });
+
+  const approveMutation = useMutation({
+    mutationFn: (id: string) => adminApiRequest("PATCH", `/api/admin/marketplace/${id}/approve`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/gear"] });
-      toast({ title: "Success", description: "Gear listing added" });
-    }
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/marketplace"] });
+      toast({ title: "Approved", description: "Listing is now live" });
+    },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Record<string, any> }) =>
-      adminApiRequest("PATCH", `/api/gear/${id}`, data),
+  const rejectMutation = useMutation({
+    mutationFn: (id: string) => adminApiRequest("PATCH", `/api/admin/marketplace/${id}/reject`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/gear"] });
-      toast({ title: "Updated", description: "Listing updated" });
-      setEditingId(null);
-      setEditData({});
-    }
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/marketplace"] });
+      toast({ title: "Rejected", description: "Listing rejected" });
+    },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/gear/${id}`),
+  const removeMutation = useMutation({
+    mutationFn: (id: string) => adminApiRequest("DELETE", `/api/admin/marketplace/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/gear"] });
-      toast({ title: "Deleted", description: "Listing removed" });
-    }
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/marketplace"] });
+      toast({ title: "Removed", description: "Listing removed" });
+    },
   });
 
-  const startEdit = (item: GearListing) => {
-    setEditingId(item.id);
-    setEditData({
-      name: item.name || "",
-      category: item.category || "keyboards",
-      description: item.description || "",
-      price: item.price || 0,
-      originalPrice: item.originalPrice || 0,
-      amazonLink: item.amazonLink || "",
-      bajaaoLink: item.bajaaoLink || "",
-      soundGlitzLink: item.soundGlitzLink || "",
-      isSold: item.isSold || false,
-    });
+  const banMutation = useMutation({
+    mutationFn: ({ id, banned }: { id: string; banned: boolean }) =>
+      adminApiRequest("PATCH", `/api/admin/users/${id}/ban`, { banned }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      toast({ title: "Updated", description: "User status updated" });
+    },
+  });
+
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(price);
+
+  const statusBadge = (status: string) => {
+    const colors: Record<string, string> = { pending: "bg-yellow-600", active: "bg-green-600", sold: "bg-gray-500", rejected: "bg-red-600", removed: "bg-red-800" };
+    return <Badge className={`${colors[status] || "bg-gray-500"} text-xs`}>{status}</Badge>;
   };
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Plus className="w-5 h-5" />
-            Add New Gear Listing
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <Label>Name</Label>
-              <Input value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} placeholder="Item name" />
-            </div>
-            <div>
-              <Label>Category</Label>
-              <Select value={newItem.category} onValueChange={(v) => setNewItem({ ...newItem, category: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="keyboards">Keyboards</SelectItem>
-                  <SelectItem value="guitars">Guitars</SelectItem>
-                  <SelectItem value="drums">Drums</SelectItem>
-                  <SelectItem value="pro_audio">Pro Audio</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Price (₹)</Label>
-              <Input type="number" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: parseInt(e.target.value) || 0 })} />
-            </div>
-            <div>
-              <Label>Original Price (₹)</Label>
-              <Input type="number" value={newItem.originalPrice} onChange={(e) => setNewItem({ ...newItem, originalPrice: parseInt(e.target.value) || 0 })} />
-            </div>
-            <div>
-              <Label>Amazon Link</Label>
-              <Input value={newItem.amazonLink} onChange={(e) => setNewItem({ ...newItem, amazonLink: e.target.value })} placeholder="https://amazon.in/..." />
-            </div>
-            <div>
-              <Label>Bajaao Link</Label>
-              <Input value={newItem.bajaaoLink} onChange={(e) => setNewItem({ ...newItem, bajaaoLink: e.target.value })} placeholder="https://bajaao.com/..." />
-            </div>
-            <div className="md:col-span-2">
-              <Label>Description</Label>
-              <Textarea value={newItem.description} onChange={(e) => setNewItem({ ...newItem, description: e.target.value })} rows={2} />
-            </div>
-          </div>
-          <Button className="mt-4" onClick={() => createMutation.mutate(newItem)} disabled={createMutation.isPending}>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Listing
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Stats */}
+      {stats && (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{stats.totalListings}</p><p className="text-xs text-muted-foreground">Total Listings</p></CardContent></Card>
+          <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-yellow-500">{stats.pendingListings}</p><p className="text-xs text-muted-foreground">Pending</p></CardContent></Card>
+          <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-green-500">{stats.activeListings}</p><p className="text-xs text-muted-foreground">Active</p></CardContent></Card>
+          <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-gray-400">{stats.soldListings}</p><p className="text-xs text-muted-foreground">Sold</p></CardContent></Card>
+          <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{stats.totalUsers}</p><p className="text-xs text-muted-foreground">Users</p></CardContent></Card>
+          <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-red-500">{stats.bannedUsers}</p><p className="text-xs text-muted-foreground">Banned</p></CardContent></Card>
+        </div>
+      )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Current Listings</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <p className="text-muted-foreground">Loading...</p>
-          ) : listings && listings.length > 0 ? (
-            <div className="space-y-2">
-              {listings.map((item) => (
-                <div key={item.id} className="border rounded-md">
-                  {editingId === item.id ? (
-                    <div className="p-4 space-y-3">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div>
-                          <Label className="text-xs">Name</Label>
-                          <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
-                        </div>
-                        <div>
-                          <Label className="text-xs">Price (₹)</Label>
-                          <Input type="number" value={editData.price} onChange={(e) => setEditData({ ...editData, price: parseInt(e.target.value) || 0 })} />
-                        </div>
-                        <div>
-                          <Label className="text-xs">Original Price (₹)</Label>
-                          <Input type="number" value={editData.originalPrice} onChange={(e) => setEditData({ ...editData, originalPrice: parseInt(e.target.value) || 0 })} />
-                        </div>
-                        <div>
-                          <Label className="text-xs">Amazon Link</Label>
-                          <Input value={editData.amazonLink} onChange={(e) => setEditData({ ...editData, amazonLink: e.target.value })} />
-                        </div>
-                        <div>
-                          <Label className="text-xs">Bajaao Link</Label>
-                          <Input value={editData.bajaaoLink} onChange={(e) => setEditData({ ...editData, bajaaoLink: e.target.value })} />
-                        </div>
-                        <div>
-                          <Label className="text-xs">SoundGlitz Link</Label>
-                          <Input value={editData.soundGlitzLink} onChange={(e) => setEditData({ ...editData, soundGlitzLink: e.target.value })} />
-                        </div>
-                      </div>
+      {/* Sub-tabs */}
+      <div className="flex gap-2 border-b pb-2">
+        {["pending", "all", "users"].map((tab) => (
+          <Button key={tab} variant={subTab === tab ? "default" : "ghost"} size="sm" onClick={() => setSubTab(tab)} className="capitalize">
+            {tab === "pending" ? `Pending Review (${pendingListings?.length || 0})` : tab === "all" ? "All Listings" : "Users"}
+          </Button>
+        ))}
+      </div>
+
+      {/* Pending Review */}
+      {subTab === "pending" && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Pending Review</CardTitle>
+            <CardDescription>Approve or reject user-submitted listings</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {pendingLoading ? (
+              <div className="flex justify-center py-8"><Loader2 className="w-8 h-8 animate-spin" /></div>
+            ) : !pendingListings?.length ? (
+              <p className="text-muted-foreground text-center py-8">No pending listings</p>
+            ) : (
+              <div className="space-y-3">
+                {pendingListings.map((listing: any) => (
+                  <div key={listing.id} className="p-4 border rounded-lg">
+                    <div className="flex justify-between items-start">
                       <div>
-                        <Label className="text-xs">Description</Label>
-                        <Textarea value={editData.description} onChange={(e) => setEditData({ ...editData, description: e.target.value })} rows={2} />
+                        <p className="font-medium">{listing.title}</p>
+                        <p className="text-sm text-muted-foreground">{listing.category} • {listing.condition} • {listing.city}</p>
+                        <p className="text-lg font-bold text-green-500 mt-1">{formatPrice(listing.price)}</p>
+                        {listing.description && <p className="text-sm mt-1 line-clamp-2">{listing.description}</p>}
+                        <p className="text-xs text-muted-foreground mt-2">By: {listing.seller?.displayName || "Unknown"} ({listing.seller?.city})</p>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <Switch checked={editData.isSold} onCheckedChange={(v) => setEditData({ ...editData, isSold: v })} />
-                          <Label className="text-xs">Sold</Label>
-                        </div>
-                        <div className="flex gap-2 ml-auto">
-                          <Button size="sm" onClick={() => updateMutation.mutate({ id: item.id, data: editData })} disabled={updateMutation.isPending}>
-                            <Save className="w-3 h-3 mr-1" /> Save
-                          </Button>
-                          <Button size="sm" variant="ghost" onClick={() => { setEditingId(null); setEditData({}); }}>
-                            <X className="w-3 h-3 mr-1" /> Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between p-3">
-                      <div>
-                        <p className="font-medium">{item.name} {item.isSold && <span className="text-xs text-red-400 ml-1">(Sold)</span>}</p>
-                        <p className="text-sm text-muted-foreground">{item.category} • ₹{item.price?.toLocaleString()}</p>
-                      </div>
-                      <div className="flex gap-1">
-                        <Button variant="ghost" size="icon" onClick={() => startEdit(item)}>
-                          <Edit className="w-4 h-4" />
+                      <div className="flex gap-2">
+                        <Button size="sm" onClick={() => approveMutation.mutate(listing.id)} disabled={approveMutation.isPending}>
+                          <Check className="w-3 h-3 mr-1" /> Approve
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
-                          <Trash2 className="w-4 h-4 text-destructive" />
+                        <Button size="sm" variant="destructive" onClick={() => rejectMutation.mutate(listing.id)} disabled={rejectMutation.isPending}>
+                          <X className="w-3 h-3 mr-1" /> Reject
                         </Button>
                       </div>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-muted-foreground">No listings yet.</p>
-          )}
-        </CardContent>
-      </Card>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* All Listings */}
+      {subTab === "all" && (
+        <Card>
+          <CardHeader>
+            <CardTitle>All Marketplace Listings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {allLoading ? (
+              <div className="flex justify-center py-8"><Loader2 className="w-8 h-8 animate-spin" /></div>
+            ) : !allListings?.length ? (
+              <p className="text-muted-foreground text-center py-8">No listings</p>
+            ) : (
+              <div className="space-y-2">
+                {allListings.map((listing: any) => (
+                  <div key={listing.id} className="flex items-center justify-between p-3 border rounded-md">
+                    <div>
+                      <p className="font-medium">{listing.title} {statusBadge(listing.status)}</p>
+                      <p className="text-sm text-muted-foreground">{listing.category} • {formatPrice(listing.price)} • {listing.city} • By: {listing.seller?.displayName || "Unknown"}</p>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removeMutation.mutate(listing.id)}>
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Users */}
+      {subTab === "users" && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Marketplace Users</CardTitle>
+            <CardDescription>Manage registered marketplace users</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {usersLoading ? (
+              <div className="flex justify-center py-8"><Loader2 className="w-8 h-8 animate-spin" /></div>
+            ) : !users?.length ? (
+              <p className="text-muted-foreground text-center py-8">No registered users yet</p>
+            ) : (
+              <div className="space-y-2">
+                {users.map((user: any) => (
+                  <div key={user.id} className="flex items-center justify-between p-3 border rounded-md">
+                    <div>
+                      <p className="font-medium">
+                        {user.displayName || user.email}
+                        {user.isBanned && <Badge className="bg-red-600 text-xs ml-2">Banned</Badge>}
+                      </p>
+                      <p className="text-sm text-muted-foreground">{user.email} • {user.phone} • {user.city}</p>
+                    </div>
+                    <Button
+                      variant={user.isBanned ? "outline" : "destructive"}
+                      size="sm"
+                      onClick={() => banMutation.mutate({ id: user.id, banned: !user.isBanned })}
+                    >
+                      {user.isBanned ? "Unban" : "Ban"}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

@@ -20,7 +20,9 @@ import {
   type PageSetting,
   type InsertPageSetting,
   type ShareableLink,
-  type InsertShareableLink
+  type InsertShareableLink,
+  type MarketplaceListing,
+  type InsertMarketplaceListing
 } from "../shared/schema.js";
 import { randomUUID } from "crypto";
 
@@ -91,6 +93,33 @@ export interface IStorage {
   createShareableLink(link: InsertShareableLink): Promise<ShareableLink>;
   deleteShareableLink(id: string): Promise<boolean>;
   incrementShareableLinkAccess(code: string): Promise<void>;
+
+  // Marketplace Users
+  getUserByPhone(phone: string): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
+  updateUser(id: string, data: Partial<{displayName: string; phone: string; city: string; bio: string}>): Promise<User | undefined>;
+  banUser(id: string, banned: boolean): Promise<User | undefined>;
+
+  // Marketplace Listings
+  getMarketplaceListings(filters: {
+    category?: string;
+    condition?: string;
+    city?: string;
+    priceMin?: number;
+    priceMax?: number;
+    search?: string;
+    sort?: string;
+    status?: string;
+  }): Promise<MarketplaceListing[]>;
+  getMarketplaceListing(id: string): Promise<MarketplaceListing | undefined>;
+  getListingsBySeller(sellerId: string): Promise<MarketplaceListing[]>;
+  getPendingListings(): Promise<MarketplaceListing[]>;
+  createMarketplaceListing(listing: InsertMarketplaceListing & { sellerId: string; city: string }): Promise<MarketplaceListing>;
+  updateMarketplaceListing(id: string, data: Partial<InsertMarketplaceListing>): Promise<MarketplaceListing | undefined>;
+  updateListingStatus(id: string, status: string): Promise<MarketplaceListing | undefined>;
+  deleteMarketplaceListing(id: string): Promise<boolean>;
+  incrementListingViewCount(id: string): Promise<void>;
+  getMarketplaceStats(): Promise<{ totalListings: number; pendingListings: number; activeListings: number; soldListings: number; totalUsers: number; bannedUsers: number }>;
 }
 
 export class MemStorage implements IStorage {
@@ -105,6 +134,7 @@ export class MemStorage implements IStorage {
   private obsGuideContent: Map<string, ObsGuideContent>;
   private pageSettings: Map<string, PageSetting>;
   private shareableLinks: Map<string, ShareableLink>;
+  private marketplaceListings: Map<string, MarketplaceListing>;
 
   constructor() {
     this.users = new Map();
@@ -118,7 +148,8 @@ export class MemStorage implements IStorage {
     this.obsGuideContent = new Map();
     this.pageSettings = new Map();
     this.shareableLinks = new Map();
-    
+    this.marketplaceListings = new Map();
+
     this.initializeSampleData();
   }
 
@@ -172,8 +203,125 @@ export class MemStorage implements IStorage {
       username: "admin",
       email: "admin@nathanielschool.com",
       password: "nph2024admin",
-      isAdmin: true
+      isAdmin: true,
+      displayName: "Admin",
+      phone: null,
+      city: null,
+      bio: null,
+      isBanned: false,
+      createdAt: new Date(),
     });
+
+    // Sample marketplace seller
+    const sampleSeller: User = {
+      id: "seller1",
+      username: "rahul_music",
+      email: "rahul@example.com",
+      password: "seller123",
+      isAdmin: false,
+      displayName: "Rahul Sharma",
+      phone: "9876543210",
+      city: "Bangalore",
+      bio: "Musician and gear enthusiast based in Bangalore",
+      isBanned: false,
+      createdAt: new Date("2025-01-15"),
+    };
+    this.users.set(sampleSeller.id, sampleSeller);
+
+    // Sample marketplace listings
+    const sampleMarketplaceListings: MarketplaceListing[] = [
+      {
+        id: "ml1",
+        sellerId: "seller1",
+        title: "Yamaha PSR-E373 Keyboard",
+        category: "keyboards",
+        condition: "excellent",
+        price: 9500,
+        description: "Barely used Yamaha PSR-E373. Comes with power adapter and music stand. Great for beginners and intermediate players.",
+        imageUrls: JSON.stringify(["https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=600"]),
+        city: "Bangalore",
+        status: "active",
+        viewCount: 24,
+        createdAt: new Date("2025-11-10"),
+        updatedAt: new Date("2025-11-10"),
+      },
+      {
+        id: "ml2",
+        sellerId: "seller1",
+        title: "Fender CD-60S Acoustic Guitar",
+        category: "guitars",
+        condition: "good",
+        price: 12000,
+        description: "Solid spruce top acoustic guitar. Some minor pick marks on the body but plays and sounds great. Includes gig bag.",
+        imageUrls: JSON.stringify(["https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600"]),
+        city: "Bangalore",
+        status: "active",
+        viewCount: 42,
+        createdAt: new Date("2025-10-20"),
+        updatedAt: new Date("2025-10-20"),
+      },
+      {
+        id: "ml3",
+        sellerId: "seller1",
+        title: "Harmonium - 3 Reed, 9 Stopper",
+        category: "indian_classical",
+        condition: "fair",
+        price: 7500,
+        description: "Traditional Indian harmonium in working condition. 3 reeds with 9 stoppers. Suitable for practice and light performances.",
+        imageUrls: JSON.stringify(["https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600"]),
+        city: "Mumbai",
+        status: "active",
+        viewCount: 18,
+        createdAt: new Date("2025-09-15"),
+        updatedAt: new Date("2025-09-15"),
+      },
+      {
+        id: "ml4",
+        sellerId: "seller1",
+        title: "Focusrite Scarlett 2i2 (3rd Gen)",
+        category: "pro_audio",
+        condition: "mint",
+        price: 8500,
+        description: "Like new Focusrite Scarlett 2i2 3rd generation USB audio interface. Used only a handful of times. Comes with original box and USB-C cable.",
+        imageUrls: JSON.stringify(["https://images.unsplash.com/photo-1598653222000-6b7b7a552625?w=600"]),
+        city: "Bangalore",
+        status: "active",
+        viewCount: 56,
+        createdAt: new Date("2025-12-01"),
+        updatedAt: new Date("2025-12-01"),
+      },
+      {
+        id: "ml5",
+        sellerId: "seller1",
+        title: "Roland TD-1DMK Electronic Drums",
+        category: "drums",
+        condition: "good",
+        price: 28000,
+        description: "Roland TD-1DMK e-drum kit with mesh heads. Great for apartment practice. Includes throne, sticks, and headphones.",
+        imageUrls: JSON.stringify(["https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=600"]),
+        city: "Chennai",
+        status: "active",
+        viewCount: 33,
+        createdAt: new Date("2025-11-25"),
+        updatedAt: new Date("2025-11-25"),
+      },
+      {
+        id: "ml6",
+        sellerId: "seller1",
+        title: "Shure SM58 Dynamic Microphone",
+        category: "accessories",
+        condition: "excellent",
+        price: 5500,
+        description: "Industry standard vocal microphone. Practically indestructible. Includes mic clip and carry pouch.",
+        imageUrls: JSON.stringify(["https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=600"]),
+        city: "Bangalore",
+        status: "pending",
+        viewCount: 0,
+        createdAt: new Date("2025-12-05"),
+        updatedAt: new Date("2025-12-05"),
+      },
+    ];
+    sampleMarketplaceListings.forEach(listing => this.marketplaceListings.set(listing.id, listing));
   }
 
   // Users
@@ -191,7 +339,19 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
-    const user: User = { ...insertUser, id, isAdmin: false };
+    const user: User = {
+      id,
+      username: insertUser.username,
+      email: insertUser.email,
+      password: insertUser.password,
+      isAdmin: false,
+      displayName: (insertUser as any).displayName ?? null,
+      phone: (insertUser as any).phone ?? null,
+      city: (insertUser as any).city ?? null,
+      bio: (insertUser as any).bio ?? null,
+      isBanned: false,
+      createdAt: new Date(),
+    };
     this.users.set(id, user);
     return user;
   }
@@ -481,6 +641,164 @@ export class MemStorage implements IStorage {
       link.accessCount = (link.accessCount || 0) + 1;
       this.shareableLinks.set(link.id, link);
     }
+  }
+
+  // Marketplace Users
+  async getUserByPhone(phone: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(user => user.phone === phone);
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return Array.from(this.users.values()).filter(user => !user.isAdmin);
+  }
+
+  async updateUser(id: string, data: Partial<{displayName: string; phone: string; city: string; bio: string}>): Promise<User | undefined> {
+    const existing = this.users.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...data };
+    this.users.set(id, updated);
+    return updated;
+  }
+
+  async banUser(id: string, banned: boolean): Promise<User | undefined> {
+    const existing = this.users.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, isBanned: banned };
+    this.users.set(id, updated);
+    return updated;
+  }
+
+  // Marketplace Listings
+  async getMarketplaceListings(filters: {
+    category?: string;
+    condition?: string;
+    city?: string;
+    priceMin?: number;
+    priceMax?: number;
+    search?: string;
+    sort?: string;
+    status?: string;
+  }): Promise<MarketplaceListing[]> {
+    let listings = Array.from(this.marketplaceListings.values());
+
+    // Default to active listings unless status filter is provided
+    const statusFilter = filters.status || "active";
+    listings = listings.filter(l => l.status === statusFilter);
+
+    if (filters.category) {
+      listings = listings.filter(l => l.category === filters.category);
+    }
+    if (filters.condition) {
+      listings = listings.filter(l => l.condition === filters.condition);
+    }
+    if (filters.city) {
+      listings = listings.filter(l => l.city === filters.city);
+    }
+    if (filters.priceMin !== undefined) {
+      listings = listings.filter(l => l.price >= filters.priceMin!);
+    }
+    if (filters.priceMax !== undefined) {
+      listings = listings.filter(l => l.price <= filters.priceMax!);
+    }
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      listings = listings.filter(l =>
+        l.title.toLowerCase().includes(searchLower) ||
+        l.description?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Sort
+    const sort = filters.sort || "newest";
+    if (sort === "price_low") {
+      listings.sort((a, b) => a.price - b.price);
+    } else if (sort === "price_high") {
+      listings.sort((a, b) => b.price - a.price);
+    } else {
+      // newest
+      listings.sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+    }
+
+    return listings;
+  }
+
+  async getMarketplaceListing(id: string): Promise<MarketplaceListing | undefined> {
+    return this.marketplaceListings.get(id);
+  }
+
+  async getListingsBySeller(sellerId: string): Promise<MarketplaceListing[]> {
+    return Array.from(this.marketplaceListings.values()).filter(l => l.sellerId === sellerId);
+  }
+
+  async getPendingListings(): Promise<MarketplaceListing[]> {
+    return Array.from(this.marketplaceListings.values()).filter(l => l.status === "pending");
+  }
+
+  async createMarketplaceListing(listing: InsertMarketplaceListing & { sellerId: string; city: string }): Promise<MarketplaceListing> {
+    const id = randomUUID();
+    const now = new Date();
+    const newListing: MarketplaceListing = {
+      id,
+      sellerId: listing.sellerId,
+      title: listing.title,
+      category: listing.category,
+      condition: listing.condition,
+      price: listing.price,
+      description: listing.description ?? null,
+      imageUrls: listing.imageUrls ?? null,
+      city: listing.city,
+      status: "pending",
+      viewCount: 0,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.marketplaceListings.set(id, newListing);
+    return newListing;
+  }
+
+  async updateMarketplaceListing(id: string, data: Partial<InsertMarketplaceListing>): Promise<MarketplaceListing | undefined> {
+    const existing = this.marketplaceListings.get(id);
+    if (!existing) return undefined;
+    const updated: MarketplaceListing = { ...existing, ...data, updatedAt: new Date() };
+    this.marketplaceListings.set(id, updated);
+    return updated;
+  }
+
+  async updateListingStatus(id: string, status: string): Promise<MarketplaceListing | undefined> {
+    const existing = this.marketplaceListings.get(id);
+    if (!existing) return undefined;
+    const updated: MarketplaceListing = { ...existing, status, updatedAt: new Date() };
+    this.marketplaceListings.set(id, updated);
+    return updated;
+  }
+
+  async deleteMarketplaceListing(id: string): Promise<boolean> {
+    return this.marketplaceListings.delete(id);
+  }
+
+  async incrementListingViewCount(id: string): Promise<void> {
+    const existing = this.marketplaceListings.get(id);
+    if (existing) {
+      existing.viewCount = (existing.viewCount || 0) + 1;
+      this.marketplaceListings.set(id, existing);
+    }
+  }
+
+  async getMarketplaceStats(): Promise<{ totalListings: number; pendingListings: number; activeListings: number; soldListings: number; totalUsers: number; bannedUsers: number }> {
+    const allListings = Array.from(this.marketplaceListings.values());
+    const allUsers = Array.from(this.users.values()).filter(u => !u.isAdmin);
+    return {
+      totalListings: allListings.length,
+      pendingListings: allListings.filter(l => l.status === "pending").length,
+      activeListings: allListings.filter(l => l.status === "active").length,
+      soldListings: allListings.filter(l => l.status === "sold").length,
+      totalUsers: allUsers.length,
+      bannedUsers: allUsers.filter(u => u.isBanned).length,
+    };
   }
 }
 

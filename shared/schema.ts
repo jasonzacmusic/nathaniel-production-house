@@ -3,6 +3,31 @@ import { pgTable, text, varchar, integer, boolean, timestamp } from "drizzle-orm
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Marketplace Constants
+export const MARKETPLACE_CATEGORIES = [
+  { value: "guitars", label: "Guitars" },
+  { value: "bass", label: "Bass Guitars" },
+  { value: "keyboards", label: "Keyboards & Pianos" },
+  { value: "drums", label: "Drums & Percussion" },
+  { value: "indian_classical", label: "Indian Classical" },
+  { value: "pro_audio", label: "Pro Audio & Studio" },
+  { value: "amplifiers", label: "Amplifiers" },
+  { value: "dj", label: "DJ Equipment" },
+  { value: "accessories", label: "Accessories" },
+] as const;
+
+export const LISTING_CONDITIONS = [
+  { value: "mint", label: "Mint / Like New", description: "No visible wear, essentially unused" },
+  { value: "excellent", label: "Excellent", description: "Minor cosmetic marks, fully functional" },
+  { value: "good", label: "Good", description: "Normal wear, fully functional" },
+  { value: "fair", label: "Fair", description: "Visible wear or minor issues" },
+  { value: "poor", label: "Poor", description: "Significant wear, may need repair" },
+] as const;
+
+export const INDIAN_CITIES = [
+  "Bangalore", "Mumbai", "Delhi", "Chennai", "Hyderabad", "Pune", "Kolkata", "Goa", "Other"
+] as const;
+
 // Users table for authentication
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -10,6 +35,12 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   isAdmin: boolean("is_admin").default(false),
+  displayName: text("display_name"),
+  phone: text("phone"),
+  city: text("city"),
+  bio: text("bio"),
+  isBanned: boolean("is_banned").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -166,6 +197,49 @@ export const shareableLinks = pgTable("shareable_links", {
 export const insertShareableLinkSchema = createInsertSchema(shareableLinks).omit({ id: true, createdAt: true, accessCount: true });
 export type InsertShareableLink = z.infer<typeof insertShareableLinkSchema>;
 export type ShareableLink = typeof shareableLinks.$inferSelect;
+
+// Marketplace Listings (peer-to-peer)
+export const marketplaceListings = pgTable("marketplace_listings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sellerId: varchar("seller_id").notNull(),
+  title: text("title").notNull(),
+  category: text("category").notNull(),
+  condition: text("condition").notNull(),
+  price: integer("price").notNull(),
+  description: text("description"),
+  imageUrls: text("image_urls"), // JSON array stored as text
+  city: text("city").notNull(),
+  status: text("status").notNull().default("pending"), // pending, active, sold, removed, rejected
+  viewCount: integer("view_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertMarketplaceListingSchema = createInsertSchema(marketplaceListings).omit({
+  id: true,
+  viewCount: true,
+  createdAt: true,
+  updatedAt: true,
+  status: true,
+});
+
+export const registerUserSchema = z.object({
+  displayName: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email"),
+  phone: z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit Indian mobile number"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  city: z.string().min(1, "City is required"),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
+
+export type InsertMarketplaceListing = z.infer<typeof insertMarketplaceListingSchema>;
+export type MarketplaceListing = typeof marketplaceListings.$inferSelect;
+export type RegisterUser = z.infer<typeof registerUserSchema>;
+export type LoginUser = z.infer<typeof loginSchema>;
 
 // Form data types for frontend
 export interface BookingFormData {
