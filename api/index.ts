@@ -1,6 +1,7 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import express from "express";
 import { createServer } from "http";
-import { registerRoutes } from "../server/routes";
+import { registerRoutes } from "../server/routes.js";
 
 const app = express();
 
@@ -8,10 +9,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const httpServer = createServer(app);
-const initPromise = registerRoutes(httpServer, app);
+let initialized = false;
 
-// Vercel serverless handler - ensures routes are registered before handling requests
-export default async function handler(req: any, res: any) {
-  await initPromise;
-  return app(req, res);
+async function ensureInit() {
+  if (!initialized) {
+    await registerRoutes(httpServer, app);
+    initialized = true;
+  }
+}
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  await ensureInit();
+  app(req as any, res as any);
 }
