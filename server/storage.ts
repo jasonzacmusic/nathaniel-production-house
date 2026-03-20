@@ -21,7 +21,7 @@ import {
   type InsertPageSetting,
   type ShareableLink,
   type InsertShareableLink
-} from "../shared/schema";
+} from "../shared/schema.js";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
