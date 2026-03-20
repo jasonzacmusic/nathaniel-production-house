@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import SEOHead from "@/components/SEOHead";
+import SEOHead, { schemas } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -183,10 +183,19 @@ export default function Instruments() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SEOHead 
-        title="How to Buy Instruments - Piano, Guitar & Accessories"
-        description="Comprehensive buying guides for digital pianos, keyboards, acoustic guitars, and music accessories. Honest recommendations from Nathaniel School of Music teachers."
+      <SEOHead
+        title="Instrument Buying Guide - Piano, Guitar & Accessories"
+        description="Comprehensive buying guides for digital pianos, keyboards, acoustic guitars, and music accessories. Expert recommendations from Nathaniel School of Music teachers in Bangalore."
         path="/instruments"
+        keywords="buy digital piano india, keyboard buying guide, acoustic guitar guide, music accessories bangalore, best piano for beginners, yamaha keyboard india, roland piano comparison"
+        jsonLd={[
+          schemas.breadcrumb([{ name: "Home", url: "/" }, { name: "Instruments", url: "/instruments" }]),
+          schemas.article("Instrument Buying Guide", "Expert buying guides for pianos, guitars, keyboards, and accessories for musicians in India.", "/instruments"),
+          schemas.faq([
+            { q: "Which digital piano is best for beginners in India?", a: "The Yamaha P-45 and Casio CDP-S110 are excellent beginner options under ₹35,000. For more features, consider the Yamaha CK-88 or Roland RD-88." },
+            { q: "Where can I buy musical instruments in Bangalore?", a: "You can purchase from Bajaao.com, Amazon India, or visit Nathaniel School of Music for hands-on recommendations and our gear marketplace." },
+          ]),
+        ]}
       />
       <Header />
       <main className="flex-1">

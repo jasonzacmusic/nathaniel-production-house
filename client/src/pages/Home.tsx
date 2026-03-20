@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
-import SEOHead from "@/components/SEOHead";
+import SEOHead, { schemas } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -203,9 +203,20 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title="Recording Studio & Tech Resources"
-        description="State-of-the-art, fully digital recording facility offering full service production including recording, editing, mixing, mastering, and musical arrangement. Nathaniel Production House, Bangalore."
+        title="Recording Studio & Music Production - Bangalore"
+        description="Professional recording studio in Bangalore, India. Full-service music production: recording, mixing, mastering, arrangement. 500+ students trained, 15+ years experience. Book your session today."
         path="/"
+        keywords="recording studio bangalore, music production india, mixing mastering, professional recording, album production, voice over recording, songwriting, nathaniel production house, music school bangalore"
+        jsonLd={[
+          schemas.breadcrumb([{ name: "Home", url: "/" }]),
+          schemas.faq([
+            { q: "What services does Nathaniel Production House offer?", a: "We offer professional recording, editing, mixing, mastering, songwriting, arrangement, and video production services at our Bangalore studios." },
+            { q: "Where is Nathaniel Production House located?", a: "We have two locations in Bangalore: Langford Town (560025) and Sahakar Nagar (560092)." },
+            { q: "How many years of experience does the studio have?", a: "Nathaniel Production House has over 15 years of experience in music production and education, with 500+ students trained." },
+            { q: "What genres does the studio specialize in?", a: "We work across all genres including Rock, Metal, Blues, Folk, Electronic, Christian, Indian Classical, Country, and more." },
+            { q: "Does the studio offer session musicians?", a: "Yes, we have in-house session musicians for piano, guitar, bass, flute, percussion, vocals (Carnatic, Hindustani, Western), trumpet, and more." },
+          ]),
+        ]}
       />
       <Header />
       <main className="flex-1">

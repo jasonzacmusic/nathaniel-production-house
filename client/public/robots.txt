@@ -1,0 +1,36 @@
+# Nathaniel Production House
+# https://studio.nathanielschool.com
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/dashboard
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://studio.nathanielschool.com/sitemap.xml
+
+# AI Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /

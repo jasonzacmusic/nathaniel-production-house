@@ -1,0 +1,81 @@
+# Nathaniel Production House
+
+> Professional recording studio and music production house in Bangalore, India. Full-service recording, mixing, mastering, arrangement, and music education resources.
+
+## About
+
+Nathaniel Production House is a fully digital recording facility affiliated with Nathaniel School of Music, based in Bangalore, India. With 15+ years of experience and 500+ students trained, we offer comprehensive music production services and educational resources.
+
+## Locations
+
+- Langford Town, Bangalore 560025, Karnataka, India
+- Sahakar Nagar, Bangalore 560092, Karnataka, India
+
+## Contact
+
+- Phone: +91 77604 56847
+- Email: music@nathanielschool.com
+- WhatsApp: +91 77604 56847
+- Hours: Monday-Saturday, 9:00 AM - 8:00 PM
+
+## Studio Services
+
+- **Recording**: Multi-track recording for any instrument with professional equipment
+- **Editing**: Time and pitch correction using industry-standard tools
+- **Mixing**: Expertise across Country, Rock, Metal, Blues, Folk, Electronic, and more
+- **Mastering**: CD-ready, streaming-ready output in all formats
+- **Songwriting & Production**: Vocal harmony, synth programming, sound design, orchestration
+- **Video & Artwork**: Professional video recording/editing and album cover design
+
+## Session Musicians Available
+
+Voice Over, Piano/Keyboard, Orchestration, Arrangement, Electric/Acoustic Bass, Acoustic/Nylon/Electric Guitar, Indian & Western Flute, Percussion, Carnatic/Hindustani/Western Vocals, Choir, Trumpet, Melodica
+
+## Professional Equipment
+
+- DAW: Industry-standard Digital Audio Workstations
+- Interfaces: Focusrite, Mbox 3 Pro
+- Monitors: M-Audio BX 8 Deluxe
+- Microphones: Shure (Beta 52A, SM 57, SM 81), Rode NT5, Blue (Bluebird, Baby Bottle), SE Electronics
+- Headphones: EX-29, HD 380 Pro, AKG K 240 MK II
+- Virtual Instruments: Native Instruments Komplete 8, IK Multimedia, Pianoteq, Steven Slate Drums
+
+## Free Educational Resources
+
+### Instrument Buying Guides
+Comprehensive guides for purchasing pianos, keyboards, guitars, and accessories at every budget level.
+
+### Piano Guide
+Detailed comparison of digital pianos including Yamaha CK-88 vs Roland RD-88, setup guides, and recommendations by price tier.
+
+### OBS & Zoom Setup Guide
+Complete tutorial for setting up professional online music lessons using OBS Studio and Zoom, with optimal audio/video settings.
+
+### MIDI Piano Visualizer
+Free web-based tool featuring real-time chord detection, staff notation, 40+ scale practice modes, and multiple visualization modes (Standard, Fun, Teacher).
+
+## Gear Marketplace
+Community marketplace for buying and selling used musical instruments with price comparisons across Amazon, Bajaao, and SoundGlitz.
+
+## Affiliate Partners
+Discounted deals on music software (Pianoteq, Slate Digital, Native Instruments, Waves, iZotope, Reaper) and hardware (Focusrite, Audio-Technica, PreSonus).
+
+## Notable Clients
+
+- Lagori (Folk Rock)
+- Bhoomi (Rock)
+- Parvaaz (Psychedelic Rock Blues)
+- Allegro Fudge (Acoustic Rock)
+- Jason Zac Band (Instrumental)
+- Samuel Deepak Victor (Christian Music)
+
+## Pages
+
+- [Home](https://studio.nathanielschool.com/)
+- [Instrument Buying Guides](https://studio.nathanielschool.com/instruments)
+- [Piano Guide](https://studio.nathanielschool.com/piano-guide)
+- [OBS & Zoom Setup Guide](https://studio.nathanielschool.com/obs-guide)
+- [MIDI Visualizer](https://studio.nathanielschool.com/midi-visualizer)
+- [Gear Marketplace](https://studio.nathanielschool.com/marketplace)
+- [Partner Deals](https://studio.nathanielschool.com/partners)
+- [Contact](https://studio.nathanielschool.com/contact)

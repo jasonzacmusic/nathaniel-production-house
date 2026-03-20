@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import SEOHead from "@/components/SEOHead";
+import SEOHead, { schemas } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -318,9 +318,19 @@ export default function PianoGuide() {
   return (
     <div className="min-h-screen flex flex-col">
       <SEOHead
-        title="Complete Piano Buying Guide - How to Choose the Right Keyboard"
-        description="Comprehensive guide to buying digital pianos and keyboards. Yamaha CK-88 vs Roland RD-88 comparison, touch response settings, sustain pedals, and expert recommendations from Jason Zach at Nathaniel School of Music."
+        title="Complete Piano Buying Guide 2026 - Yamaha CK-88 vs Roland RD-88"
+        description="Comprehensive guide to buying digital pianos and keyboards in India. Yamaha CK-88 vs Roland RD-88 comparison, touch response settings, sustain pedals, and expert recommendations by price tier."
         path="/piano-guide"
+        keywords="yamaha ck-88 vs roland rd-88, best digital piano india 2026, piano buying guide, weighted keyboard india, sustain pedal guide, digital piano comparison, keyboard for music students"
+        jsonLd={[
+          schemas.breadcrumb([{ name: "Home", url: "/" }, { name: "Instruments", url: "/instruments" }, { name: "Piano Guide", url: "/piano-guide" }]),
+          schemas.article("Complete Piano Buying Guide 2026", "Expert guide to choosing the right digital piano or keyboard. Includes Yamaha CK-88 vs Roland RD-88 comparison.", "/piano-guide"),
+          schemas.faq([
+            { q: "Yamaha CK-88 vs Roland RD-88 - which is better?", a: "Both are excellent 88-key stage pianos. The CK-88 offers built-in speakers and lighter weight, while the RD-88 has superior piano sounds and weighted action. Choose CK-88 for portability, RD-88 for studio feel." },
+            { q: "What sustain pedal should I buy for my digital piano?", a: "Avoid cheap on/off sustain pedals. Invest in a half-damper compatible pedal like the Yamaha FC3A or Roland DP-10 for realistic sustain control." },
+            { q: "How much should I spend on my first digital piano?", a: "Budget ₹15,000-25,000 for beginners, ₹30,000-60,000 for intermediate, and ₹60,000+ for professional-grade keyboards." },
+          ]),
+        ]}
       />
       <Header />
       <main className="flex-1">
