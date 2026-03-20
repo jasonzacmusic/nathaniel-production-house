@@ -10,14 +10,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
-import { 
-  Music, LogOut, Plus, Trash2, Save, Piano, Guitar, Package, 
+import {
+  Music, LogOut, Plus, Trash2, Save, Piano, Guitar, Package,
   Users, MessageSquare, Settings, ExternalLink, Edit, Loader2,
-  Eye, EyeOff, Link, Copy, Share2, FileText
+  Eye, EyeOff, Link, Copy, Share2, FileText, Globe, Check, X
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import type { InstrumentRecommendation, GearListing, AffiliatePartner, ContactMessage, ShareableLink } from "@shared/schema";
 import { getAllPages, updatePageVisibility } from "@/config/siteConfig";
+
+const SITE_DOMAIN = "https://studio.nathanielschool.com";
 
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem("adminToken");
@@ -175,7 +177,8 @@ export default function AdminDashboard() {
 
 function InstrumentsManager() {
   const { toast } = useToast();
-  const [editingItem, setEditingItem] = useState<InstrumentRecommendation | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Record<string, string>>({});
   const [newItem, setNewItem] = useState({
     category: "piano",
     name: "",
@@ -202,6 +205,17 @@ function InstrumentsManager() {
     }
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, string> }) =>
+      adminApiRequest("PATCH", `/api/instruments/recommendations/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/instruments/recommendations"] });
+      toast({ title: "Updated", description: "Instrument updated" });
+      setEditingId(null);
+      setEditData({});
+    }
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminApiRequest("DELETE", `/api/instruments/recommendations/${id}`),
     onSuccess: () => {
@@ -209,6 +223,20 @@ function InstrumentsManager() {
       toast({ title: "Deleted", description: "Instrument removed" });
     }
   });
+
+  const startEdit = (item: InstrumentRecommendation) => {
+    setEditingId(item.id);
+    setEditData({
+      name: item.name || "",
+      model: item.model || "",
+      priceRange: item.priceRange || "",
+      amazonLink: item.amazonLink || "",
+      bajaaoLink: item.bajaaoLink || "",
+      description: item.description || "",
+      recommendation: item.recommendation || "budget",
+      category: item.category || "piano",
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -278,7 +306,7 @@ function InstrumentsManager() {
       <Card>
         <CardHeader>
           <CardTitle>Current Recommendations</CardTitle>
-          <CardDescription>Click to edit or delete instrument recommendations</CardDescription>
+          <CardDescription>Click the edit icon to modify, or delete</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -286,23 +314,78 @@ function InstrumentsManager() {
           ) : instruments && instruments.length > 0 ? (
             <div className="space-y-2">
               {instruments.map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-3 border rounded-md hover-elevate">
-                  <div>
-                    <p className="font-medium">{item.name} {item.model}</p>
-                    <p className="text-sm text-muted-foreground">{item.category} • {item.recommendation} • {item.priceRange}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    {item.amazonLink && (
-                      <Button variant="ghost" size="icon" asChild>
-                        <a href={item.amazonLink} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      </Button>
-                    )}
-                    <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
-                  </div>
+                <div key={item.id} className="border rounded-md">
+                  {editingId === item.id ? (
+                    <div className="p-4 space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                          <Label className="text-xs">Name</Label>
+                          <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Model</Label>
+                          <Input value={editData.model} onChange={(e) => setEditData({ ...editData, model: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Price Range</Label>
+                          <Input value={editData.priceRange} onChange={(e) => setEditData({ ...editData, priceRange: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Amazon Link</Label>
+                          <Input value={editData.amazonLink} onChange={(e) => setEditData({ ...editData, amazonLink: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Bajaao Link</Label>
+                          <Input value={editData.bajaaoLink} onChange={(e) => setEditData({ ...editData, bajaaoLink: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Level</Label>
+                          <Select value={editData.recommendation} onValueChange={(v) => setEditData({ ...editData, recommendation: v })}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="budget">Budget</SelectItem>
+                              <SelectItem value="intermediate">Intermediate</SelectItem>
+                              <SelectItem value="professional">Professional</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Description</Label>
+                        <Textarea value={editData.description} onChange={(e) => setEditData({ ...editData, description: e.target.value })} rows={2} />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" onClick={() => updateMutation.mutate({ id: item.id, data: editData })} disabled={updateMutation.isPending}>
+                          <Save className="w-3 h-3 mr-1" /> Save
+                        </Button>
+                        <Button size="sm" variant="ghost" onClick={() => { setEditingId(null); setEditData({}); }}>
+                          <X className="w-3 h-3 mr-1" /> Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between p-3 hover-elevate">
+                      <div>
+                        <p className="font-medium">{item.name} {item.model}</p>
+                        <p className="text-sm text-muted-foreground">{item.category} • {item.recommendation} • {item.priceRange}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        {item.amazonLink && (
+                          <Button variant="ghost" size="icon" asChild>
+                            <a href={item.amazonLink} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
+                        <Button variant="ghost" size="icon" onClick={() => startEdit(item)}>
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -317,6 +400,8 @@ function InstrumentsManager() {
 
 function MarketplaceManager() {
   const { toast } = useToast();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Record<string, any>>({});
   const [newItem, setNewItem] = useState({
     name: "",
     category: "keyboards",
@@ -342,6 +427,17 @@ function MarketplaceManager() {
     }
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, any> }) =>
+      adminApiRequest("PATCH", `/api/gear/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/gear"] });
+      toast({ title: "Updated", description: "Listing updated" });
+      setEditingId(null);
+      setEditData({});
+    }
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminApiRequest("DELETE", `/api/gear/${id}`),
     onSuccess: () => {
@@ -349,6 +445,21 @@ function MarketplaceManager() {
       toast({ title: "Deleted", description: "Listing removed" });
     }
   });
+
+  const startEdit = (item: GearListing) => {
+    setEditingId(item.id);
+    setEditData({
+      name: item.name || "",
+      category: item.category || "keyboards",
+      description: item.description || "",
+      price: item.price || 0,
+      originalPrice: item.originalPrice || 0,
+      amazonLink: item.amazonLink || "",
+      bajaaoLink: item.bajaaoLink || "",
+      soundGlitzLink: item.soundGlitzLink || "",
+      isSold: item.isSold || false,
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -415,14 +526,70 @@ function MarketplaceManager() {
           ) : listings && listings.length > 0 ? (
             <div className="space-y-2">
               {listings.map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-3 border rounded-md">
-                  <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-muted-foreground">{item.category} • ₹{item.price?.toLocaleString()}</p>
-                  </div>
-                  <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
-                    <Trash2 className="w-4 h-4 text-destructive" />
-                  </Button>
+                <div key={item.id} className="border rounded-md">
+                  {editingId === item.id ? (
+                    <div className="p-4 space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                          <Label className="text-xs">Name</Label>
+                          <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Price (₹)</Label>
+                          <Input type="number" value={editData.price} onChange={(e) => setEditData({ ...editData, price: parseInt(e.target.value) || 0 })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Original Price (₹)</Label>
+                          <Input type="number" value={editData.originalPrice} onChange={(e) => setEditData({ ...editData, originalPrice: parseInt(e.target.value) || 0 })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Amazon Link</Label>
+                          <Input value={editData.amazonLink} onChange={(e) => setEditData({ ...editData, amazonLink: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Bajaao Link</Label>
+                          <Input value={editData.bajaaoLink} onChange={(e) => setEditData({ ...editData, bajaaoLink: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">SoundGlitz Link</Label>
+                          <Input value={editData.soundGlitzLink} onChange={(e) => setEditData({ ...editData, soundGlitzLink: e.target.value })} />
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Description</Label>
+                        <Textarea value={editData.description} onChange={(e) => setEditData({ ...editData, description: e.target.value })} rows={2} />
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <Switch checked={editData.isSold} onCheckedChange={(v) => setEditData({ ...editData, isSold: v })} />
+                          <Label className="text-xs">Sold</Label>
+                        </div>
+                        <div className="flex gap-2 ml-auto">
+                          <Button size="sm" onClick={() => updateMutation.mutate({ id: item.id, data: editData })} disabled={updateMutation.isPending}>
+                            <Save className="w-3 h-3 mr-1" /> Save
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={() => { setEditingId(null); setEditData({}); }}>
+                            <X className="w-3 h-3 mr-1" /> Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between p-3">
+                      <div>
+                        <p className="font-medium">{item.name} {item.isSold && <span className="text-xs text-red-400 ml-1">(Sold)</span>}</p>
+                        <p className="text-sm text-muted-foreground">{item.category} • ₹{item.price?.toLocaleString()}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="icon" onClick={() => startEdit(item)}>
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -437,6 +604,8 @@ function MarketplaceManager() {
 
 function PartnersManager() {
   const { toast } = useToast();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<Record<string, string>>({});
   const [newItem, setNewItem] = useState({
     name: "",
     type: "software",
@@ -458,6 +627,17 @@ function PartnersManager() {
     }
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, string> }) =>
+      adminApiRequest("PATCH", `/api/partners/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/partners"] });
+      toast({ title: "Updated", description: "Partner updated" });
+      setEditingId(null);
+      setEditData({});
+    }
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id: string) => adminApiRequest("DELETE", `/api/partners/${id}`),
     onSuccess: () => {
@@ -465,6 +645,18 @@ function PartnersManager() {
       toast({ title: "Deleted", description: "Partner removed" });
     }
   });
+
+  const startEdit = (item: AffiliatePartner) => {
+    setEditingId(item.id);
+    setEditData({
+      name: item.name || "",
+      type: item.type || "software",
+      description: item.description || "",
+      commission: item.commission || "",
+      dealLink: item.dealLink || "",
+      logoUrl: item.logoUrl || "",
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -521,14 +713,66 @@ function PartnersManager() {
           ) : partners && partners.length > 0 ? (
             <div className="space-y-2">
               {partners.map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-3 border rounded-md">
-                  <div>
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-sm text-muted-foreground">{item.type} • {item.commission}</p>
-                  </div>
-                  <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
-                    <Trash2 className="w-4 h-4 text-destructive" />
-                  </Button>
+                <div key={item.id} className="border rounded-md">
+                  {editingId === item.id ? (
+                    <div className="p-4 space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-xs">Name</Label>
+                          <Input value={editData.name} onChange={(e) => setEditData({ ...editData, name: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Type</Label>
+                          <Select value={editData.type} onValueChange={(v) => setEditData({ ...editData, type: v })}>
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="software">Software</SelectItem>
+                              <SelectItem value="hardware">Hardware</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label className="text-xs">Commission/Deal</Label>
+                          <Input value={editData.commission} onChange={(e) => setEditData({ ...editData, commission: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Deal Link</Label>
+                          <Input value={editData.dealLink} onChange={(e) => setEditData({ ...editData, dealLink: e.target.value })} />
+                        </div>
+                        <div>
+                          <Label className="text-xs">Logo URL</Label>
+                          <Input value={editData.logoUrl} onChange={(e) => setEditData({ ...editData, logoUrl: e.target.value })} />
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-xs">Description</Label>
+                        <Textarea value={editData.description} onChange={(e) => setEditData({ ...editData, description: e.target.value })} rows={2} />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" onClick={() => updateMutation.mutate({ id: item.id, data: editData })} disabled={updateMutation.isPending}>
+                          <Save className="w-3 h-3 mr-1" /> Save
+                        </Button>
+                        <Button size="sm" variant="ghost" onClick={() => { setEditingId(null); setEditData({}); }}>
+                          <X className="w-3 h-3 mr-1" /> Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between p-3">
+                      <div>
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-sm text-muted-foreground">{item.type} • {item.commission}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="icon" onClick={() => startEdit(item)}>
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(item.id)}>
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -580,23 +824,97 @@ function MessagesViewer() {
   );
 }
 
+function SiteLinksCard() {
+  const { toast } = useToast();
+  const pages = getAllPages();
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const publicPages = pages.filter(p => !p.isAnchor && p.path !== "/admin" && p.path !== "/admin/dashboard");
+
+  const copyUrl = async (page: { id: string; path: string }) => {
+    const url = `${SITE_DOMAIN}${page.path}`;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = url;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+      setCopiedId(page.id);
+      setTimeout(() => setCopiedId(null), 2000);
+      toast({ title: "Copied!", description: url });
+    } catch {
+      toast({ title: "URL", description: url, duration: 10000 });
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Globe className="w-5 h-5" />
+          Site Links
+        </CardTitle>
+        <CardDescription>Copy-pastable links to all pages on your site</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          {publicPages.map((page) => {
+            const url = `${SITE_DOMAIN}${page.path}`;
+            return (
+              <div
+                key={page.id}
+                className="flex items-center justify-between p-3 rounded-lg border bg-card group"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm">{page.label}</p>
+                  <p className="text-xs text-muted-foreground font-mono truncate">{url}</p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="ml-3 shrink-0"
+                  onClick={() => copyUrl(page)}
+                >
+                  {copiedId === page.id ? (
+                    <Check className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 function PageVisibilityManager() {
   const { toast } = useToast();
   const pages = getAllPages();
-  
+
   const { data: pageSettings, isLoading } = useQuery<{ pageId: string; visible: boolean }[]>({
     queryKey: ["/api/page-settings"]
   });
-  
+
   const [localVisibility, setLocalVisibility] = useState<Record<string, boolean>>({});
-  
+
   useEffect(() => {
     if (pageSettings) {
       const visMap = pageSettings.reduce((acc, s) => ({ ...acc, [s.pageId]: s.visible }), {} as Record<string, boolean>);
       setLocalVisibility(visMap);
     }
   }, [pageSettings]);
-  
+
   const toggleMutation = useMutation({
     mutationFn: async ({ pageId, visible }: { pageId: string; visible: boolean }) => {
       const response = await adminApiRequest("PATCH", `/api/page-settings/${pageId}`, { visible });
@@ -605,72 +923,75 @@ function PageVisibilityManager() {
     onSuccess: (_, variables) => {
       updatePageVisibility(variables.pageId, variables.visible);
       queryClient.invalidateQueries({ queryKey: ["/api/page-settings"] });
-      toast({ 
-        title: variables.visible ? "Page Shown" : "Page Hidden", 
-        description: `Page visibility updated` 
+      toast({
+        title: variables.visible ? "Page Shown" : "Page Hidden",
+        description: `Page visibility updated`
       });
     }
   });
-  
+
   const getVisibility = (pageId: string, defaultVisible: boolean) => {
     if (pageId in localVisibility) return localVisibility[pageId];
     return defaultVisible;
   };
-  
+
   const handleToggle = (pageId: string, currentVisible: boolean) => {
     const newVisible = !currentVisible;
     setLocalVisibility(prev => ({ ...prev, [pageId]: newVisible }));
     toggleMutation.mutate({ pageId, visible: newVisible });
   };
-  
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Eye className="w-5 h-5" />
-          Page Visibility
-        </CardTitle>
-        <CardDescription>Control which pages are visible on the website navigation</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="w-8 h-8 animate-spin" />
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {pages.filter(p => !p.isAnchor).map((page) => {
-              const isVisible = getVisibility(page.id, page.visible);
-              return (
-                <div 
-                  key={page.id} 
-                  className="flex items-center justify-between p-4 rounded-lg border bg-card"
-                  data-testid={`page-visibility-${page.id}`}
-                >
-                  <div className="flex items-center gap-4">
-                    {isVisible ? (
-                      <Eye className="w-5 h-5 text-green-500" />
-                    ) : (
-                      <EyeOff className="w-5 h-5 text-muted-foreground" />
-                    )}
-                    <div>
-                      <p className="font-medium">{page.label}</p>
-                      <p className="text-sm text-muted-foreground">{page.path}</p>
+    <div className="space-y-6">
+      <SiteLinksCard />
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Eye className="w-5 h-5" />
+            Page Visibility
+          </CardTitle>
+          <CardDescription>Control which pages are visible on the website navigation</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {pages.filter(p => !p.isAnchor).map((page) => {
+                const isVisible = getVisibility(page.id, page.visible);
+                return (
+                  <div
+                    key={page.id}
+                    className="flex items-center justify-between p-4 rounded-lg border bg-card"
+                    data-testid={`page-visibility-${page.id}`}
+                  >
+                    <div className="flex items-center gap-4">
+                      {isVisible ? (
+                        <Eye className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <EyeOff className="w-5 h-5 text-muted-foreground" />
+                      )}
+                      <div>
+                        <p className="font-medium">{page.label}</p>
+                        <p className="text-sm text-muted-foreground">{page.path}</p>
+                      </div>
                     </div>
+                    <Switch
+                      checked={isVisible}
+                      onCheckedChange={() => handleToggle(page.id, isVisible)}
+                      disabled={toggleMutation.isPending}
+                      data-testid={`switch-${page.id}`}
+                    />
                   </div>
-                  <Switch
-                    checked={isVisible}
-                    onCheckedChange={() => handleToggle(page.id, isVisible)}
-                    disabled={toggleMutation.isPending}
-                    data-testid={`switch-${page.id}`}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -690,7 +1011,7 @@ function ShareLinksManager() {
     },
     onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/share-links"] });
-      const url = `${window.location.origin}/s/${data.code}`;
+      const url = `${SITE_DOMAIN}/s/${data.code}`;
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(url);
@@ -722,7 +1043,7 @@ function ShareLinksManager() {
   });
   
   const copyToClipboard = async (code: string) => {
-    const url = `${window.location.origin}/s/${code}`;
+    const url = `${SITE_DOMAIN}/s/${code}`;
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(url);
@@ -743,8 +1064,8 @@ function ShareLinksManager() {
     }
   };
   
-  const getFullUrl = (code: string) => `${window.location.origin}/s/${code}`;
-  
+  const getFullUrl = (code: string) => `${SITE_DOMAIN}/s/${code}`;
+
   return (
     <div className="space-y-6">
       <Card>
